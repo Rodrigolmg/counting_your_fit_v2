@@ -1,4 +1,5 @@
 import 'package:counting_your_fit_v2/app_localizations.dart';
+import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -13,13 +14,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       supportedLocales: const [
-        Locale('pt'),
+        Locale('pt', 'BR'),
         Locale('en', 'US'),
       ],
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate
       ],
       localeResolutionCallback: (locale, supportedLocales) {
 
@@ -106,8 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Text(
+              context.translate.get('counterLabel'),
             ),
             Text(
               '$_counter',

@@ -30,7 +30,7 @@ class AppLocalizations {
     return true;
   }
 
-  String translate(String key) {
+  String get(String key) {
     return _localizedStrings[key]!;
   }
 }
