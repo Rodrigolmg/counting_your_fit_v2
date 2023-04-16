@@ -18,14 +18,25 @@ class AppLocalizations {
   static const LocalizationsDelegate<AppLocalizations> delegate =
       _AppLocalizationsDelegate();
 
-  Map<String, String> _localizedStrings = {};
+  Map<String, dynamic> _localizedStrings = {};
+
+  Map<String, dynamic> flattenTranslations(Map<String, dynamic> json, [String prefix = '']){
+    final Map<String, dynamic> flatMap = {};
+    json.forEach((key, value) {
+      if(value is Map<String, dynamic>){
+        flatMap.addAll(flattenTranslations(value, '$prefix$key.'));
+      } else {
+        flatMap['$prefix$key'] = value.toString();
+      }
+    });
+
+    return flatMap;
+  }
 
   Future<bool> load() async {
     String jsonString = await rootBundle.loadString('assets/lang/${locale.languageCode}.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
-    _localizedStrings = jsonMap.map(
-      (key, value) => MapEntry(key, value.toString())
-    );
+    _localizedStrings = flattenTranslations(jsonMap);
 
     return true;
   }

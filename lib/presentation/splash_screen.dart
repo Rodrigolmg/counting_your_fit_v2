@@ -1,4 +1,7 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'dart:async';
+
+import 'package:after_layout/after_layout.dart';
+import 'package:counting_your_fit_v2/access_status.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
@@ -10,27 +13,22 @@ class CustomSplashScreen extends StatefulWidget {
   State<CustomSplashScreen> createState() => _CustomSplashScreenState();
 }
 
-class _CustomSplashScreenState extends State<CustomSplashScreen> {
+class _CustomSplashScreenState extends State<CustomSplashScreen> with AfterLayoutMixin<CustomSplashScreen> {
 
-  _onSpashEnd(){
+  _onSplashEnd() async {
+
+    bool isFirstAccess = await AccessStatus.setAccess();
+
     Future.delayed(
       const Duration(seconds: 4),
       (){
         Navigator.pushReplacementNamed(
-          context, CountingYourFitRoutes.timerSetting
+            context, isFirstAccess ? CountingYourFitRoutes.introScreen
+            : CountingYourFitRoutes.timerSetting
         );
       }
     );
   }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _onSpashEnd();
-    });
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -40,4 +38,7 @@ class _CustomSplashScreenState extends State<CustomSplashScreen> {
       ),
     );
   }
+
+  @override
+  FutureOr<void> afterFirstLayout(BuildContext context) => _onSplashEnd();
 }

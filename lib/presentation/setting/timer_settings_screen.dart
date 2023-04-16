@@ -1,3 +1,4 @@
+import 'package:counting_your_fit_v2/access_status.dart';
 import 'package:flutter/material.dart';
 
 class TimerSettingsScreen extends StatefulWidget {
@@ -8,6 +9,15 @@ class TimerSettingsScreen extends StatefulWidget {
 }
 
 class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AccessStatus.reset();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,4 +26,6 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
       ),
     );
   }
+
+
 }

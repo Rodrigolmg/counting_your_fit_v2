@@ -1,3 +1,12 @@
 {
-  "counterLabel": "Você apertou o botão o total de:"
+  "intro": {
+    "firstPageLabel": "Você já esqueceu em qual série vocês estava?",
+    "secondPageLabel": "Seus problemas estão resolvidos!",
+    "thirdPageLabel": "Me fale suas séries e quanto tempo você irá descansar que eu te ajudo!",
+    "fourthPageLabel": "Ah! E se tiver ou uma isometria ou um tempo de execução de exercício, você pode me falar também!",
+    "fifthPageLabel": "Então, vamos treinar?!",
+    "go": "VAMOS"
+  },
+  "yes": "yes",
+  "no": "no"
 }
