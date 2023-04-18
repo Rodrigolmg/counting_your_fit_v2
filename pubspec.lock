@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  animated_box_decoration:
+    dependency: transitive
+    description:
+      name: animated_box_decoration
+      sha256: "543f6f1c55c26b1ffb763181b6cfe567552c6c3a3e3c6fb921917df315bf24c8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6"
   animated_splash_screen:
     dependency: "direct main"
     description:
@@ -153,6 +161,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  dimension:
+    dependency: transitive
+    description:
+      name: dimension
+      sha256: fe4523302f9f9dd1e02693661e325901481c6756ea9ada0d762dc08cc28af55d
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.6"
   fake_async:
     dependency: transitive
     description:
@@ -182,6 +198,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_class_parser:
+    dependency: transitive
+    description:
+      name: flutter_class_parser
+      sha256: c5826e597e3c9b948cb338254812461249857d2c26b328930ef21d41b11554c5
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.4"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -237,6 +261,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  im_stepper:
+    dependency: "direct main"
+    description:
+      name: im_stepper
+      sha256: "84ca411f7c4666cb8762a6dd6eec0353c96c67f674124614263875d0570ca634"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1+1"
   infinite_listview:
     dependency: transitive
     description:
@@ -293,6 +325,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.0"
+  morphable_shape:
+    dependency: "direct main"
+    description:
+      name: morphable_shape
+      sha256: "962421dd9ab29053d9d90c6109dc32856e74be62489e960ed4471162616cb16f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.6.5"
   numberpicker:
     dependency: "direct main"
     description:

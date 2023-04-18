@@ -1,4 +1,4 @@
-import 'package:counting_your_fit_v2/presentation/util/app_localizations.dart';
+import 'package:counting_your_fit_v2/app_localizations.dart';
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,11 +38,23 @@ class CountingYourFit extends StatelessWidget {
         return supportedLocales.first;
       },
       theme: ThemeData(
-        fontFamily: GoogleFonts.nunitoSans().fontFamily,
+        fontFamily: GoogleFonts.dmSans().fontFamily,
         scaffoldBackgroundColor: ColorApp.backgroundColor,
         colorScheme: ColorScheme.fromSwatch(
           backgroundColor: ColorApp.backgroundColor,
         ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            foregroundColor: ColorApp.mainColor,
+            side: BorderSide(
+              color: ColorApp.mainColor,
+              width: 2
+            )
+          )
+        )
       ),
       initialRoute: CountingYourFitRoutes.splashScreen,
       onGenerateRoute: CountingYourFitRouter.getRoutes,

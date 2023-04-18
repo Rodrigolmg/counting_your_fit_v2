@@ -26,6 +26,8 @@ dependencies:
   animated_text_kit: ^4.2.2
   rive: ^0.10.4
   after_layout: ^1.2.0
+  im_stepper: ^1.0.1+1
+  morphable_shape: ^1.6.5
 
 dev_dependencies:
   flutter_test:
