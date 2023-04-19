@@ -238,7 +238,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage>
                 ),
                 onPressed: trainCallback,
                 child: Text(
-                  'Treinar',
+                  context.translate.get('train'),
                   style: TextStyle(
                     color: ColorApp.backgroundColor,
                     fontSize: 20,
