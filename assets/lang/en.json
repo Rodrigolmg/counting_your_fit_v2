@@ -8,6 +8,10 @@
     "go": "GO"
   },
   "sets": "Sets",
+  "rest": "Time rest",
+  "additionalExercise": "Isometrics/Execution",
+  "timeLabel": "Time",
+  "train": "",
   "oneExercise": "Exercise",
   "exerciseList": "Exercise list",
   "yes": "yes",
