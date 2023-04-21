@@ -1,12 +1,23 @@
 {
   "intro": {
-    "firstPageLabel": "Did you forget what set you was during your workout?",
-    "secondPageLabel": "Your problems is solved!",
+    "firstPageLabel": "Did you forget what set you were during your workout?",
+    "secondPageLabel": "Your problems are solved!",
     "thirdPageLabel": "Tell me your sets and how much time you will rest that I'll help you!",
     "fourthPageLabel": "Oh! And if there is either an isometrics or an exercise execution time, you can tell me too!",
     "fifthPageLabel": "So, let's go?!",
     "go": "GO"
   },
+  "exerciseList": {
+    "quantity": "Quantity",
+    "historyRegister": "Register for history",
+    "configureExercises": "Configure exercises"
+  },
+  "sets": "Sets",
+  "rest": "Time rest",
+  "additionalExercise": "Isometrics/Execution",
+  "timeLabel": "Time",
+  "train": "",
+  "oneExercise": "Exercise",
   "yes": "yes",
   "no": "no"
 }
