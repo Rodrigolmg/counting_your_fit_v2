@@ -1,7 +1,9 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/custom_rect_tween.dart';
+import 'package:counting_your_fit_v2/presentation/components/hero/hero_exercise_one_value.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_router.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/hero_exercise_values.dart';
+import 'package:counting_your_fit_v2/presentation/components/hero/hero_exercise_two_values.dart';
+import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart';
 import 'package:counting_your_fit_v2/presentation/setting/state/timer_settings_state_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -28,8 +30,13 @@ class _HeroButtonState extends State<HeroButton> {
 
   final timeScreenController = GetIt.I.get<TimerSettingsStateController>();
 
+
   @override
   Widget build(BuildContext context) {
+
+    bool isOneValuePicker = widget.heroTag! == heroSetsPopUp
+    || widget.heroTag! == heroStepQuantityPopUp;
+
     return SizedBox(
       height: 47,
       width: 150,
@@ -50,7 +57,9 @@ class _HeroButtonState extends State<HeroButton> {
             Navigator.of(context).push(
               HeroRoute(
                 builder: (context) {
-                  return HeroExerciseValues(
+                  return isOneValuePicker ? HeroExerciseOneValue(
+                    heroTag: widget.heroTag!,
+                  ) : HeroExerciseTwoValues(
                     heroTag: widget.heroTag!,
                   );
                 }

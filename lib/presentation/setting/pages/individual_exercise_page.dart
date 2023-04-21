@@ -3,8 +3,10 @@ import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_button.dart';
 import 'package:counting_your_fit_v2/presentation/components/directional_button.dart';
+import 'package:counting_your_fit_v2/presentation/components/hero/hero_exercise_two_values.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart';
 import 'package:counting_your_fit_v2/presentation/components/shake_error.dart';
+import 'package:counting_your_fit_v2/presentation/setting/state/exercise_state.dart';
 import 'package:counting_your_fit_v2/presentation/setting/state/timer_settings_state_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -22,6 +24,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage>
   AnimationController? _animationController;
   Animation? _buttonPositionAnimation;
   final _timeScreenController = GetIt.I.get<TimerSettingsStateController>();
+  ExerciseController exerciseController = GetIt.I.get<ExerciseController>();
   bool _hasAdditionalExercise = false;
   final _shakeTimerKey = GlobalKey<ShakeErrorState>();
   final _shakeAdditionalKey = GlobalKey<ShakeErrorState>();
@@ -44,8 +47,8 @@ class _IndividualExercisePageState extends State<IndividualExercisePage>
   }
 
   void trainCallback(){
-    bool hasNoRestTime = _timeScreenController.minutes == '00' &&
-        _timeScreenController.seconds == '00';
+    bool hasNoRestTime = exerciseController.minutes == '00' &&
+        exerciseController.seconds == '00';
 
     if(hasNoRestTime) {
       _shakeTimerKey.currentState?.shake();
@@ -58,8 +61,8 @@ class _IndividualExercisePageState extends State<IndividualExercisePage>
         CountingYourFitRoutes.timer
       );
     } else {
-      bool hasAdditionalTime = _timeScreenController.additionalMinutes != '00' ||
-          _timeScreenController.additionalSeconds != '00';
+      bool hasAdditionalTime = exerciseController.additionalMinutes != '00' ||
+          exerciseController.additionalSeconds != '00';
 
       if(!hasAdditionalTime){
         _shakeAdditionalKey.currentState?.shake();
@@ -113,7 +116,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage>
                   ),
                   HeroButton(
                     heroTag: heroSetsPopUp,
-                    buttonLabel: _timeScreenController.sets.toString(),
+                    buttonLabel: exerciseController.sets.toString(),
                   )
                 ],
               ),
@@ -142,9 +145,12 @@ class _IndividualExercisePageState extends State<IndividualExercisePage>
                       shakeCount: 3,
                       shakeOffset: 10,
                       child: HeroButton(
+                        buttonLabel: '${exerciseController.minutes}:${exerciseController.seconds}',
                         heroTag: heroTimerPopUp,
-                        hasError: _shakeTimerKey.currentState != null && _shakeTimerKey.currentState!.animationController.status == AnimationStatus.forward,
-                        buttonLabel: '${_timeScreenController.minutes.toString()}:${_timeScreenController.seconds.toString()}',
+                        hasError: _shakeTimerKey.currentState != null &&
+                            _shakeTimerKey
+                                .currentState!.animationController.status
+                                    == AnimationStatus.forward,
                       ),
                     ),
                   ],
@@ -159,13 +165,13 @@ class _IndividualExercisePageState extends State<IndividualExercisePage>
                 children: [
                   Checkbox(
                     value: _hasAdditionalExercise,
-                    onChanged: _timeScreenController.seconds != '00' ||
-                        _timeScreenController.minutes != '00' ?
+                    onChanged: exerciseController.seconds != '00' ||
+                        exerciseController.minutes != '00' ?
                     (checkValue){
                       setState(() {
                         _hasAdditionalExercise = checkValue ?? false;
                       });
-                      _timeScreenController.resetAddionals();
+                      exerciseController.resetAddionals();
                     } : null,
                     checkColor: ColorApp.backgroundColor,
                     activeColor: ColorApp.mainColor,
@@ -207,8 +213,11 @@ class _IndividualExercisePageState extends State<IndividualExercisePage>
                       shakeOffset: 10,
                       child: HeroButton(
                         heroTag: heroAdditionalPopUp,
-                        hasError: _shakeAdditionalKey.currentState != null && _shakeAdditionalKey.currentState!.animationController.status == AnimationStatus.forward,
-                        buttonLabel: '${_timeScreenController.additionalMinutes}:${_timeScreenController.additionalSeconds}',
+                        hasError: _shakeAdditionalKey.currentState != null &&
+                            _shakeAdditionalKey.currentState!
+                                .animationController.status
+                                  == AnimationStatus.forward,
+                        buttonLabel: '${exerciseController.additionalMinutes}:${exerciseController.additionalSeconds}',
                       ),
                     ),
                     const SizedBox(

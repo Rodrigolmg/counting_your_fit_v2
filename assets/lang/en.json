@@ -7,13 +7,17 @@
     "fifthPageLabel": "So, let's go?!",
     "go": "GO"
   },
+  "exerciseList": {
+    "quantity": "Quantity",
+    "historyRegister": "Register for history",
+    "configureExercises": "Configure exercises"
+  },
   "sets": "Sets",
   "rest": "Time rest",
   "additionalExercise": "Isometrics/Execution",
   "timeLabel": "Time",
   "train": "",
   "oneExercise": "Exercise",
-  "exerciseList": "Exercise list",
   "yes": "yes",
   "no": "no"
 }

@@ -7,13 +7,17 @@
     "fifthPageLabel": "Então, vamos treinar?!",
     "go": "VAMOS"
   },
+  "exerciseList": {
+    "quantity": "Quantidade",
+    "historyRegister": "Registrar para histórico",
+    "configureExercises": "Configurar exercícios"
+  },
   "sets": "Séries",
   "rest": "Descanso",
   "additionalExercise": "Isometria/Execução",
   "timeLabel": "Tempo",
   "train": "Treinar",
   "oneExercise": "Exercício",
-  "exerciseList": "Lista de exercícios",
   "yes": "yes",
   "no": "no"
 }
