@@ -53,9 +53,6 @@ class CountingYourFit extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch(
           backgroundColor: ColorApp.backgroundColor,
         ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-
-        ),
       ),
       initialRoute: CountingYourFitRoutes.splashScreen,
       onGenerateRoute: CountingYourFitRouter.getRoutes,

@@ -32,8 +32,8 @@ class _IndividualController extends BlocController<ExerciseController>{
       GetIt.I.get<ExerciseController>();
 }
 
-class _ExerciseListController extends BlocController<ExerciseListDefinitionController>{
+class _ExerciseListController extends BlocController<ExerciseListDefinitionStateController>{
   @override
-  ExerciseListDefinitionController get controller
-    => GetIt.I.get<ExerciseListDefinitionController>();
+  ExerciseListDefinitionStateController get controller
+    => GetIt.I.get<ExerciseListDefinitionStateController>();
 }

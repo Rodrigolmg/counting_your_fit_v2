@@ -17,8 +17,9 @@ class AppInjector {
     injector.registerLazySingleton<ExerciseController>(() =>
         ExerciseController());
 
-    injector.registerLazySingleton<ExerciseListDefinitionController>(() =>
-        ExerciseListDefinitionController());
+    injector.registerLazySingleton<ExerciseListDefinitionStateController>(() =>
+        ExerciseListDefinitionStateController());
+
 
   } 
   

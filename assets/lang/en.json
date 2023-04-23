@@ -10,7 +10,9 @@
   "exerciseList": {
     "quantity": "Quantity",
     "historyRegister": "Register for history",
-    "configureExercises": "Configure exercises"
+    "configureExercises": "Configure exercises",
+    "nextExercise": "Next",
+    "registerAndTrain": "Register & train"
   },
   "sets": "Sets",
   "rest": "Time rest",

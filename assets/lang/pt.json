@@ -10,7 +10,9 @@
   "exerciseList": {
     "quantity": "Quantidade",
     "historyRegister": "Registrar para histórico",
-    "configureExercises": "Configurar exercícios"
+    "configureExercises": "Configurar exercícios",
+    "nextExercise": "Próximo",
+    "registerAndTrain": "Registrar e treinar"
   },
   "sets": "Séries",
   "rest": "Descanso",

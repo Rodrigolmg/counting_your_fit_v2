@@ -1,9 +1,11 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
+import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
 import 'package:counting_your_fit_v2/presentation/components/directional_button.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_button.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart';
 import 'package:counting_your_fit_v2/presentation/components/shake_error.dart';
+import 'package:counting_your_fit_v2/presentation/setting/state/exercise_list_definition_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/state/exercise_state.dart';
 import 'package:counting_your_fit_v2/presentation/setting/state/timer_settings_state_controller.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,7 @@ class _ExerciseListPageState extends State<ExerciseListPage> with
   Animation? _buttonPositionAnimation;
   final _timeScreenController = GetIt.I.get<TimerSettingsStateController>();
   final exerciseController = GetIt.I.get<ExerciseController>();
+  final exerciseListController = GetIt.I.get<ExerciseListDefinitionStateController>();
   bool _wantRegister = false;
   final _shakeQuantityKey = GlobalKey<ShakeErrorState>();
   int _quantityValue = 1;
@@ -93,8 +96,8 @@ class _ExerciseListPageState extends State<ExerciseListPage> with
                     SizedBox(
                       width: width * .3,
                       child: HeroButton(
-                          buttonLabel: exerciseController.stepQuantity.toString(),
-                          heroTag: heroStepQuantityPopUp
+                        buttonLabel: exerciseListController.stepQuantity.toString(),
+                        heroTag: heroStepQuantityPopUp
                       ),
                     ),
                   ],
@@ -147,8 +150,13 @@ class _ExerciseListPageState extends State<ExerciseListPage> with
                   backgroundColor: ColorApp.mainColor,
                   elevation: 2,
                 ),
-                onPressed: (){
+                onPressed: () async {
+                  await exerciseListController.defineStepList();
 
+                  if(context.mounted){
+                    Navigator.pushReplacementNamed(
+                        context, CountingYourFitRoutes.exerciseStepSetting);
+                  }
                 },
                 child: Text(
                   context.translate.get('exerciseList.configureExercises'),

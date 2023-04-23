@@ -1,5 +1,6 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart';
+import 'package:counting_your_fit_v2/presentation/setting/state/exercise_list_definition_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/state/exercise_state.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -22,6 +23,7 @@ class HeroExerciseOneValue extends StatefulWidget {
 class _HeroExerciseOneValueState extends State<HeroExerciseOneValue> {
 
   final exerciseController = GetIt.I.get<ExerciseController>();
+  final exerciseListController = GetIt.I.get<ExerciseListDefinitionStateController>();
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +53,11 @@ class _HeroExerciseOneValueState extends State<HeroExerciseOneValue> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         NumberPicker(
-                            minValue: 1,
+                            minValue: isSet ? 1 : 2,
                             maxValue: 10,
                             value: isSet ?
                               exerciseController.sets :
-                              exerciseController.stepQuantity,
+                              exerciseListController.stepQuantity,
                             infiniteLoop: true,
                             itemHeight: 35,
                             selectedTextStyle: const TextStyle(
@@ -82,7 +84,7 @@ class _HeroExerciseOneValueState extends State<HeroExerciseOneValue> {
                               if(isSet){
                                 exerciseController.setSets(value);
                               } else {
-                                exerciseController.setSteps(value);
+                                exerciseListController.setSteps(value);
                               }
                               setState(() {});
                             }

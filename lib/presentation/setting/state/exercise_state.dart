@@ -25,7 +25,6 @@ class ExerciseController extends Cubit<ExerciseStates>{
   String _additionalMinutes = '00';
   String _additionalSeconds = '00';
   int _sets = 1;
-  int _stepQuantity = 1;
 
   void setMinute(int minute){
     _minutes = minute <= 9 ? '0$minute' : minute.toString();
@@ -54,18 +53,9 @@ class ExerciseController extends Cubit<ExerciseStates>{
     _sets = sets;
   }
 
-  void setSteps(int stepValue){
-    _stepQuantity = stepValue;
-  }
-
-  void isToRegisterHistory(bool isToRegister){
-
-  }
-
   String get minutes => _minutes;
   String get seconds => _seconds;
   String get additionalMinutes => _additionalMinutes;
   String get additionalSeconds => _additionalSeconds;
   int get sets => _sets;
-  int get stepQuantity => _stepQuantity;
 }
