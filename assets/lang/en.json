@@ -14,6 +14,9 @@
     "nextExercise": "Next",
     "registerAndTrain": "Register & train"
   },
+  "stepPage": {
+    "nextExercise": "Next exercise"
+  },
   "sets": "Sets",
   "rest": "Time rest",
   "additionalExercise": "Isometrics/Execution",

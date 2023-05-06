@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 enum ExerciseListDefinitionStates{
   initialState,
   exerciseListDefined,
+  stepQuantityDefined,
   stepListDefined,
   stepCompleted,
   lastExercise
@@ -12,6 +13,7 @@ enum ExerciseListDefinitionStates{
 extension ExerciseListDefinitionStatesX on ExerciseListDefinitionStates{
   bool get isInitialState => this == ExerciseListDefinitionStates.initialState;
   bool get isListDefined => this == ExerciseListDefinitionStates.exerciseListDefined;
+  bool get isStepQuantityDefined => this == ExerciseListDefinitionStates.stepQuantityDefined;
   bool get isStepListDefined => this == ExerciseListDefinitionStates.stepListDefined;
   bool get isStepCompleted => this == ExerciseListDefinitionStates.stepCompleted;
   bool get isLastExercise => this == ExerciseListDefinitionStates.lastExercise;
@@ -57,6 +59,7 @@ class ExerciseListDefinitionStateController extends Cubit<ExerciseListDefinition
 
   void setSteps(int stepValue){
     _stepQuantity = stepValue;
+     emit(ExerciseListDefinitionStates.stepQuantityDefined);
   }
 
   Future<void> defineStepList() async {

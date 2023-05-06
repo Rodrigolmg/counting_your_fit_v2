@@ -1,17 +1,16 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/steps/step_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/steps/steps_state.dart';
 import 'package:counting_your_fit_v2/presentation/components/directional_button.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_button.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart';
-import 'package:counting_your_fit_v2/presentation/components/shake_error.dart';
-import 'package:counting_your_fit_v2/presentation/setting/state/exercise_list_definition_controller.dart';
-import 'package:counting_your_fit_v2/presentation/setting/state/exercise_state.dart';
-import 'package:counting_your_fit_v2/presentation/setting/state/timer_settings_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_variant.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/timer_settings_state_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:numberpicker/numberpicker.dart';
 
 class ExerciseListPage extends StatefulWidget {
   const ExerciseListPage({Key? key}) : super(key: key);
@@ -20,36 +19,13 @@ class ExerciseListPage extends StatefulWidget {
   State<ExerciseListPage> createState() => _ExerciseListPageState();
 }
 
-class _ExerciseListPageState extends State<ExerciseListPage> with
-  SingleTickerProviderStateMixin {
+class _ExerciseListPageState extends State<ExerciseListPage> {
 
-  AnimationController? _animationController;
-  Animation? _buttonPositionAnimation;
   final _timeScreenController = GetIt.I.get<TimerSettingsStateController>();
-  final exerciseController = GetIt.I.get<ExerciseController>();
-  final exerciseListController = GetIt.I.get<ExerciseListDefinitionStateController>();
+  final stepsController = GetIt.I.get<StepStateController>();
   bool _wantRegister = false;
-  final _shakeQuantityKey = GlobalKey<ShakeErrorState>();
-  int _quantityValue = 1;
+  int stepQuantity = 2;
 
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 550),
-    )..addListener(() {
-      setState(() {});
-    });
-
-    _buttonPositionAnimation = Tween<double>(begin: 10, end: 7)
-        .animate(CurvedAnimation(parent: _animationController!,
-        curve: Curves.easeOut)
-    );
-
-    _animationController!.repeat(reverse: true);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +36,7 @@ class _ExerciseListPageState extends State<ExerciseListPage> with
     return Stack(
       children: [
         Positioned(
-          left: _buttonPositionAnimation!.value,
+          left: 7,
           top: 80,
           child: DirectionalButton(
               isToRight: false,
@@ -95,9 +71,22 @@ class _ExerciseListPageState extends State<ExerciseListPage> with
                     ),
                     SizedBox(
                       width: width * .3,
-                      child: HeroButton(
-                        buttonLabel: exerciseListController.stepQuantity.toString(),
-                        heroTag: heroStepQuantityPopUp
+                      child: BlocBuilder<StepStateController, StepsState>(
+                        bloc: stepsController,
+                        buildWhen: (oldState, currentState) =>
+                          currentState.isStepDefined,
+                        builder: (context, state){
+
+                          if(state.isStepDefined){
+                            stepQuantity = (state as StepDefined).steps;
+                          }
+
+                          return HeroButton(
+                            buttonLabel: stepQuantity.toString(),
+                            heroTag: heroStepQuantityPopUp,
+                            variant: HeroSteps(),
+                          );
+                        },
                       ),
                     ),
                   ],
@@ -143,39 +132,29 @@ class _ExerciseListPageState extends State<ExerciseListPage> with
             width: width * .8,
             height: height * .07,
             child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  backgroundColor: ColorApp.mainColor,
-                  elevation: 2,
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                onPressed: () async {
-                  await exerciseListController.defineStepList();
-
-                  if(context.mounted){
-                    Navigator.pushReplacementNamed(
-                        context, CountingYourFitRoutes.exerciseStepSetting);
-                  }
-                },
-                child: Text(
-                  context.translate.get('exerciseList.configureExercises'),
-                  style: TextStyle(
-                      color: ColorApp.backgroundColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold
-                  ),
-                )
+                backgroundColor: ColorApp.mainColor,
+                elevation: 2,
+              ),
+              onPressed: () {
+                Navigator.pushReplacementNamed(
+                    context, CountingYourFitRoutes.exerciseStepSetting);
+              },
+              child: Text(
+                context.translate.get('exerciseList.configureExercises'),
+                style: TextStyle(
+                    color: ColorApp.backgroundColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
+                ),
+              )
             ),
           ),
         )
       ],
     );
-  }
-
-  @override
-  void dispose() {
-    _animationController!.dispose();
-    super.dispose();
   }
 }

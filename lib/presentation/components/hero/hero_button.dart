@@ -1,24 +1,22 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/custom_rect_tween.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/hero_exercise_one_value.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_router.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/hero_exercise_two_values.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart';
-import 'package:counting_your_fit_v2/presentation/setting/state/timer_settings_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_variant.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
 class HeroButton extends StatefulWidget {
 
   final String? buttonLabel;
   final String? heroTag;
   final bool hasError;
+  final HeroVariant variant;
 
   const HeroButton({
     super.key,
     required this.buttonLabel,
     required this.heroTag,
-    this.hasError = false
+    required this.variant,
+    this.hasError = false,
   });
 
 
@@ -28,14 +26,27 @@ class HeroButton extends StatefulWidget {
 
 class _HeroButtonState extends State<HeroButton> {
 
-  final timeScreenController = GetIt.I.get<TimerSettingsStateController>();
 
+  String getHeroStepTag(){
+
+    List<String> heroTagSplitted = widget.heroTag!.split('-');
+
+    bool isHeroStepTag = heroTagSplitted.length == 4;
+
+    if(!isHeroStepTag){
+      return widget.heroTag!;
+    }
+
+    heroTagSplitted.removeAt(3);
+
+    return '${heroTagSplitted[0]}-${heroTagSplitted[1]}-${heroTagSplitted[2]}';
+
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    bool isOneValuePicker = widget.heroTag! == heroSetsPopUp
-    || widget.heroTag! == heroStepQuantityPopUp;
+    String tag = getHeroStepTag();
 
     return SizedBox(
       height: 47,
@@ -57,11 +68,7 @@ class _HeroButtonState extends State<HeroButton> {
             Navigator.of(context).push(
               HeroRoute(
                 builder: (context) {
-                  return isOneValuePicker ? HeroExerciseOneValue(
-                    heroTag: widget.heroTag!,
-                  ) : HeroExerciseTwoValues(
-                    heroTag: widget.heroTag!,
-                  );
+                  return widget.variant(tag);
                 }
               )
             );
