@@ -77,7 +77,7 @@ class ExerciseListDefinitionStateController extends Cubit<ExerciseListDefinition
       id: _exerciseId,
       set: _sets,
       minute: int.parse(_minutes),
-      second: int.parse(_seconds),
+      seconds: int.parse(_seconds),
       additionalMinute: int.parse(_additionalMinutes),
       additionalSeconds: int.parse(_additionalSeconds)
     );
