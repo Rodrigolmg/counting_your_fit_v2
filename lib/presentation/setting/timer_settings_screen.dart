@@ -2,7 +2,7 @@ import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:bloc/bloc.dart';
 import 'package:counting_your_fit_v2/presentation/setting/pages/exercise_list_page.dart';
 import 'package:counting_your_fit_v2/presentation/setting/pages/individual_exercise_page.dart';
-import 'package:counting_your_fit_v2/presentation/setting/state/timer_settings_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/timer_settings_state_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';

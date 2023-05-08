@@ -10,7 +10,12 @@
   "exerciseList": {
     "quantity": "Quantidade",
     "historyRegister": "Registrar para histórico",
-    "configureExercises": "Configurar exercícios"
+    "configureExercises": "Configurar exercícios",
+    "nextExercise": "Próximo",
+    "registerAndTrain": "Registrar e treinar"
+  },
+  "stepPage": {
+    "nextExercise": "Próximo exercício"
   },
   "sets": "Séries",
   "rest": "Descanso",

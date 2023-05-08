@@ -10,7 +10,12 @@
   "exerciseList": {
     "quantity": "Quantity",
     "historyRegister": "Register for history",
-    "configureExercises": "Configure exercises"
+    "configureExercises": "Configure exercises",
+    "nextExercise": "Next",
+    "registerAndTrain": "Register & train"
+  },
+  "stepPage": {
+    "nextExercise": "Next exercise"
   },
   "sets": "Sets",
   "rest": "Time rest",

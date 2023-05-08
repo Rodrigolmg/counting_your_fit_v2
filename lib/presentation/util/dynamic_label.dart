@@ -26,9 +26,9 @@ class DynamicLabel {
   static String setsInformation(int currentSet, ExerciseSettingModel? restSettingDy,
       {@required String? sets, @required String? ofSet}) {
 
-    ExerciseSettingModel exerciseSetting = restSettingDy ?? ExerciseSettingModel(set: 1, minute: 0, second: 0);
+    ExerciseSettingModel exerciseSetting = restSettingDy ?? ExerciseSettingModel(set: 1, minute: 0, seconds: 0);
 
-    return (exerciseSetting.second != 0 || exerciseSetting.minute != 0) ?
+    return (exerciseSetting.seconds != 0 || exerciseSetting.minute != 0) ?
     '$sets $currentSet $ofSet ${exerciseSetting.set}' : '';
   }
 

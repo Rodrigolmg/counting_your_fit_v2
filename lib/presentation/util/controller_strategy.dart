@@ -1,6 +1,6 @@
-import 'package:counting_your_fit_v2/presentation/setting/state/exercise_state.dart';
-import 'package:counting_your_fit_v2/presentation/setting/state/exercise_list_definition_controller.dart';
-import 'package:counting_your_fit_v2/presentation/setting/state/timer_settings_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/individual_exercise_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/exercise_list_definition_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/timer_settings_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/util/abstract_controller.dart';
 import 'package:get_it/get_it.dart';
 
@@ -26,14 +26,14 @@ class _TimerController extends BlocController<TimerSettingsStateController>{
       GetIt.I.get<TimerSettingsStateController>();
 }
 
-class _IndividualController extends BlocController<ExerciseController>{
+class _IndividualController extends BlocController<IndividualExerciseController>{
   @override
-  ExerciseController get controller =>
-      GetIt.I.get<ExerciseController>();
+  IndividualExerciseController get controller =>
+      GetIt.I.get<IndividualExerciseController>();
 }
 
-class _ExerciseListController extends BlocController<ExerciseListDefinitionController>{
+class _ExerciseListController extends BlocController<ExerciseListDefinitionStateController>{
   @override
-  ExerciseListDefinitionController get controller
-    => GetIt.I.get<ExerciseListDefinitionController>();
+  ExerciseListDefinitionStateController get controller
+    => GetIt.I.get<ExerciseListDefinitionStateController>();
 }
