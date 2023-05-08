@@ -185,10 +185,20 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                   BlocBuilder<TimerLabelController, TimerLabelState>(
                     bloc: timerLabelController,
                     builder: (context, state){
+
+                      bool isMinuteDefined = false;
+                      bool isSecondsDefined = false;
+
+                      if(state.isMinuteLabelDefined){
+                        isMinuteDefined = (state.value as String) != '00';
+                      } else if (state.isSecondsLabelDefined){
+                        isSecondsDefined = (state.value as String) != '00';
+                      }
+
                       return Checkbox(
                         value: _hasAdditionalExercise,
-                        onChanged: secondsLabel != '00' ||
-                            minuteLabel != '00' ?
+                        onChanged: isMinuteDefined ||
+                            isSecondsDefined ?
                             (checkValue){
                           setState(() {
                             _hasAdditionalExercise = checkValue ?? false;

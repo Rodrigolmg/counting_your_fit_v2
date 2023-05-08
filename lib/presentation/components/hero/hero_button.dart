@@ -46,8 +46,6 @@ class _HeroButtonState extends State<HeroButton> {
   @override
   Widget build(BuildContext context) {
 
-    String tag = getHeroStepTag();
-
     return SizedBox(
       height: 47,
       width: 150,
@@ -68,7 +66,7 @@ class _HeroButtonState extends State<HeroButton> {
             Navigator.of(context).push(
               HeroRoute(
                 builder: (context) {
-                  return widget.variant(tag);
+                  return widget.variant(widget.heroTag!);
                 }
               )
             );

@@ -32,48 +32,42 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
   final timerLabelController = GetIt.I.get<TimerLabelController>();
   final additionalTimerLabelController = GetIt.I.get<AdditionalTimerLabelController>();
 
-  int currentStep = 0;
+  int currentStepIndex = 0;
   bool hasAdditionalExercise = false;
   final GlobalKey<ShakeErrorState> stepTimerKey = GlobalKey<ShakeErrorState>();
   final GlobalKey<ShakeErrorState> stepTimerAdditionalKey = GlobalKey<ShakeErrorState>();
-  final pageViewController = PageController();
-  int minutes = 0;
-  int seconds = 0;
   String minutesLabel = '00';
   String secondsLabel = '00';
-  int additionalMinutes = 0;
-  int additionalSeconds = 0;
   String additionalMinutesLabel = '00';
   String additionalSecondsLabel = '00';
   String buttonLabel = '';
   int sets = 1;
   List<int> steps = [1, 2];
 
-  void trainCallback(){
-    bool hasNoRestTime = minutes == 0 &&
-        seconds == 0;
+  void trainCallback(int step){
+    bool hasNoRestTime = minutesLabel == '00' &&
+        secondsLabel == '00';
 
     if(hasNoRestTime) {
       stepTimerKey.currentState?.shake();
       return;
     } else{
       if(hasAdditionalExercise) {
-        bool hasAdditionalTime = additionalMinutes != 0 ||
-            additionalSeconds != 0;
+        bool hasAdditionalTime = additionalMinutesLabel != '00' ||
+            additionalSecondsLabel != '00';
 
         if (!hasAdditionalTime) {
           stepTimerAdditionalKey.currentState?.shake();
           return;
         }
-        currentStep++;
-
-        if(steps.length - 1 == currentStep){
-
-        } else {
-          stepController.nextStep(currentStep);
-        }
-        timerLabelController.resetTimer();
       }
+      stepController.nextStep(step);
+
+      if(steps.length == step){
+
+      }
+
+      timerLabelController.resetTimer();
     }
     // exerciseController.nextExercise(currentStep);
   }
@@ -118,19 +112,19 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
             height: height * .17,
             child: BlocBuilder<StepStateController, StepsState>(
               bloc: stepController,
-              buildWhen: (oldState, currentState) =>
-                currentState.isStepDefined,
               builder: (context, state) {
 
                 if(state.isStepDefined){
                   steps = stepController.steps;
+                } else if(state.isNextStep){
+                  currentStepIndex = (state.value as int) - 1;
                 }
 
                 return NumberStepper(
                   enableNextPreviousButtons: false,
                   enableStepTapping: true,
                   direction: Axis.horizontal,
-                  activeStep: currentStep,
+                  activeStep: currentStepIndex,
                   activeStepColor: ColorApp.mainColor,
                   numberStyle: const TextStyle(
                     color: Colors.black,
@@ -138,15 +132,9 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                   activeStepBorderColor: Colors.transparent,
                   lineColor: Colors.black,
                   numbers: steps,
-                  scrollingDisabled: true,
-                  stepReachedAnimationEffect: Curves.easeInQuad,
-                  onStepReached: (index){
-                    pageViewController.animateToPage(
-                        index,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeIn
-                    );
-                  },
+                  scrollingDisabled: false,
+                  stepReachedAnimationEffect: Curves.easeOut,
+                  onStepReached: null,
                 );
               },
             ),
@@ -178,7 +166,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                       }
 
                       return HeroButton(
-                        heroTag: '$heroSetsPopUp-step',
+                        heroTag: heroSetsPopUpStep,
                         buttonLabel: sets.toString(),
                         variant: HeroSets(),
                       );
@@ -225,7 +213,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
 
                           return HeroButton(
                             buttonLabel: '$minutesLabel:$secondsLabel',
-                            heroTag: '$heroTimerPopUp-step',
+                            heroTag: heroTimerPopUpStep,
                             hasError: stepTimerKey.currentState
                                 != null &&
                                 stepTimerKey.currentState!
@@ -249,10 +237,20 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                   BlocBuilder<TimerLabelController, TimerLabelState>(
                     bloc: timerLabelController,
                     builder: (context, state){
+
+                      bool isMinuteDefined = false;
+                      bool isSecondsDefined = false;
+
+                      if(state.isMinuteLabelDefined){
+                        isMinuteDefined = (state.value as String) != '00';
+                      } else if (state.isSecondsLabelDefined){
+                        isSecondsDefined = (state.value as String) != '00';
+                      }
+
                       return Checkbox(
                         value: hasAdditionalExercise,
-                        onChanged: secondsLabel != '00' ||
-                            minutesLabel != '00' ?
+                        onChanged: isMinuteDefined ||
+                            isSecondsDefined ?
                           (checkValue){
                             setState(() {
                               hasAdditionalExercise = checkValue ?? false;
@@ -315,7 +313,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                           }
 
                           return HeroButton(
-                            heroTag: '$heroAdditionalPopUp-step',
+                            heroTag: heroAdditionalPopUpStep,
                             hasError: stepTimerAdditionalKey.currentState != null &&
                                 stepTimerAdditionalKey.currentState!
                                     .animationController.status
@@ -350,15 +348,21 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                     backgroundColor: ColorApp.mainColor,
                     elevation: 2,
                   ),
-                  onPressed: trainCallback,
+                  onPressed: (){
+                    currentStepIndex++;
+                    trainCallback(currentStepIndex + 1);
+                  },
                   child: BlocBuilder<StepStateController, StepsState>(
                       bloc: stepController,
                       builder: (context, state){
+                        buttonLabel = context.translate.get('stepPage.nextExercise');
 
-                        if(state.isInitialStep || state.isNextStep){
-                          buttonLabel = context.translate.get('stepPage.nextExercise');
-                        } else {
-                          buttonLabel = context.translate.get('train');
+                        if(state.isNextStep){
+                          if(state.value != steps.length){
+                            buttonLabel = context.translate.get('stepPage.nextExercise');
+                          } else {
+                            buttonLabel = context.translate.get('train');
+                          }
                         }
 
                         return Text(
