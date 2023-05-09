@@ -17,6 +17,14 @@
   "stepPage": {
     "nextExercise": "Next exercise"
   },
+  "individualExercise": {
+    "set": "Set",
+    "of": "of",
+    "resting": "Resting",
+    "toRest": "Rest",
+    "toExecute": "Execute",
+    "executing": "Executing"
+  },
   "sets": "Sets",
   "rest": "Time rest",
   "additionalExercise": "Isometrics/Execution",

@@ -4,6 +4,8 @@ extension ExerciseStateX on IndividualExerciseState {
   bool get isInitial => this is InitialState;
   bool get isExerciseDefined => this is ExerciseDefined;
   bool get isNextSet => this is NextSet;
+  bool get isResting => this is Resting;
+  bool get isExecuting => this is Executing;
   bool get isAdditionalFinished => this is AdditionalFinished;
   bool get isExerciseFinished => this is ExerciseFinished;
   bool get isExerciseStarted => this is ExerciseStarted;
@@ -39,6 +41,14 @@ class NextSet implements IndividualExerciseState{
   const NextSet({
     required this.nextSet,
   });
+}
+
+class Resting implements IndividualExerciseState{
+  const Resting();
+}
+
+class Executing implements IndividualExerciseState{
+  const Executing();
 }
 
 class AdditionalFinished implements IndividualExerciseState{

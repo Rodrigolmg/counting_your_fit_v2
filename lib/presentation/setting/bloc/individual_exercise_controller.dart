@@ -31,6 +31,14 @@ class IndividualExerciseController extends Cubit<IndividualExerciseState>{
     emit(const ExerciseStarted());
   }
 
+  void rest(){
+    emit(const Resting());
+  }
+
+  void execute(){
+    emit(const Executing());
+  }
+
   void cancelExecution(){
     emit(const ExerciseStopped());
   }

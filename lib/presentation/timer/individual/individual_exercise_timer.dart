@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:counting_your_fit_v2/color_app.dart';
+import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/exercise_states.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual_exercise_controller.dart';
@@ -110,9 +111,9 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Série',
-                      style: TextStyle(
+                    Text(
+                      context.translate.get('individualExercise.set'),
+                      style: const TextStyle(
                         fontSize: 35,
                       ),
                     ),
@@ -134,9 +135,9 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                         }
                     ),
                     const SizedBox(width: 15),
-                    const Text(
-                      'de',
-                      style: TextStyle(
+                    Text(
+                      context.translate.get('individualExercise.of'),
+                      style: const TextStyle(
                           fontSize: 35
                       ),
                     ),
@@ -225,12 +226,11 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                                   );
                                 },
                               ),
-
                               Center(
                                 child: GestureDetector(
                                   onTap: () {
                                     stopWatchTimer.onStartTimer();
-                                    individualExerciseController.startExercise();
+                                    individualExerciseController.rest();
                                   },
                                   child: Container(
                                     width: 230,
@@ -278,43 +278,57 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
               ),
               Positioned(
                 bottom: height * .21,
-                child: Row(
-                  children: [
-                    Text(
-                      'Descansando',
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: ColorApp.mainColor,
-                        shadows: const [
-                          Shadow(
-                            color: Colors.black54,
-                            offset: Offset(.1, .1),
-                            blurRadius: .5
-                          )
-                        ]
-                      ),
-                    ),
-                    AnimatedTextKit(
-                      animatedTexts: [
-                        TyperAnimatedText(
-                          '...',
-                          speed: const Duration(milliseconds: 100),
-                          textStyle: TextStyle(
-                            fontSize: 25,
-                            color: ColorApp.mainColor,
-                            shadows: const [
-                              Shadow(
-                                color: Colors.black54,
-                                offset: Offset(.1, .1),
-                                blurRadius: .5
+                child: BlocBuilder<IndividualExerciseController, IndividualExerciseState>(
+                  bloc: individualExerciseController,
+                  builder: (context, state) {
+                    String actionText = context.translate.get('individualExercise.toRest');
+
+                    if(state.isResting){
+                      actionText = context.translate.get('individualExercise.resting');
+                    } else if (state.isExecuting){
+                      actionText = context.translate.get('individualExercise.executing');
+                    }
+
+                    return Row(
+                      children: [
+                        Text(
+                          actionText,
+                          style: TextStyle(
+                              fontSize: 25,
+                              color: ColorApp.mainColor,
+                              shadows: const [
+                                Shadow(
+                                    color: Colors.black54,
+                                    offset: Offset(.1, .1),
+                                    blurRadius: .5
+                                )
+                              ]
+                          ),
+                        ),
+                        if(state.isResting || state.isExecuting)
+                          AnimatedTextKit(
+                            animatedTexts: [
+                              TyperAnimatedText(
+                                  '...',
+                                  speed: const Duration(milliseconds: 100),
+                                  textStyle: TextStyle(
+                                      fontSize: 25,
+                                      color: ColorApp.mainColor,
+                                      shadows: const [
+                                        Shadow(
+                                            color: Colors.black54,
+                                            offset: Offset(.1, .1),
+                                            blurRadius: .5
+                                        )
+                                      ]
+                                  )
                               )
-                            ]
+                            ],
+                            repeatForever: true,
                           )
-                        )
                       ],
-                      repeatForever: true,
-                    )
-                  ],
+                    );
+                  },
                 ),
               )
             ],
