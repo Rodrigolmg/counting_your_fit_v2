@@ -36,6 +36,7 @@ class IndividualExerciseController extends Cubit<IndividualExerciseState>{
   }
 
   void setNextSet(int nextSet){
+    nextSet++;
     emit(NextSet(nextSet: nextSet));
   }
 
