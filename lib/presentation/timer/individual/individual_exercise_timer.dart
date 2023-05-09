@@ -26,9 +26,13 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   int currentSet = 1;
   int minuteValue = 0;
   int secondsValue = 0;
-  int additionalMinuteValue = 0;
-  int additionalSecondsValue = 0;
+  int? additionalMinuteValue;
+  int? additionalSecondsValue;
   double circularValue = 0.0;
+  String actionLabel = '';
+  bool isAutoRest = false;
+  bool isToExecute = false;
+  bool hasEnded = false;
 
 
   @override
@@ -44,14 +48,21 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
 
       if(exerciseDefined.additionalMinute != null){
         additionalMinuteValue = exerciseDefined.additionalMinute!;
+        isToExecute = true;
       }
 
       if(exerciseDefined.additionalSeconds != null){
         additionalSecondsValue = exerciseDefined.additionalSeconds!;
+        isToExecute = true;
       }
+
+      isAutoRest = exerciseDefined.isAutoRest;
+
     }
-    int presetMilli = StopWatchTimer.getMilliSecFromMinute(minuteValue) +
-        StopWatchTimer.getMilliSecFromSecond(secondsValue);
+
+    int presetMilli = StopWatchTimer.getMilliSecFromMinute(additionalMinuteValue ?? minuteValue) +
+        StopWatchTimer.getMilliSecFromSecond(additionalSecondsValue ?? secondsValue);
+
     stopWatchTimer = StopWatchTimer(
       mode: StopWatchMode.countDown,
       presetMillisecond: presetMilli,
@@ -59,20 +70,44 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
         circularValue = value / presetMilli;
 
         if(value == 0){
-          stopWatchTimer.onStopTimer();
-          if(currentSet != setQuantity){
-            stopWatchTimer.onResetTimer();
-          }
+          stopWatchTimer.onResetTimer();
           circularValue = 0.0;
         }
       },
       onEnded: (){
-        if(currentSet == setQuantity){
-          individualExerciseController.finishExercise();
-          Navigator.pushReplacementNamed(context,
-              CountingYourFitRoutes.timerSetting);
-        } else {
-          individualExerciseController.setNextSet(currentSet);
+        if(!hasEnded){
+          stopWatchTimer.onStopTimer();
+
+          if(individualExerciseController.state.isResting){
+            individualExerciseController.finishResting();
+            isToExecute = (additionalMinuteValue != null && additionalMinuteValue! > 0)
+                || (additionalSecondsValue != null && additionalSecondsValue! > 0);
+          } else if (individualExerciseController.state.isExecuting){
+            individualExerciseController.finishExecuting();
+            isToExecute = false;
+          }
+
+          if(individualExerciseController.state.isExecuteFinished){
+            presetMilli = StopWatchTimer.getMilliSecFromMinute(minuteValue) +
+                StopWatchTimer.getMilliSecFromSecond(secondsValue);
+            stopWatchTimer.setPresetTime(mSec: presetMilli, add: false);
+          } else if(individualExerciseController.state.isRestFinished) {
+
+            if((additionalMinuteValue != null && additionalMinuteValue! > 0)
+                || (additionalSecondsValue != null && additionalSecondsValue! > 0)){
+              presetMilli = StopWatchTimer.getMilliSecFromMinute(additionalMinuteValue!) +
+                  StopWatchTimer.getMilliSecFromSecond(additionalSecondsValue!);
+              stopWatchTimer.setPresetTime(mSec: presetMilli, add: false);
+            }
+
+            individualExerciseController.setNextSet(currentSet);
+            if(currentSet == setQuantity){
+              individualExerciseController.finishExercise();
+              Navigator.pushReplacementNamed(context,
+                  CountingYourFitRoutes.timerSetting);
+            }
+          }
+          hasEnded = true;
         }
       }
     );
@@ -189,8 +224,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                 buildWhen: (oldState, currentState) => currentState.isNextSet,
                 builder: (context, state){
 
-                  int set = state is NextSet ?
-                  state.nextSet : 1;
+                  int set = state is NextSet ? state.nextSet : 1;
 
                   return AnimatedPositioned(
                     top: height * (set == setQuantity ? .29 : .27),
@@ -229,8 +263,20 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                               Center(
                                 child: GestureDetector(
                                   onTap: () {
+
+                                    if(state.isResting || state.isExecuting){
+                                      return;
+                                    }
+
                                     stopWatchTimer.onStartTimer();
-                                    individualExerciseController.rest();
+                                    setState(() {
+                                      hasEnded = false;
+                                    });
+                                    if(isToExecute){
+                                      individualExerciseController.execute();
+                                    } else {
+                                      individualExerciseController.rest();
+                                    }
                                   },
                                   child: Container(
                                     width: 230,
@@ -281,12 +327,18 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                 child: BlocBuilder<IndividualExerciseController, IndividualExerciseState>(
                   bloc: individualExerciseController,
                   builder: (context, state) {
-                    String actionText = context.translate.get('individualExercise.toRest');
+                    String actionText = '';
 
-                    if(state.isResting){
-                      actionText = context.translate.get('individualExercise.resting');
-                    } else if (state.isExecuting){
+                    if(isToExecute){
+                      actionText = context.translate.get('individualExercise.toExecute');
+                    } else {
+                      actionText = context.translate.get('individualExercise.toRest');
+                    }
+
+                    if (state.isExecuting){
                       actionText = context.translate.get('individualExercise.executing');
+                    } else if(state.isResting){
+                      actionText = context.translate.get('individualExercise.resting');
                     }
 
                     return Row(

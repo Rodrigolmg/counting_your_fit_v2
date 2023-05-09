@@ -33,7 +33,8 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
   final timerLabelController = GetIt.I.get<TimerLabelController>();
   final additionalTimerLabel = GetIt.I.get<AdditionalTimerLabelController>();
 
-  bool _hasAdditionalExercise = false;
+  bool hasAdditionalExercise = false;
+  bool isAutoRest = false;
   final _shakeTimerKey = GlobalKey<ShakeErrorState>();
   final _shakeAdditionalKey = GlobalKey<ShakeErrorState>();
 
@@ -52,7 +53,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
       return;
     }
 
-    if(!_hasAdditionalExercise){
+    if(!hasAdditionalExercise){
       individualExerciseController.registerIndividualExercise(
         set: sets,
         minute: int.parse(minuteLabel),
@@ -77,7 +78,8 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
         minute: int.parse(minuteLabel),
         seconds: int.parse(secondsLabel),
         additionalMinute: int.parse(additionalMinutes),
-        additionalSeconds: int.parse(additionalSeconds)
+        additionalSeconds: int.parse(additionalSeconds),
+        isAutoRest: isAutoRest
       );
 
       Navigator.pushReplacementNamed(
@@ -85,6 +87,13 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
           CountingYourFitRoutes.individualTimer
       );
     }
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+
   }
 
   @override
@@ -213,12 +222,12 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                       }
 
                       return Checkbox(
-                        value: _hasAdditionalExercise,
+                        value: hasAdditionalExercise,
                         onChanged: isMinuteDefined ||
                             isSecondsDefined ?
                             (checkValue){
                           setState(() {
-                            _hasAdditionalExercise = checkValue ?? false;
+                            hasAdditionalExercise = checkValue ?? false;
                           });
                         } : null,
                         checkColor: ColorApp.backgroundColor,
@@ -232,7 +241,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                   Text(
                     context.translate.get('additionalExercise'),
                     style: TextStyle(
-                        color: _hasAdditionalExercise ?
+                        color: hasAdditionalExercise ?
                         ColorApp.mainColor : Colors.black26,
                         fontSize: 20
                     ),
@@ -240,7 +249,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                 ],
               ),
               AnimatedOpacity(
-                opacity: _hasAdditionalExercise ? 1 : 0,
+                opacity: hasAdditionalExercise ? 1 : 0,
                 duration: const Duration(milliseconds: 100),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -294,31 +303,82 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
           ),
         ),
         AnimatedPositioned(
-          top: height * (!_hasAdditionalExercise ? .52 : .59),
+          top: height * (!hasAdditionalExercise ? .52 : .59),
           left: width * .105,
           duration: const Duration(milliseconds: 150),
           curve: Curves.easeOutQuad,
-          child: SizedBox(
-            width: width * .8,
-            height: height * .07,
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  backgroundColor: ColorApp.mainColor,
-                  elevation: 2,
+          child: Column(
+            children: [
+              SizedBox(
+                width: width * .8,
+                height: height * .07,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      backgroundColor: ColorApp.mainColor,
+                      elevation: 2,
+                    ),
+                    onPressed: trainCallback,
+                    child: Text(
+                      context.translate.get('train'),
+                      style: TextStyle(
+                          color: ColorApp.backgroundColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
+                      ),
+                    )
                 ),
-                onPressed: trainCallback,
-                child: Text(
-                  context.translate.get('train'),
-                  style: TextStyle(
-                    color: ColorApp.backgroundColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  BlocBuilder<AdditionalTimerLabelController, AdditionalTimerLabelState>(
+                      bloc: additionalTimerLabel,
+                      builder: (context, state){
+
+                        bool isAdditionalMinuteDefined = false;
+                        bool isAdditionalSecondsDefined = false;
+
+                        if(state.isAdditionalMinuteLabelDefined){
+                          isAdditionalMinuteDefined = (state.value as String) != '00';
+                        } else if (state.isAdditionalSecondsLabelDefined){
+                          isAdditionalSecondsDefined = (state.value as String) != '00';
+                        }
+
+                        return Checkbox(
+                          value: isAutoRest,
+                          onChanged: isAdditionalMinuteDefined ||
+                              isAdditionalSecondsDefined ?
+                              (checkValue){
+                            setState(() {
+                              isAutoRest = checkValue ?? false;
+                            });
+                          } : null,
+                          checkColor: ColorApp.backgroundColor,
+                          activeColor: ColorApp.mainColor,
+                        );
+                      }
                   ),
-                )
-            ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    context.translate.get('autoRest'),
+                    style: TextStyle(
+                        color: isAutoRest ?
+                        ColorApp.mainColor : Colors.black26,
+                        fontSize: 20
+                    ),
+                  )
+                ],
+              ),
+            ],
           ),
 
         )

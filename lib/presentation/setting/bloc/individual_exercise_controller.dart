@@ -15,6 +15,7 @@ class IndividualExerciseController extends Cubit<IndividualExerciseState>{
     required int seconds,
     int? additionalMinute,
     int? additionalSeconds,
+    bool isAutoRest = false
   }){
     emit(
       ExerciseDefined(
@@ -22,7 +23,8 @@ class IndividualExerciseController extends Cubit<IndividualExerciseState>{
         minute: minute,
         seconds: seconds,
         additionalMinute: additionalMinute,
-        additionalSeconds: additionalSeconds
+        additionalSeconds: additionalSeconds,
+        isAutoRest: isAutoRest
       )
     );
   }
@@ -50,5 +52,13 @@ class IndividualExerciseController extends Cubit<IndividualExerciseState>{
 
   void finishExercise(){
     emit(const ExerciseFinished());
+  }
+
+  void finishExecuting(){
+    emit(const ExecuteFinished());
+  }
+
+  void finishResting(){
+    emit(const RestFinished());
   }
 }
