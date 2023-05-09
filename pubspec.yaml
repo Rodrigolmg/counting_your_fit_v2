@@ -13,23 +13,24 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  cupertino_icons: ^1.0.2
-  intl: ^0.17.0
-  audioplayers: ^4.0.1
-  smooth_page_indicator: ^1.0.1
-  shared_preferences: ^2.1.0
-  google_fonts: ^4.0.3
-  awesome_notifications: ^0.7.4+1
-  numberpicker: ^2.1.2
-  animated_text_kit: ^4.2.2
-  rive: ^0.10.4
   after_layout: ^1.2.0
-  im_stepper: ^1.0.1+1
-  morphable_shape: ^1.6.5
+  animated_text_kit: ^4.2.2
+  audioplayers: ^4.0.1
+  awesome_notifications: ^0.7.4+1
   bloc: ^8.1.1
+  cupertino_icons: ^1.0.2
   flutter_bloc: ^8.1.2
   flutter_riverpod: ^2.3.5
   get_it: ^7.2.0
+  google_fonts: ^4.0.3
+  im_stepper: ^1.0.1+1
+  intl: ^0.17.0
+  morphable_shape: ^1.6.5
+  numberpicker: ^2.1.2
+  rive: ^0.10.4
+  shared_preferences: ^2.1.0
+  smooth_page_indicator: ^1.0.1
+  stop_watch_timer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

@@ -11,6 +11,7 @@ import 'package:counting_your_fit_v2/presentation/components/directional_button.
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_variant.dart';
 import 'package:counting_your_fit_v2/presentation/components/shake_error.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/individual_exercise_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/timer_settings_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state_controller.dart';
 import 'package:flutter/material.dart';
@@ -27,9 +28,11 @@ class IndividualExercisePage extends StatefulWidget {
 class _IndividualExercisePageState extends State<IndividualExercisePage> {
 
   final _timeScreenController = GetIt.I.get<TimerSettingsStateController>();
+  final individualExerciseController = GetIt.I.get<IndividualExerciseController>();
   final setsController = GetIt.I.get<SetsStateController>();
   final timerLabelController = GetIt.I.get<TimerLabelController>();
   final additionalTimerLabel = GetIt.I.get<AdditionalTimerLabelController>();
+
   bool _hasAdditionalExercise = false;
   final _shakeTimerKey = GlobalKey<ShakeErrorState>();
   final _shakeAdditionalKey = GlobalKey<ShakeErrorState>();
@@ -50,9 +53,15 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
     }
 
     if(!_hasAdditionalExercise){
+      individualExerciseController.registerIndividualExercise(
+        set: sets,
+        minute: int.parse(minuteLabel),
+        seconds: int.parse(secondsLabel)
+      );
+
       Navigator.pushReplacementNamed(
         context,
-        CountingYourFitRoutes.timer
+        CountingYourFitRoutes.individualTimer
       );
     } else {
       bool hasAdditionalTime = additionalMinutes != '00' ||
@@ -63,9 +72,17 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
         return;
       }
 
+      individualExerciseController.registerIndividualExercise(
+        set: sets,
+        minute: int.parse(minuteLabel),
+        seconds: int.parse(secondsLabel),
+        additionalMinute: int.parse(additionalMinutes),
+        additionalSeconds: int.parse(additionalSeconds)
+      );
+
       Navigator.pushReplacementNamed(
           context,
-          CountingYourFitRoutes.timer
+          CountingYourFitRoutes.individualTimer
       );
     }
   }

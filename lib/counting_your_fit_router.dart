@@ -3,6 +3,7 @@ import 'package:counting_your_fit_v2/presentation/intro/intro_screen.dart';
 import 'package:counting_your_fit_v2/presentation/setting/exercise_step_setting_screen.dart';
 import 'package:counting_your_fit_v2/presentation/setting/timer_settings_screen.dart';
 import 'package:counting_your_fit_v2/presentation/splash_screen.dart';
+import 'package:counting_your_fit_v2/presentation/timer/individual/individual_exercise_timer.dart';
 import 'package:flutter/material.dart';
 
 class CountingYourFitRouter {
@@ -24,9 +25,9 @@ class CountingYourFitRouter {
               child: child,
             )
         );
-      case 'timer':
+      case 'individual_timer':
         return PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => const TimerSettingsScreen(),
+            pageBuilder: (context, animation, secondaryAnimation) => const IndividualExerciseTimer(),
             transitionsBuilder: (context, animation, sAnimation, child) => SlideTransition(
               position: Tween<Offset>(
                   begin: const Offset(0, 1),
@@ -78,6 +79,6 @@ class CountingYourFitRoutes {
   static const String splashScreen = 'splash';
   static const String timerSetting = 'timer_settings';
   static const String exerciseStepSetting = 'exercise_step_settings';
-  static const String timer = 'timer';
+  static const String individualTimer = 'individual_timer';
   static const String introScreen = 'intro_screen';
 }

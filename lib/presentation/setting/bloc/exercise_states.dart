@@ -6,6 +6,8 @@ extension ExerciseStateX on IndividualExerciseState {
   bool get isNextSet => this is NextSet;
   bool get isAdditionalFinished => this is AdditionalFinished;
   bool get isExerciseFinished => this is ExerciseFinished;
+  bool get isExerciseStarted => this is ExerciseStarted;
+  bool get isExerciseStopped => this is ExerciseStopped;
 }
 
 class InitialState implements IndividualExerciseState {
@@ -13,16 +15,23 @@ class InitialState implements IndividualExerciseState {
 }
 
 class ExerciseDefined implements IndividualExerciseState{
+  final int set;
+  final int minute;
+  final int seconds;
+  final int? additionalMinute;
+  final int? additionalSeconds;
+  final bool isFinished;
+
   const ExerciseDefined({
-    required int set,
-    required int minute,
-    required int seconds,
-    int? additionalMinute,
-    int? additionalSeconds,
-    bool isFinished = false
+    required this.set,
+    required this.minute,
+    required this.seconds,
+    this.additionalMinute,
+    this.additionalSeconds,
+    this.isFinished = false
   });
 
-  // RegisterIndividualExerciseUseCase registerIndividualExerciseUseCase = GetIt.I.get();
+// RegisterIndividualExerciseUseCase registerIndividualExerciseUseCase = GetIt.I.get();
 }
 
 class NextSet implements IndividualExerciseState{
@@ -38,4 +47,12 @@ class AdditionalFinished implements IndividualExerciseState{
 
 class ExerciseFinished implements IndividualExerciseState{
   const ExerciseFinished();
+}
+
+class ExerciseStarted implements IndividualExerciseState{
+  const ExerciseStarted();
+}
+
+class ExerciseStopped implements IndividualExerciseState{
+  const ExerciseStopped();
 }
