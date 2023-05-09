@@ -73,6 +73,9 @@ class _HeroExerciseAdditionalTimerValuesState extends State<HeroExerciseAddition
                               additionalMinutes = (state as AdditionalMinuteDefined)
                                   .additionalMinute;
                               additionalTimerLabel.setMinuteLabel(additionalMinutes);
+                            } else if(state.isAdditionalMinuteReset){
+                              additionalMinutes = 0;
+                              additionalTimerLabel.resetAdditionalTimer();
                             }
 
                             return NumberPicker(
@@ -119,6 +122,9 @@ class _HeroExerciseAdditionalTimerValuesState extends State<HeroExerciseAddition
                                 additionalSeconds = (state as AdditionalSecondsDefined)
                                     .additionalSeconds;
                                 additionalTimerLabel.setSecondsLabel(additionalSeconds);
+                              } else if(state.isAdditionalSecondsReset){
+                                additionalSeconds = 0;
+                                additionalTimerLabel.resetAdditionalTimer();
                               }
 
                               return NumberPicker(

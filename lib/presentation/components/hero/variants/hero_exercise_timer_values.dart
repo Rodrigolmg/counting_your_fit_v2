@@ -71,6 +71,10 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
 
                             if(state.isMinuteDefined){
                               minutes = (state as MinuteDefined).minute;
+                              timerLabel.setMinuteLabel(minutes);
+                            } else if(state.isMinuteReset){
+                              minutes = 0;
+                              timerLabel.resetTimer();
                             }
 
                             return NumberPicker(
@@ -114,8 +118,10 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
 
                               if(state.isSecondsDefined){
                                 seconds = (state as SecondsDefined).seconds;
-                                timerLabel.setSecondsLabel(seconds);
+                              } else if(state.isSecondsReset){
+                                seconds = 0;
                               }
+                              timerLabel.setSecondsLabel(seconds);
 
                               return NumberPicker(
                                   minValue: 0,

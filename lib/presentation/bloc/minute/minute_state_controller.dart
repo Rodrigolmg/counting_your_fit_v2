@@ -14,4 +14,8 @@ class MinuteStateController extends Cubit<MinuteState>{
     timerLabel.setMinuteLabel(minute);
     emit(MinuteDefined(minute));
   }
+
+  void resetMinute(){
+    emit(const MinuteReset());
+  }
 }

@@ -2,6 +2,11 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/minute/additional_minute_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/seconds/additional_seconds_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/exercise_states.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual_exercise_controller.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +25,13 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
 
   late final StopWatchTimer stopWatchTimer;
   final individualExerciseController = GetIt.I.get<IndividualExerciseController>();
+
+  // EXERCISE VALUES CONTROLLER
+  final setsController = GetIt.I.get<SetsStateController>();
+  final minuteController = GetIt.I.get<MinuteStateController>();
+  final secondsController = GetIt.I.get<SecondsStateController>();
+  final additionalMinuteController = GetIt.I.get<AdditionalMinuteStateController>();
+  final additionalSecondsController = GetIt.I.get<AdditionalSecondsStateController>();
 
   // EXERCISES VALUES
   int setQuantity = 0;
@@ -103,6 +115,12 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
             individualExerciseController.setNextSet(currentSet);
             if(currentSet == setQuantity){
               individualExerciseController.finishExercise();
+              setsController.resetSet();
+              minuteController.resetMinute();
+              secondsController.resetSeconds();
+              additionalMinuteController.resetAdditionalMinute();
+              additionalSecondsController.resetAdditionalSeconds();
+
               Navigator.pushReplacementNamed(context,
                   CountingYourFitRoutes.timerSetting);
             }

@@ -4,6 +4,10 @@ import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/additional_timer_label_state.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/additional_timer_label_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/minute/additional_minute_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/seconds/additional_seconds_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_button.dart';
@@ -29,9 +33,13 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
 
   final _timeScreenController = GetIt.I.get<TimerSettingsStateController>();
   final individualExerciseController = GetIt.I.get<IndividualExerciseController>();
-  final setsController = GetIt.I.get<SetsStateController>();
   final timerLabelController = GetIt.I.get<TimerLabelController>();
   final additionalTimerLabel = GetIt.I.get<AdditionalTimerLabelController>();
+
+  // EXERCISE VALUES
+  final setsController = GetIt.I.get<SetsStateController>();
+  final minuteController = GetIt.I.get<MinuteStateController>();
+  final secondsController = GetIt.I.get<SecondsStateController>();
 
   bool hasAdditionalExercise = false;
   bool isAutoRest = false;
@@ -89,11 +97,11 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
     }
   }
 
-
   @override
   void initState() {
     super.initState();
-
+    timerLabelController.resetTimer();
+    additionalTimerLabel.resetAdditionalTimer();
   }
 
   @override
@@ -142,6 +150,8 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
 
                       if(state.isSetDefined){
                         sets = (state as SetDefined).sets;
+                      } else if (state.isSetReset){
+                        sets = 1;
                       }
 
                       return HeroButton(
@@ -184,6 +194,9 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                             minuteLabel = (state as MinuteLabelDefined).minuteLabel ?? '00';
                           } else if (state.isSecondsLabelDefined){
                             secondsLabel = (state as SecondsLabelDefined).secondsLabel ?? '00';
+                          } else if(state.isTimerReset){
+                            minuteLabel = '00';
+                            secondsLabel = '00';
                           }
 
                           return HeroButton(

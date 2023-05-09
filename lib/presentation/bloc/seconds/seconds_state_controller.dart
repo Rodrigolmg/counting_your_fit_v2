@@ -15,4 +15,8 @@ class SecondsStateController extends Cubit<SecondsState>{
     timerLabel.setSecondsLabel(seconds);
     emit(SecondsDefined(seconds));
   }
+
+  void resetSeconds(){
+    emit(const SecondsReset());
+  }
 }

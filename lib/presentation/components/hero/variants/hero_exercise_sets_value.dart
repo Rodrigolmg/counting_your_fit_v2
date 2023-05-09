@@ -58,6 +58,8 @@ class _HeroExerciseSetsValueState extends State<HeroExerciseSetsValue> {
 
                             if(state.isSetDefined){
                               sets = (state as SetDefined).sets;
+                            } else if (state.isSetReset){
+                              sets = 1;
                             }
 
                             return NumberPicker(

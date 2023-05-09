@@ -3,6 +3,7 @@ abstract class AdditionalMinuteState{}
 extension AdditionalMinuteStateX on AdditionalMinuteState {
   bool get isInitialAddititionalMinute => this is InitialAdditionalMinute;
   bool get isAdditionalMinuteDefined => this is AdditionalMinuteDefined;
+  bool get isAdditionalMinuteReset => this is AdditionalMinuteReset;
 }
 
 class InitialAdditionalMinute implements AdditionalMinuteState {
@@ -13,4 +14,8 @@ class InitialAdditionalMinute implements AdditionalMinuteState {
 class AdditionalMinuteDefined implements AdditionalMinuteState {
   final int additionalMinute;
   const AdditionalMinuteDefined(this.additionalMinute);
+}
+
+class AdditionalMinuteReset implements AdditionalMinuteState {
+  const AdditionalMinuteReset();
 }
