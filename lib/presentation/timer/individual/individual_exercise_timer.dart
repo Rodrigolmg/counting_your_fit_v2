@@ -86,7 +86,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
           circularValue = 0.0;
         }
       },
-      onEnded: (){
+      onEnded: () {
         if(!hasEnded){
           stopWatchTimer.onStopTimer();
 
@@ -103,6 +103,14 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
             presetMilli = StopWatchTimer.getMilliSecFromMinute(minuteValue) +
                 StopWatchTimer.getMilliSecFromSecond(secondsValue);
             stopWatchTimer.setPresetTime(mSec: presetMilli, add: false);
+            if(isAutoRest){
+              Future.delayed(
+                const Duration(seconds: 1),
+                    (){
+                  onCountdownTimer();
+                }
+              );
+            }
           } else if(individualExerciseController.state.isRestFinished) {
 
             if((additionalMinuteValue != null && additionalMinuteValue! > 0)
@@ -129,6 +137,18 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
         }
       }
     );
+  }
+
+  void onCountdownTimer(){
+    stopWatchTimer.onStartTimer();
+    setState(() {
+      hasEnded = false;
+    });
+    if(isToExecute){
+      individualExerciseController.execute();
+    } else {
+      individualExerciseController.rest();
+    }
   }
 
   @override
@@ -286,15 +306,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                                       return;
                                     }
 
-                                    stopWatchTimer.onStartTimer();
-                                    setState(() {
-                                      hasEnded = false;
-                                    });
-                                    if(isToExecute){
-                                      individualExerciseController.execute();
-                                    } else {
-                                      individualExerciseController.rest();
-                                    }
+                                    onCountdownTimer();
                                   },
                                   child: Container(
                                     width: 230,
