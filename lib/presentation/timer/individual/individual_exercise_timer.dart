@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
@@ -46,10 +49,61 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   bool isToExecute = false;
   bool hasEnded = false;
 
+  // AUDIO PLAYERS
+  final tenSecondsPlayer = AudioPlayer(playerId: 'ten')..setReleaseMode(ReleaseMode.stop);
+  final threeSecondsPlayer = AudioPlayer(playerId: 'three')..setReleaseMode(ReleaseMode.stop);
+  final finalTimePlayer = AudioPlayer(playerId: 'final')..setReleaseMode(ReleaseMode.stop);
+  List<StreamSubscription> streams = [];
+
+  // LOGICAL VALUE FOR PLAY FINAL BEEP ONLY ONE TIME
+  int finalBeepPlayQuantity = 0;
+
+  void configPlayer(AudioPlayer player, String asset) async {
+    await player.setPlayerMode(PlayerMode.lowLatency);
+    await player.setSource(AssetSource(asset));
+    await player.setVolume(0.5);
+    player.onLog.listen(
+            (event) => AudioLogger.log(event),
+        onError: (e) => AudioLogger.errorToString(e)
+    );
+    streams.add(player.onPlayerStateChanged.listen((event) {}));
+  }
+
+  void configPlayers() {
+    configPlayer(tenSecondsPlayer, 'sounds/ten_seconds_beep.mp3');
+    configPlayer(threeSecondsPlayer, 'sounds/beep_a.mp3');
+    configPlayer(finalTimePlayer, 'sounds/final_beep.mp3');
+  }
+
+  void play(AudioPlayer player, int stopTime) async {
+    await player.resume();
+    Future.delayed(
+      Duration(milliseconds: stopTime),
+          () async {
+        await player.stop();
+        await player.audioCache.clearAll();
+      }
+    );
+  }
+
+  void playBeep(int second) {
+    if(second < 11 && second >= 10){
+      play(tenSecondsPlayer, 1001);
+    } else if (second == 3 || second == 2 || second == 1){
+      play(threeSecondsPlayer, 500);
+    } else if (second == 0){
+      if(finalBeepPlayQuantity == 0){
+        play(finalTimePlayer, 500);
+        finalBeepPlayQuantity++;
+      }
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    configPlayers();
+
     if(individualExerciseController.state.isExerciseDefined){
       ExerciseDefined exerciseDefined = individualExerciseController.state
       as ExerciseDefined;
@@ -80,11 +134,14 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
       presetMillisecond: presetMilli,
       onChange: (value) {
         circularValue = value / presetMilli;
-
         if(value == 0){
           stopWatchTimer.onResetTimer();
           circularValue = 0.0;
+          return;
         }
+      },
+      onChangeRawSecond: (second){
+        playBeep(second);
       },
       onEnded: () {
         if(!hasEnded){
@@ -106,7 +163,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
             if(isAutoRest){
               Future.delayed(
                 const Duration(seconds: 1),
-                    (){
+                (){
                   onCountdownTimer();
                 }
               );
@@ -140,6 +197,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   }
 
   void onCountdownTimer(){
+    finalBeepPlayQuantity = 0;
     stopWatchTimer.onStartTimer();
     setState(() {
       hasEnded = false;
@@ -422,7 +480,8 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
 
   @override
   void dispose() {
-    super.dispose();
     stopWatchTimer.dispose();
+    streams.forEach((element) => element.cancel());
+    super.dispose();
   }
 }
