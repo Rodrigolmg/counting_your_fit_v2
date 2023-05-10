@@ -1,3 +1,4 @@
+import 'package:counting_your_fit_v2/domain/usecase/register_exercise_list_usecase.dart';
 import 'package:counting_your_fit_v2/domain/usecase/register_individual_exercise_usecase.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/additional_timer_label_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/minute/additional_minute_state_controller.dart';
@@ -6,10 +7,9 @@ import 'package:counting_your_fit_v2/presentation/bloc/seconds/additional_second
 import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/steps/step_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/individual_exercise_controller.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/exercise_list_definition_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/timer_settings_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/util/additional_timer_label.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state_controller.dart';
 import 'package:get_it/get_it.dart';
 
@@ -17,23 +17,24 @@ class AppInjector {
   
   final injector = GetIt.instance;
 
-
   void setup() {
 
     //USECASE
     injector.registerFactory<RegisterIndividualExerciseUseCase>(() =>
         RegisterIndividualExerciseUseCaseImpl());
 
+    injector.registerFactory<RegisterExerciseListUseCase>(() =>
+        RegisterExerciseListUseCaseImpl());
 
-    // CONTROLLERS
+    // BLOC CONTROLLERS
     injector.registerLazySingleton<TimerSettingsStateController>(() =>
         TimerSettingsStateController());
 
     injector.registerLazySingleton<IndividualExerciseController>(() =>
         IndividualExerciseController());
 
-    injector.registerLazySingleton<ExerciseListDefinitionStateController>(() =>
-        ExerciseListDefinitionStateController());
+    injector.registerLazySingleton<ExerciseListDefinitionController>(() =>
+        ExerciseListDefinitionController());
 
     injector.registerLazySingleton<StepStateController>(() =>
         StepStateController());

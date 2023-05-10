@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:counting_your_fit_v2/domain/usecase/register_individual_exercise_usecase.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/exercise_states.dart';
-import 'package:get_it/get_it.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_states.dart';
 
 class IndividualExerciseController extends Cubit<IndividualExerciseState>{
 

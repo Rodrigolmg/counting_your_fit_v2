@@ -14,4 +14,8 @@ class SetsStateController extends Cubit<SetsState>{
   void resetSet(){
     emit(const SetReset());
   }
+
+  void selectSet(int setSelected){
+    emit(SetSelected(setSelected));
+  }
 }

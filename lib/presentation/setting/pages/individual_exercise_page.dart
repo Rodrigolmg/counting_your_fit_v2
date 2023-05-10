@@ -15,7 +15,7 @@ import 'package:counting_your_fit_v2/presentation/components/directional_button.
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_variant.dart';
 import 'package:counting_your_fit_v2/presentation/components/shake_error.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/individual_exercise_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/timer_settings_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state_controller.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +34,9 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
   final _timeScreenController = GetIt.I.get<TimerSettingsStateController>();
   final individualExerciseController = GetIt.I.get<IndividualExerciseController>();
   final timerLabelController = GetIt.I.get<TimerLabelController>();
-  final additionalTimerLabel = GetIt.I.get<AdditionalTimerLabelController>();
+  final additionalTimerLabelController = GetIt.I.get<AdditionalTimerLabelController>();
 
-  // EXERCISE VALUES
+  // EXERCISE CONTROLLERS
   final setsController = GetIt.I.get<SetsStateController>();
   final minuteController = GetIt.I.get<MinuteStateController>();
   final secondsController = GetIt.I.get<SecondsStateController>();
@@ -101,7 +101,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
   void initState() {
     super.initState();
     timerLabelController.resetTimer();
-    additionalTimerLabel.resetAdditionalTimer();
+    additionalTimerLabelController.resetAdditionalTimer();
   }
 
   @override
@@ -285,7 +285,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                       shakeOffset: 10,
                       child: BlocBuilder<AdditionalTimerLabelController,
                           AdditionalTimerLabelState>(
-                        bloc: additionalTimerLabel,
+                        bloc: additionalTimerLabelController,
                         builder: (context, state) {
 
                           if(state.isAdditionalMinuteLabelDefined){
@@ -352,7 +352,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   BlocBuilder<AdditionalTimerLabelController, AdditionalTimerLabelState>(
-                      bloc: additionalTimerLabel,
+                      bloc: additionalTimerLabelController,
                       builder: (context, state){
 
                         bool isAdditionalMinuteDefined = false;

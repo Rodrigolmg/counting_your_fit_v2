@@ -10,8 +10,8 @@ import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state_contr
 import 'package:counting_your_fit_v2/presentation/bloc/seconds/additional_seconds_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/exercise_states.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/individual_exercise_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_states.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
