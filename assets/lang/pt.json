@@ -23,7 +23,9 @@
     "resting": "Descansando",
     "toRest": "Descansar",
     "toExecute": "Executar isometria/exercício",
-    "executing": "Executando"
+    "executing": "Executando",
+    "cancelTitle": "Parar exercício?",
+    "cancelDescription": "Quer mesmo parar o exercício atual?"
   },
   "sets": "Séries",
   "rest": "Descanso",
@@ -32,6 +34,8 @@
   "timeLabel": "Tempo",
   "train": "Treinar",
   "oneExercise": "Exercício",
-  "yes": "yes",
-  "no": "no"
+  "yes": "Sim",
+  "no": "Não",
+  "closeAppTitle": "Sem mais contagem?",
+  "closeAppDescription": "Quer realmente fechar a contagem de exercícios?"
 }

@@ -99,6 +99,109 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
     }
   }
 
+  void stopPlayer(AudioPlayer player){
+    if(player.state == PlayerState.playing){
+      player.stop();
+    }
+  }
+
+  void finishExercise(){
+    individualExerciseController.finishExercise();
+    setsController.resetSet();
+    minuteController.resetMinute();
+    secondsController.resetSeconds();
+    additionalMinuteController.resetAdditionalMinute();
+    additionalSecondsController.resetAdditionalSeconds();
+  }
+
+  void cancelExercise() async {
+    finishExercise();
+    stopWatchTimer.onStopTimer();
+    stopPlayer(tenSecondsPlayer);
+    stopPlayer(threeSecondsPlayer);
+    stopPlayer(finalTimePlayer);
+    Navigator.pushReplacementNamed(context,
+        CountingYourFitRoutes.timerSetting);
+  }
+
+  Future<bool> onCancel() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          backgroundColor: ColorApp.mainColor,
+          elevation: 2,
+          actions: [
+            TextButton(
+                onPressed: (){
+                  cancelExercise();
+
+                },
+                child: Text(
+                  context.translate.get('yes'),
+                  style: TextStyle(
+                      color: ColorApp.errorColor2,
+                      fontSize: 20,
+                      shadows: const [
+                        Shadow(
+                            color: Colors.black54,
+                            offset: Offset(1, 1)
+                        )
+                      ]
+                  ),
+                )
+            ),
+            TextButton(
+              onPressed: (){
+                Navigator.pop(context);
+              },
+              child: Text(
+               context.translate.get('no'),
+               style: TextStyle(
+                 color: ColorApp.backgroundColor,
+                 fontSize: 20,
+                 shadows: const [
+                   Shadow(
+                     color: Colors.black54,
+                     offset: Offset(1, 1)
+                   )
+                 ]
+               ),
+              )
+            ),
+          ],
+          title: Text(
+            context.translate.get('individualExercise.cancelTitle'),
+            style: TextStyle(
+              color: ColorApp.backgroundColor,
+              shadows: const [
+                Shadow(
+                    color: Colors.black54,
+                    offset: Offset(1, 1)
+                )
+              ]
+            ),
+          ),
+          content: Text(
+            context.translate.get('individualExercise.cancelDescription'),
+            style: TextStyle(
+                color: ColorApp.backgroundColor,
+                shadows: const [
+                  Shadow(
+                      color: Colors.black54,
+                      offset: Offset(1, 1)
+                  )
+                ]
+            ),
+          ),
+        );
+      }
+    );
+    return false;
+  }
+
+
   @override
   void initState() {
     super.initState();
@@ -179,13 +282,8 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
 
             individualExerciseController.setNextSet(currentSet);
             if(currentSet == setQuantity){
-              individualExerciseController.finishExercise();
-              setsController.resetSet();
-              minuteController.resetMinute();
-              secondsController.resetSeconds();
-              additionalMinuteController.resetAdditionalMinute();
-              additionalSecondsController.resetAdditionalSeconds();
 
+              finishExercise();
               Navigator.pushReplacementNamed(context,
                   CountingYourFitRoutes.timerSetting);
             }
@@ -216,15 +314,15 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
     double width = MediaQuery.of(context).size.width;
 
     return WillPopScope(
-      onWillPop: () async {
-        return true;
-      },
+      onWillPop: onCancel,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            onPressed: (){},
+            onPressed: () async {
+              await onCancel();
+            },
             icon: Icon(
               Icons.watch_off,
               color: ColorApp.mainColor,
