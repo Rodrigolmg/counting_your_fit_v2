@@ -1,10 +1,13 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
+import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/additional_timer_label_state.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/additional_timer_label_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/steps/step_state_controller.dart';
@@ -13,6 +16,8 @@ import 'package:counting_your_fit_v2/presentation/components/hero/hero_button.da
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_variant.dart';
 import 'package:counting_your_fit_v2/presentation/components/shake_error.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:im_stepper/stepper.dart';
@@ -28,14 +33,21 @@ class ExerciseStepSettingScreen extends StatefulWidget {
 class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
 
   final stepController = GetIt.I.get<StepStateController>();
-  final setsController = GetIt.I.get<SetsStateController>();
   final timerLabelController = GetIt.I.get<TimerLabelController>();
   final additionalTimerLabelController = GetIt.I.get<AdditionalTimerLabelController>();
+  final exerciseListDefinitionController = GetIt.I.get<ExerciseListDefinitionController>();
+
+  // EXERCISE CONTROLLERS
+  final setsController = GetIt.I.get<SetsStateController>();
+  final minuteController = GetIt.I.get<MinuteStateController>();
+  final secondsController = GetIt.I.get<SecondsStateController>();
 
   int currentStepIndex = 0;
   bool hasAdditionalExercise = false;
+  bool isAutoRest = false;
   final GlobalKey<ShakeErrorState> stepTimerKey = GlobalKey<ShakeErrorState>();
   final GlobalKey<ShakeErrorState> stepTimerAdditionalKey = GlobalKey<ShakeErrorState>();
+
   String minutesLabel = '00';
   String secondsLabel = '00';
   String additionalMinutesLabel = '00';
@@ -51,24 +63,45 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
     if(hasNoRestTime) {
       stepTimerKey.currentState?.shake();
       return;
-    } else{
-      if(hasAdditionalExercise) {
-        bool hasAdditionalTime = additionalMinutesLabel != '00' ||
-            additionalSecondsLabel != '00';
-
-        if (!hasAdditionalTime) {
-          stepTimerAdditionalKey.currentState?.shake();
-          return;
-        }
-      }
-      stepController.nextStep(step);
-
-      if(steps.length == step){
-
-      }
-
-      timerLabelController.resetTimer();
     }
+
+    if(hasAdditionalExercise) {
+      bool hasAdditionalTime = additionalMinutesLabel != '00' ||
+          additionalSecondsLabel != '00';
+
+      if (!hasAdditionalTime) {
+        stepTimerAdditionalKey.currentState?.shake();
+        return;
+      }
+    }
+
+    exerciseListDefinitionController.registerSingleExercise(
+      id: step - 1,
+      set: sets,
+      minute: int.parse(minutesLabel),
+      seconds: int.parse(secondsLabel),
+      additionalMinute: int.tryParse(additionalMinutesLabel),
+      additionalSecond: int.tryParse(additionalSecondsLabel),
+      isAutoRest: isAutoRest
+    );
+
+    stepController.nextStep(step);
+    exerciseListDefinitionController.nextStep(step);
+
+    timerLabelController.resetTimer();
+    additionalTimerLabelController.resetAdditionalTimer();
+    setsController.resetSet();
+    minuteController.resetMinute();
+    secondsController.resetSeconds();
+    setState(() {
+      hasAdditionalExercise = false;
+      isAutoRest = false;
+    });
+
+    if(steps.length == step){
+      exerciseListDefinitionController.defineExerciseList();
+    }
+
     // exerciseController.nextExercise(currentStep);
   }
 
@@ -79,6 +112,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
       if(stepController.state.isStepDefined){
         steps = List.from(stepController.steps);
       }
+
     });
   }
 
@@ -120,9 +154,15 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                   currentStepIndex = (state.value as int) - 1;
                 }
 
+                bool canSelect = false;
+
+                if(exerciseListDefinitionController.state.isSingleExerciseDefined){
+                  canSelect = true;
+                }
+
                 return NumberStepper(
                   enableNextPreviousButtons: false,
-                  enableStepTapping: true,
+                  enableStepTapping: canSelect,
                   direction: Axis.horizontal,
                   activeStep: currentStepIndex,
                   activeStepColor: ColorApp.mainColor,
@@ -134,7 +174,12 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                   numbers: steps,
                   scrollingDisabled: false,
                   stepReachedAnimationEffect: Curves.easeOut,
-                  onStepReached: null,
+                  onStepReached: (stepIndex){
+                    exerciseListDefinitionController.selectExercise(stepIndex);
+                    ExerciseSettingEntity exerciseSelected =
+                      (exerciseListDefinitionController.state as ExerciseSelected).exerciseSelected;
+                    setsController.selectSet(exerciseSelected.set);
+                  },
                 );
               },
             ),
@@ -163,6 +208,10 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
 
                       if(state.isSetDefined){
                         sets = (state as SetDefined).sets;
+                      } else if (state.isSetReset){
+                        sets = 1;
+                      } else if (state.isSetSelected){
+                        sets = (state as SetSelected).setSelected;
                       }
 
                       return HeroButton(
@@ -209,6 +258,33 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                           } else if (state.isTimerReset){
                             minutesLabel = '00';
                             secondsLabel = '00';
+                          } else {
+                            return BlocBuilder<ExerciseListDefinitionController, ExerciseListDefinitionStates>(
+                              bloc: exerciseListDefinitionController,
+                              builder: (context, state){
+
+                                if(state.isSingleExerciseSelected){
+
+                                  int minuteValue = (state as ExerciseSelected).exerciseSelected.minute;
+                                  int secondsValue = state.exerciseSelected.seconds;
+
+                                  minutesLabel = minuteValue.toString();
+                                  secondsLabel = secondsValue <= 9 ? '0$secondsValue'
+                                      : secondsValue.toString();
+                                }
+
+                                return HeroButton(
+                                  buttonLabel: '$minutesLabel:$secondsLabel',
+                                  heroTag: heroTimerPopUpStep,
+                                  hasError: stepTimerKey.currentState
+                                      != null &&
+                                      stepTimerKey.currentState!
+                                          .animationController.status
+                                          == AnimationStatus.forward,
+                                  variant: HeroTimer(),
+                                );
+                              },
+                            );
                           }
 
                           return HeroButton(
@@ -337,46 +413,97 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
             left: width * .105,
             duration: const Duration(milliseconds: 150),
             curve: Curves.easeOutQuad,
-            child: SizedBox(
-              width: width * .8,
-              height: height * .07,
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    backgroundColor: ColorApp.mainColor,
-                    elevation: 2,
-                  ),
-                  onPressed: (){
-                    currentStepIndex++;
-                    trainCallback(currentStepIndex + 1);
-                  },
-                  child: BlocBuilder<StepStateController, StepsState>(
-                      bloc: stepController,
-                      builder: (context, state){
-                        buttonLabel = context.translate.get('stepPage.nextExercise');
-
-                        if(state.isNextStep){
-                          if(state.value != steps.length){
+            child: Column(
+              children: [
+                SizedBox(
+                  width: width * .8,
+                  height: height * .07,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        backgroundColor: ColorApp.mainColor,
+                        elevation: 2,
+                      ),
+                      onPressed: (){
+                        currentStepIndex++;
+                        trainCallback(currentStepIndex + 1);
+                      },
+                      child: BlocBuilder<StepStateController, StepsState>(
+                          bloc: stepController,
+                          builder: (context, state){
                             buttonLabel = context.translate.get('stepPage.nextExercise');
-                          } else {
-                            buttonLabel = context.translate.get('train');
-                          }
-                        }
 
-                        return Text(
-                          buttonLabel,
-                          style: TextStyle(
-                              color: ColorApp.backgroundColor,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
-                          ),
-                        );
-                      }
-                  )
-              ),
-            ),
+                            if(state.isNextStep){
+                              if(state.value != steps.length){
+                                buttonLabel = context.translate.get('stepPage.nextExercise');
+                              } else {
+                                buttonLabel = context.translate.get('train');
+                              }
+                            }
+
+                            return Text(
+                              buttonLabel,
+                              style: TextStyle(
+                                  color: ColorApp.backgroundColor,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            );
+                          }
+                      )
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    BlocBuilder<AdditionalTimerLabelController, AdditionalTimerLabelState>(
+                        bloc: additionalTimerLabelController,
+                        builder: (context, state){
+
+                          bool isAdditionalMinuteDefined = false;
+                          bool isAdditionalSecondsDefined = false;
+
+                          if(state.isAdditionalMinuteLabelDefined){
+                            isAdditionalMinuteDefined = (state.value as String) != '00';
+                          } else if (state.isAdditionalSecondsLabelDefined){
+                            isAdditionalSecondsDefined = (state.value as String) != '00';
+                          }
+
+                          return Checkbox(
+                            value: isAutoRest,
+                            onChanged: isAdditionalMinuteDefined ||
+                                isAdditionalSecondsDefined ?
+                                (checkValue){
+                              setState(() {
+                                isAutoRest = checkValue ?? false;
+                              });
+                            } : null,
+                            checkColor: ColorApp.backgroundColor,
+                            activeColor: ColorApp.mainColor,
+                          );
+                        }
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      context.translate.get('autoRest'),
+                      style: TextStyle(
+                          color: isAutoRest ?
+                          ColorApp.mainColor : Colors.black26,
+                          fontSize: 20
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            )
 
           )
         ],

@@ -76,7 +76,13 @@ class _HeroButtonState extends State<HeroButton> {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
-              color: ColorApp.backgroundColor
+              color: ColorApp.backgroundColor,
+              shadows: const [
+                Shadow(
+                  color: Colors.black26,
+                  offset: Offset(1, 1)
+                )
+              ]
             ),
           ),
         ),

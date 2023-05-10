@@ -12,4 +12,8 @@ class AdditionalSecondsStateController extends Cubit<AdditionalSecondsState>{
   void setAdditionalSeconds(int additionalSeconds){
     emit(AdditionalSecondsDefined(additionalSeconds));
   }
+
+  void resetAdditionalSeconds(){
+    emit(const AdditionalSecondsReset());
+  }
 }

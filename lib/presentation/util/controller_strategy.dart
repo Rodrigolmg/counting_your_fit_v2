@@ -1,5 +1,5 @@
-import 'package:counting_your_fit_v2/presentation/setting/bloc/individual_exercise_controller.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/exercise_list_definition_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/timer_settings_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/util/abstract_controller.dart';
 import 'package:get_it/get_it.dart';
@@ -15,7 +15,6 @@ class ControllerStrategy{
   static final Map<ControllerEnum, BlocController> controller = {
     ControllerEnum.timerController: _TimerController(),
     ControllerEnum.exerciseController: _IndividualController(),
-    ControllerEnum.exerciseListController: _ExerciseListController()
   };
 
 }
@@ -30,10 +29,4 @@ class _IndividualController extends BlocController<IndividualExerciseController>
   @override
   IndividualExerciseController get controller =>
       GetIt.I.get<IndividualExerciseController>();
-}
-
-class _ExerciseListController extends BlocController<ExerciseListDefinitionStateController>{
-  @override
-  ExerciseListDefinitionStateController get controller
-    => GetIt.I.get<ExerciseListDefinitionStateController>();
 }

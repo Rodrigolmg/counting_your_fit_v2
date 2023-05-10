@@ -17,12 +17,25 @@
   "stepPage": {
     "nextExercise": "Next exercise"
   },
+  "individualExercise": {
+    "set": "Set",
+    "of": "of",
+    "resting": "Resting",
+    "toRest": "Rest",
+    "toExecute": "Execute isometrics/exercise",
+    "executing": "Executing",
+    "cancelTitle": "Stop exercise?",
+    "cancelDescription": "Do you really want to stop the current exercise?"
+  },
   "sets": "Sets",
   "rest": "Time rest",
   "additionalExercise": "Isometrics/Execution",
+  "autoRest": "Auto rest",
   "timeLabel": "Time",
   "train": "",
   "oneExercise": "Exercise",
   "yes": "yes",
-  "no": "no"
+  "no": "no",
+  "closeAppTitle": "No more count?",
+  "closeAppDescription": "Do you really want to close your counting?"
 }

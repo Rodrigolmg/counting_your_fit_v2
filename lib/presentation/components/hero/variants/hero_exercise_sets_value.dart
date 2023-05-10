@@ -1,7 +1,6 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/exercise_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -59,6 +58,8 @@ class _HeroExerciseSetsValueState extends State<HeroExerciseSetsValue> {
 
                             if(state.isSetDefined){
                               sets = (state as SetDefined).sets;
+                            } else if (state.isSetReset){
+                              sets = 1;
                             }
 
                             return NumberPicker(
