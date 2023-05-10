@@ -32,10 +32,10 @@
   "additionalExercise": "Isometrics/Execution",
   "autoRest": "Auto rest",
   "timeLabel": "Time",
-  "train": "",
+  "train": "Workout",
   "oneExercise": "Exercise",
-  "yes": "yes",
-  "no": "no",
+  "yes": "Yes",
+  "no": "No",
   "closeAppTitle": "No more count?",
   "closeAppDescription": "Do you really want to close your counting?"
 }
