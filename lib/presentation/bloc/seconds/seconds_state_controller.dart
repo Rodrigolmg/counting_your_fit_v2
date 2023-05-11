@@ -19,4 +19,8 @@ class SecondsStateController extends Cubit<SecondsState>{
   void resetSeconds(){
     emit(const SecondsReset());
   }
+
+  void selectSeconds(int secondsSelected){
+    emit(SecondsSelected(secondsSelected));
+  }
 }

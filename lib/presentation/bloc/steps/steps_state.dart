@@ -7,6 +7,7 @@ extension StepsStateX on StepsState{
   bool get isInitialStep => this is InitialStep;
   bool get isStepDefined => this is StepDefined;
   bool get isNextStep => this is NextStep;
+  bool get isStepSelected => this is StepSelected;
 }
 
 class InitialStep implements StepsState {
@@ -31,4 +32,12 @@ class NextStep implements StepsState{
 
   @override
   get value => nextStep;
+}
+
+class StepSelected implements StepsState{
+  int? stepSelected;
+  StepSelected(this.stepSelected);
+
+  @override
+  get value => stepSelected;
 }

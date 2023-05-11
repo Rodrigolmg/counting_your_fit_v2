@@ -7,6 +7,7 @@ class ExerciseSettingEntity{
   int? additionalSeconds;
   bool? isFinished;
   bool? isAutoRest;
+  bool? hasAdditionalTime;
 
   ExerciseSettingEntity({
     this.id,
@@ -15,6 +16,7 @@ class ExerciseSettingEntity{
     required this.seconds,
     this.additionalMinute,
     this.additionalSeconds,
+    this.hasAdditionalTime = false,
     this.isFinished = false,
     this.isAutoRest = false,
   });

@@ -15,7 +15,10 @@
     "registerAndTrain": "Registrar e treinar"
   },
   "stepPage": {
-    "nextExercise": "Próximo exercício"
+    "nextExercise": "Próximo exercício",
+    "editExercise": "Editar exercício",
+    "cancelTitle": "Parar definição de exercícios?",
+    "cancelDescription": "Quer realmente parar de configurar seus exercícios?"
   },
   "individualExercise": {
     "set": "Série",

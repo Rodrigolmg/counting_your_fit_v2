@@ -7,6 +7,7 @@ extension TimerLabelStateX on TimerLabelState{
   bool get isMinuteLabelDefined => this is MinuteLabelDefined;
   bool get isSecondsLabelDefined => this is SecondsLabelDefined;
   bool get isTimerReset => this is TimerReset;
+  bool get isTimerSelected => this is TimerLabelSelected;
 }
 
 class InitialTimerLabel implements TimerLabelState<String?> {
@@ -32,6 +33,15 @@ class SecondsLabelDefined implements TimerLabelState<String?>{
 
   @override
   String? get value => secondsLabel;
+}
+
+class TimerLabelSelected implements TimerLabelState<String?>{
+  final String? timerSelected;
+
+  const TimerLabelSelected({this.timerSelected});
+
+  @override
+  String? get value => timerSelected;
 }
 
 class TimerReset implements TimerLabelState<String?>{

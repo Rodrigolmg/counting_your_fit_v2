@@ -23,4 +23,8 @@ class TimerLabelController extends Cubit<TimerLabelState>{
     emit(const TimerReset());
   }
 
+  void selectTimer(String timerSelected){
+    emit(TimerLabelSelected(timerSelected: timerSelected));
+  }
+
 }

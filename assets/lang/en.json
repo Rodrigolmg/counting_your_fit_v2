@@ -15,7 +15,10 @@
     "registerAndTrain": "Register & train"
   },
   "stepPage": {
-    "nextExercise": "Next exercise"
+    "nextExercise": "Next exercise",
+    "editExercise": "Edit exercise",
+    "cancelTitle": "Stop exercises defining?",
+    "cancelDescription": "Do you really want to stop setting your exercises?"
   },
   "individualExercise": {
     "set": "Set",
@@ -32,10 +35,10 @@
   "additionalExercise": "Isometrics/Execution",
   "autoRest": "Auto rest",
   "timeLabel": "Time",
-  "train": "",
+  "train": "Workout",
   "oneExercise": "Exercise",
-  "yes": "yes",
-  "no": "no",
+  "yes": "Yes",
+  "no": "No",
   "closeAppTitle": "No more count?",
   "closeAppDescription": "Do you really want to close your counting?"
 }

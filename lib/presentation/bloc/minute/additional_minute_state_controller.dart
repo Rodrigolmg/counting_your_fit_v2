@@ -11,6 +11,10 @@ class AdditionalMinuteStateController extends Cubit<AdditionalMinuteState>{
     emit(AdditionalMinuteDefined(additionalMinute));
   }
 
+  void selectAdditionalMinute(int? additionalMinuteSelected){
+    emit(AdditionalMinuteSelected(additionalMinuteSelected));
+  }
+
   void resetAdditionalMinute(){
     emit(const AdditionalMinuteReset());
   }

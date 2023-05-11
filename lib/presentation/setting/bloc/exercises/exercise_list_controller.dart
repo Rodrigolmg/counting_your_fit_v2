@@ -19,22 +19,27 @@ class ExerciseListDefinitionController extends Cubit<ExerciseListDefinitionState
     required int? seconds,
     int? additionalMinute,
     int? additionalSecond,
-    bool isAutoRest = false
+    bool hasAdditionalTime = false,
+    bool isAutoRest = false,
   }) async {
-    RegisterExerciseListUseCase useCase = GetIt.I.get();
-    _exercises.addAll(
-      List.from(await useCase(
-          id: id,
-          set: set!,
-          minute: minute!,
-          seconds: seconds!,
-          additionalMinute: additionalMinute,
-          additionalSecond: additionalSecond,
-          isFinished: false,
-          isAutoRest: isAutoRest
-        )
-      )
+    RegisterSingleExerciseListUseCase useCase = GetIt.I.get();
+    ExerciseSettingEntity exerciseDefined = await useCase(
+        id: id,
+        set: set!,
+        minute: minute!,
+        seconds: seconds!,
+        additionalMinute: additionalMinute,
+        additionalSecond: additionalSecond,
+        isFinished: false,
+        hasAdditionalTime: hasAdditionalTime,
+        isAutoRest: isAutoRest
     );
+
+    if(_exercises.isNotEmpty){
+      _exercises.removeWhere((exerciseRegistered) => exerciseRegistered.id == exerciseDefined.id);
+    }
+
+    _exercises.add(exerciseDefined);
 
     emit(const SingleExerciseDefined());
   }
@@ -49,7 +54,9 @@ class ExerciseListDefinitionController extends Cubit<ExerciseListDefinitionState
 
   void selectExercise(int index){
     if(_exercises.isNotEmpty && _exercises.length >= index + 1){
-      emit(ExerciseSelected(_exercises[index]));
+      emit(ExerciseSelected(exerciseSelected: _exercises[index]));
+    } else {
+      emit(const ExerciseSelected());
     }
   }
 

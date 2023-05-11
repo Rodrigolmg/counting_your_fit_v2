@@ -9,7 +9,9 @@ class ExerciseSettingModel extends ExerciseSettingEntity {
     required int? seconds,
     int? additionalMinute,
     int? additionalSeconds,
+    bool hasAdditionalTime= false,
     bool isFinished = false,
+    bool isAutoRest = false,
   }) : super(
     id: id,
     set: set!,
@@ -17,7 +19,9 @@ class ExerciseSettingModel extends ExerciseSettingEntity {
     seconds: seconds!,
     additionalSeconds: additionalSeconds,
     additionalMinute: additionalMinute,
-    isFinished: isFinished
+    hasAdditionalTime: hasAdditionalTime,
+    isAutoRest: isAutoRest,
+    isFinished: isFinished,
   );
 
   factory ExerciseSettingModel.fromJson(Map<String, dynamic> json){
@@ -28,6 +32,8 @@ class ExerciseSettingModel extends ExerciseSettingEntity {
       seconds: json['seconds'],
       additionalMinute: json['additional_minute'],
       additionalSeconds: json['additional_seconds'],
+      hasAdditionalTime: json['has_additional'],
+      isAutoRest: json['is_auto'],
       isFinished: json['is_finished']
     );
   }
@@ -40,6 +46,8 @@ class ExerciseSettingModel extends ExerciseSettingEntity {
       'seconds': seconds,
       'additional_minute': additionalMinute,
       'additional_seconds': additionalSeconds,
+      'has_additional': hasAdditionalTime,
+      'is_auto': isAutoRest,
       'is_finished': isFinished
     };
   }
