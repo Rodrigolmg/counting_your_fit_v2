@@ -15,7 +15,8 @@
     "registerAndTrain": "Registrar e treinar"
   },
   "stepPage": {
-    "nextExercise": "Próximo exercício"
+    "nextExercise": "Próximo exercício",
+    "editExercise": "Editar exercício"
   },
   "individualExercise": {
     "set": "Série",

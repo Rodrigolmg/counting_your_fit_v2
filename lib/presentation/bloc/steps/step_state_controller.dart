@@ -21,5 +21,9 @@ class StepStateController extends Cubit<StepsState>{
     emit(NextStep(nextStepValue));
   }
 
+  void selectStep(int stepSelected){
+    emit(StepSelected(stepSelected));
+  }
+
   List<int> get steps => _stepsList;
 }

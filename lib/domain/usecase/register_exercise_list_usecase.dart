@@ -1,8 +1,8 @@
 
 import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
 
-abstract class RegisterExerciseListUseCase{
-  Future<List<ExerciseSettingEntity>> call({
+abstract class RegisterSingleExerciseListUseCase{
+  Future<ExerciseSettingEntity> call({
     required int id,
     required int? set,
     required int? minute,
@@ -10,15 +10,14 @@ abstract class RegisterExerciseListUseCase{
     int? additionalMinute,
     int? additionalSecond,
     bool isFinished = false,
+    bool hasAdditionalTime = false,
     bool isAutoRest = false,
   });
 }
 
-class RegisterExerciseListUseCaseImpl implements RegisterExerciseListUseCase{
-  final List<ExerciseSettingEntity> _exercises = [];
-
+class RegisterSingleExerciseListUseCaseImpl implements RegisterSingleExerciseListUseCase{
   @override
-  Future<List<ExerciseSettingEntity>> call({
+  Future<ExerciseSettingEntity> call({
     required int id,
     required int? set,
     required int? minute,
@@ -26,6 +25,7 @@ class RegisterExerciseListUseCaseImpl implements RegisterExerciseListUseCase{
     int? additionalMinute, int?
     additionalSecond,
     bool isFinished = false,
+    bool hasAdditionalTime = false,
     bool isAutoRest = false
   }) async {
     ExerciseSettingEntity exercise = ExerciseSettingEntity(
@@ -36,10 +36,9 @@ class RegisterExerciseListUseCaseImpl implements RegisterExerciseListUseCase{
       additionalMinute: additionalMinute,
       additionalSeconds: additionalSecond,
       isFinished: isFinished,
+      hasAdditionalTime: hasAdditionalTime,
       isAutoRest: isAutoRest
     );
-
-    _exercises.add(exercise);
-    return _exercises;
+    return exercise;
   }
 }

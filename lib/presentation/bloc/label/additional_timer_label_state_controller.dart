@@ -20,6 +20,10 @@ class AdditionalTimerLabelController extends Cubit<AdditionalTimerLabelState>{
     emit(AdditionalSecondsLabelDefined(secondsLabel: secondsLabel));
   }
 
+  void selectAdditionalTimer(String additionalTimerSelected){
+    emit(AdditionalTimeLabelSelected(additionalTimeSelected: additionalTimerSelected));
+  }
+
   void resetAdditionalTimer(){
     emit(const AdditionalTimerReset());
   }

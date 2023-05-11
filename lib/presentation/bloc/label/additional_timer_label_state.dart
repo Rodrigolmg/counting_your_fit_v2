@@ -7,6 +7,7 @@ extension TimerLabelStateX on AdditionalTimerLabelState{
   bool get isAdditionalMinuteLabelDefined => this is AdditionalMinuteLabelDefined;
   bool get isAdditionalSecondsLabelDefined => this is AdditionalSecondsLabelDefined;
   bool get isAdditionalTimerReset => this is AdditionalTimerReset;
+  bool get isAdditionalTimerSelected => this is AdditionalTimeLabelSelected;
 }
 
 class InitialAdditionalTimerLabel implements AdditionalTimerLabelState<String?> {
@@ -32,6 +33,15 @@ class AdditionalSecondsLabelDefined implements AdditionalTimerLabelState<String?
 
   @override
   String? get value => secondsLabel;
+
+}
+
+class AdditionalTimeLabelSelected implements AdditionalTimerLabelState<String?>{
+  final String additionalTimeSelected;
+  const AdditionalTimeLabelSelected({this.additionalTimeSelected = '00:00'});
+
+  @override
+  String? get value => additionalTimeSelected;
 
 }
 

@@ -29,6 +29,6 @@ class NextStep implements ExerciseListDefinitionStates{
 }
 
 class ExerciseSelected implements ExerciseListDefinitionStates{
-  final ExerciseSettingEntity exerciseSelected;
-  const ExerciseSelected(this.exerciseSelected);
+  final ExerciseSettingEntity? exerciseSelected;
+  const ExerciseSelected({this.exerciseSelected});
 }

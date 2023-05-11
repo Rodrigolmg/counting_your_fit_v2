@@ -23,8 +23,8 @@ class AppInjector {
     injector.registerFactory<RegisterIndividualExerciseUseCase>(() =>
         RegisterIndividualExerciseUseCaseImpl());
 
-    injector.registerFactory<RegisterExerciseListUseCase>(() =>
-        RegisterExerciseListUseCaseImpl());
+    injector.registerFactory<RegisterSingleExerciseListUseCase>(() =>
+        RegisterSingleExerciseListUseCaseImpl());
 
     // BLOC CONTROLLERS
     injector.registerLazySingleton<TimerSettingsStateController>(() =>

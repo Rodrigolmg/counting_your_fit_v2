@@ -15,7 +15,8 @@
     "registerAndTrain": "Register & train"
   },
   "stepPage": {
-    "nextExercise": "Next exercise"
+    "nextExercise": "Next exercise",
+    "editExercise": "Edit exercise"
   },
   "individualExercise": {
     "set": "Set",

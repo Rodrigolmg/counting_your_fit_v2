@@ -65,8 +65,6 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
                       children: [
                         BlocBuilder<MinuteStateController, MinuteState>(
                           bloc: minuteController,
-                          buildWhen: (oldState, currentState) =>
-                            currentState.isMinuteDefined,
                           builder: (context, state){
 
                             if(state.isMinuteDefined){
@@ -75,6 +73,8 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
                             } else if(state.isMinuteReset){
                               minutes = 0;
                               timerLabel.resetTimer();
+                            } else if (state.isMinuteSelected){
+                              minutes = (state as MinuteSelected).minuteSelected;
                             }
 
                             return NumberPicker(
@@ -112,16 +112,18 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
                         ),
                         BlocBuilder<SecondsStateController, SecondsState>(
                             bloc: secondsController,
-                            buildWhen: (oldState, currentState) =>
-                              currentState.isSecondsDefined,
                             builder: (context, state){
 
                               if(state.isSecondsDefined){
                                 seconds = (state as SecondsDefined).seconds;
+                                timerLabel.setSecondsLabel(seconds);
                               } else if(state.isSecondsReset){
                                 seconds = 0;
+                                timerLabel.resetTimer();
+                              } else if (state.isSecondsSelected){
+                                seconds = (state as SecondsSelected).secondsSelected;
                               }
-                              timerLabel.setSecondsLabel(seconds);
+
 
                               return NumberPicker(
                                   minValue: 0,
