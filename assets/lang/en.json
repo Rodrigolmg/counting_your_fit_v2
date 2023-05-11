@@ -16,7 +16,9 @@
   },
   "stepPage": {
     "nextExercise": "Next exercise",
-    "editExercise": "Edit exercise"
+    "editExercise": "Edit exercise",
+    "cancelTitle": "Stop exercises defining?",
+    "cancelDescription": "Do you really want to stop setting your exercises?"
   },
   "individualExercise": {
     "set": "Set",
