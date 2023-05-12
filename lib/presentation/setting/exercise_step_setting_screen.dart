@@ -83,7 +83,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
         int.parse(additionalSecondsLabel) > 0);
 
     exerciseListDefinitionController.registerSingleExercise(
-      id: step - 1,
+      id: step,
       set: sets,
       minute: int.parse(minutesLabel),
       seconds: int.parse(secondsLabel),
@@ -93,8 +93,8 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
       isAutoRest: isAutoRest
     );
 
-    stepController.nextStep(step);
-    exerciseListDefinitionController.nextStep(step);
+    stepController.nextStep(step + 1);
+    // exerciseListDefinitionController.nextStep(step + 1);
 
     timerLabelController.resetTimer();
     additionalTimerLabelController.resetAdditionalTimer();
@@ -106,8 +106,10 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
       isAutoRest = false;
     });
 
-    if(steps.length == step){
+    if(step == steps.length){
       exerciseListDefinitionController.defineExerciseList();
+      Navigator.pushReplacementNamed(context,
+          CountingYourFitRoutes.exerciseListTimer);
     }
 
     // exerciseController.nextExercise(currentStep);
@@ -556,7 +558,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                           ),
                           onPressed: (){
                             currentStepIndex++;
-                            trainCallback(currentStepIndex + 1);
+                            trainCallback(currentStepIndex);
                           },
                           child: BlocBuilder<StepStateController, StepsState>(
                               bloc: stepController,

@@ -48,8 +48,16 @@ class ExerciseListDefinitionController extends Cubit<ExerciseListDefinitionState
     emit(ExerciseListDefined(_exercises));
   }
 
-  void nextStep(int nextStep){
-    emit(NextStep(nextStep));
+  void nextExercise(int nextExercise){
+    emit(NextExercise(nextExercise));
+  }
+
+  void finishCurrentRest(){
+    emit(const CurrentExerciseRestFinished());
+  }
+
+  void finishCurrentExecute(){
+    emit(const CurrentExerciseExecuteFinished());
   }
 
   void selectExercise(int index){

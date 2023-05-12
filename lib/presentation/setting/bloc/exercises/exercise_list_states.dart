@@ -7,7 +7,11 @@ extension ExerciseListDefinitionStatesX on ExerciseListDefinitionStates{
   bool get isSingleExerciseDefined => this is SingleExerciseDefined;
   bool get isSingleExerciseSelected => this is ExerciseSelected;
   bool get isExerciseListDefined => this is ExerciseListDefined;
-  bool get isNextStep => this is NextStep;
+  bool get isCurrentResting => this is CurrentExerciseResting;
+  bool get isCurrentExecuting => this is CurrentExerciseResting;
+  bool get isCurrentRestFinished => this is CurrentExerciseRestFinished;
+  bool get isCurrentExecuteFinished => this is CurrentExerciseExecuteFinished;
+  bool get isNextExercise => this is NextExercise;
 }
 
 class InitialState implements ExerciseListDefinitionStates {
@@ -18,14 +22,30 @@ class SingleExerciseDefined implements ExerciseListDefinitionStates{
   const SingleExerciseDefined();
 }
 
+class CurrentExerciseResting implements ExerciseListDefinitionStates{
+  const CurrentExerciseResting();
+}
+
+class CurrentExerciseExecuting implements ExerciseListDefinitionStates{
+  const CurrentExerciseExecuting();
+}
+
+class CurrentExerciseRestFinished implements ExerciseListDefinitionStates{
+  const CurrentExerciseRestFinished();
+}
+
+class CurrentExerciseExecuteFinished implements ExerciseListDefinitionStates{
+  const CurrentExerciseExecuteFinished();
+}
+
 class ExerciseListDefined implements ExerciseListDefinitionStates{
   final List<ExerciseSettingEntity> exercises;
   const ExerciseListDefined(this.exercises);
 }
 
-class NextStep implements ExerciseListDefinitionStates{
-  final int nextStep;
-  const NextStep(this.nextStep);
+class NextExercise implements ExerciseListDefinitionStates{
+  final int nextExercise;
+  const NextExercise(this.nextExercise);
 }
 
 class ExerciseSelected implements ExerciseListDefinitionStates{
