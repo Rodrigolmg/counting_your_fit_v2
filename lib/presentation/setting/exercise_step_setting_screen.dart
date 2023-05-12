@@ -47,6 +47,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
   final secondsController = GetIt.I.get<SecondsStateController>();
 
   int currentStepIndex = 0;
+  int? selectedStepIndex;
   bool hasAdditionalExercise = false;
   bool isAutoRest = false;
   final GlobalKey<ShakeErrorState> stepTimerKey = GlobalKey<ShakeErrorState>();
@@ -59,8 +60,9 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
   String buttonLabel = '';
   int sets = 1;
   List<int> steps = [1, 2];
+  final List<ExerciseSettingEntity> exercises = [];
 
-  void trainCallback(int step){
+  void trainCallback() async {
     bool hasNoRestTime = minutesLabel == '00' &&
         secondsLabel == '00';
 
@@ -82,8 +84,8 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
     hasAdditionalExercise = (int.parse(additionalMinutesLabel) > 0 ||
         int.parse(additionalSecondsLabel) > 0);
 
-    exerciseListDefinitionController.registerSingleExercise(
-      id: step,
+    ExerciseSettingEntity exercise = await exerciseListDefinitionController.registerSingleExercise(
+      id: steps[currentStepIndex],
       set: sets,
       minute: int.parse(minutesLabel),
       seconds: int.parse(secondsLabel),
@@ -93,7 +95,21 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
       isAutoRest: isAutoRest
     );
 
-    stepController.nextStep(step + 1);
+    if(exercises.isNotEmpty){
+        int indexOfExercise = exercises
+            .indexWhere((element) => element.id == exercise.id);
+      if(indexOfExercise >= 0){
+        exercises.removeWhere((element) => element.id == exercise.id);
+        exercises.insert(indexOfExercise, exercise);
+      } else {
+        exercises.add(exercise);
+      }
+    } else {
+      exercises.add(exercise);
+    }
+
+    stepController.nextStep(++currentStepIndex);
+    selectExercise(currentStepIndex);
     // exerciseListDefinitionController.nextStep(step + 1);
 
     timerLabelController.resetTimer();
@@ -106,10 +122,12 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
       isAutoRest = false;
     });
 
-    if(step == steps.length){
-      exerciseListDefinitionController.defineExerciseList();
-      Navigator.pushReplacementNamed(context,
-          CountingYourFitRoutes.exerciseListTimer);
+    if(currentStepIndex == steps.length){
+      exerciseListDefinitionController.defineExerciseList(exercises);
+      if(context.mounted){
+        Navigator.pushReplacementNamed(context,
+            CountingYourFitRoutes.exerciseListTimer);
+      }
     }
 
     // exerciseController.nextExercise(currentStep);
@@ -117,50 +135,61 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
 
   void selectExercise(int stepIndex){
     ExerciseSettingEntity? exercise;
-    exerciseListDefinitionController.selectExercise(stepIndex);
-    if(exerciseListDefinitionController.state.isSingleExerciseSelected){
-      exercise = (exerciseListDefinitionController.state as ExerciseSelected)
-          .exerciseSelected;
-      if(exercise != null){
-        stepController.selectStep(stepIndex);
-        setsController.selectSet(exercise.set);
-
-        minuteController.selectMinute(exercise.minute);
-        secondsController.selectSeconds(exercise.seconds);
-        String minuteLabel = exercise.minute <= 9 ? '0${exercise.minute}' : exercise.minute.toString();
-        String secondsLabel = exercise.seconds <= 9 ? '0${exercise.seconds}' : exercise.seconds.toString();
-        timerLabelController.selectTimer('$minuteLabel:$secondsLabel');
-
-        // ADDITIONAL TIME
-        additionalMinuteController.selectAdditionalMinute(exercise.additionalMinute);
-        additionalSecondsController.selectAdditionalSeconds(exercise.additionalSeconds);
-        String additionalMinuteLabel = exercise.additionalMinute != null &&
-            exercise.additionalMinute! <= 9 ? '0${exercise.additionalMinute}' :
-            exercise.additionalMinute.toString();
-        String additionalSecondsLabel = exercise.additionalSeconds != null &&
-            exercise.additionalSeconds! <= 9 ? '0${exercise.additionalSeconds}'
-            : exercise.additionalSeconds.toString();
-        additionalTimerLabelController.selectAdditionalTimer('$additionalMinuteLabel:$additionalSecondsLabel');
-        setState(() {
-          hasAdditionalExercise = exercise!.hasAdditionalTime ?? false;
-          isAutoRest = exercise.isAutoRest ?? false;
-        });
-      } else {
-        stepController.selectStep(stepIndex);
-        setsController.selectSet(1);
-        minuteController.selectMinute(0);
-        secondsController.selectSeconds(0);
-        additionalMinuteController.selectAdditionalMinute(null);
-        additionalSecondsController.selectAdditionalSeconds(null);
-        timerLabelController.selectTimer('00:00');
-        additionalTimerLabelController.selectAdditionalTimer('00:00');
-        setState(() {
-          hasAdditionalExercise = false;
-          isAutoRest = false;
-        });
+    if(exercises.isNotEmpty){
+      if(exercises.asMap().containsKey(stepIndex)){
+        exercise = exercises[stepIndex];
+        selectedStepIndex = stepIndex;
       }
-
     }
+
+    exerciseListDefinitionController.selectExercise(exercise: exercise);
+
+    if(exercise != null){
+      stepController.selectStep(stepIndex);
+      setsController.selectSet(exercise.set);
+
+      minuteController.selectMinute(exercise.minute);
+      secondsController.selectSeconds(exercise.seconds);
+      String minuteLabel = exercise.minute <= 9 ? '0${exercise.minute}' : exercise.minute.toString();
+      String secondsLabel = exercise.seconds <= 9 ? '0${exercise.seconds}' : exercise.seconds.toString();
+      timerLabelController.selectTimer('$minuteLabel:$secondsLabel');
+
+      // ADDITIONAL TIME
+      additionalMinuteController.selectAdditionalMinute(exercise.additionalMinute);
+      additionalSecondsController.selectAdditionalSeconds(exercise.additionalSeconds);
+      String additionalMinuteLabel = exercise.additionalMinute != null &&
+          exercise.additionalMinute! <= 9 ? '0${exercise.additionalMinute}' :
+      exercise.additionalMinute.toString();
+      String additionalSecondsLabel = exercise.additionalSeconds != null &&
+          exercise.additionalSeconds! <= 9 ? '0${exercise.additionalSeconds}'
+          : exercise.additionalSeconds.toString();
+      additionalTimerLabelController.selectAdditionalTimer('$additionalMinuteLabel:$additionalSecondsLabel');
+      setState(() {
+        hasAdditionalExercise = exercise!.hasAdditionalTime ?? false;
+        isAutoRest = exercise.isAutoRest ?? false;
+      });
+    } else {
+      stepController.selectStep(stepIndex);
+      setsController.selectSet(1);
+      minuteController.selectMinute(0);
+      secondsController.selectSeconds(0);
+      additionalMinuteController.selectAdditionalMinute(null);
+      additionalSecondsController.selectAdditionalSeconds(null);
+      timerLabelController.selectTimer('00:00');
+      additionalTimerLabelController.selectAdditionalTimer('00:00');
+      setState(() {
+        hasAdditionalExercise = false;
+        isAutoRest = false;
+      });
+    }
+
+
+    // if(exerciseListDefinitionController.state.isSingleExerciseSelected){
+    //   exercise = (exerciseListDefinitionController.state as ExerciseSelected)
+    //       .exerciseSelected;
+    //
+    //
+    // }
   }
 
   void cancelExercise() async {
@@ -292,7 +321,8 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                   if(state.isStepDefined){
                     steps = stepController.steps;
                   } else if(state.isNextStep){
-                    currentStepIndex = (state.value as int) - 1;
+                    currentStepIndex = (state.value as int);
+                    // selectExercise(currentStepIndex);
                   } else if (state.isStepSelected){
                     currentStepIndex = (state.value as int);
                   }
@@ -390,9 +420,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                             } else {
                               if(state.isMinuteLabelDefined){
                                 minutesLabel = state.value ?? '00';
-                              }
-
-                              if (state.isSecondsLabelDefined){
+                              } else if (state.isSecondsLabelDefined){
                                 secondsLabel = state.value ?? '00';
                               }
 
@@ -557,8 +585,12 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                             elevation: 2,
                           ),
                           onPressed: (){
-                            currentStepIndex++;
-                            trainCallback(currentStepIndex);
+
+                            if(selectedStepIndex != null){
+                              currentStepIndex = selectedStepIndex!;
+                            }
+
+                            trainCallback();
                           },
                           child: BlocBuilder<StepStateController, StepsState>(
                               bloc: stepController,
