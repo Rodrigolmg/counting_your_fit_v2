@@ -109,18 +109,19 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
     }
 
     stepController.nextStep(++currentStepIndex);
-    selectExercise(currentStepIndex);
-    // exerciseListDefinitionController.nextStep(step + 1);
-
-    timerLabelController.resetTimer();
-    additionalTimerLabelController.resetAdditionalTimer();
-    setsController.resetSet();
-    minuteController.resetMinute();
-    secondsController.resetSeconds();
-    setState(() {
-      hasAdditionalExercise = false;
-      isAutoRest = false;
-    });
+    if(exercises.asMap().containsKey(currentStepIndex)){
+      selectExercise(currentStepIndex);
+    } else {
+      timerLabelController.resetTimer();
+      additionalTimerLabelController.resetAdditionalTimer();
+      setsController.resetSet();
+      minuteController.resetMinute();
+      secondsController.resetSeconds();
+      setState(() {
+        hasAdditionalExercise = false;
+        isAutoRest = false;
+      });
+    }
 
     if(currentStepIndex == steps.length){
       exerciseListDefinitionController.defineExerciseList(exercises);
@@ -129,8 +130,6 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
             CountingYourFitRoutes.exerciseListTimer);
       }
     }
-
-    // exerciseController.nextExercise(currentStep);
   }
 
   void selectExercise(int stepIndex){
