@@ -11,6 +11,8 @@ extension ExerciseListDefinitionStatesX on ExerciseListDefinitionStates{
   bool get isCurrentExecuting => this is CurrentExerciseResting;
   bool get isCurrentRestFinished => this is CurrentExerciseRestFinished;
   bool get isCurrentExecuteFinished => this is CurrentExerciseExecuteFinished;
+  bool get isCurrentExerciseFinished => this is CurrentExerciseFinished;
+  bool get isCurrentNextSet => this is CurrentExerciseNextSet;
   bool get isNextExercise => this is NextExercise;
 }
 
@@ -21,6 +23,7 @@ class InitialState implements ExerciseListDefinitionStates {
 class SingleExerciseDefined implements ExerciseListDefinitionStates{
   const SingleExerciseDefined();
 }
+
 
 class CurrentExerciseResting implements ExerciseListDefinitionStates{
   const CurrentExerciseResting();
@@ -36,6 +39,15 @@ class CurrentExerciseRestFinished implements ExerciseListDefinitionStates{
 
 class CurrentExerciseExecuteFinished implements ExerciseListDefinitionStates{
   const CurrentExerciseExecuteFinished();
+}
+
+class CurrentExerciseFinished implements ExerciseListDefinitionStates{
+  const CurrentExerciseFinished();
+}
+
+class CurrentExerciseNextSet implements ExerciseListDefinitionStates{
+  final int nextSet;
+  const CurrentExerciseNextSet(this.nextSet);
 }
 
 class ExerciseListDefined implements ExerciseListDefinitionStates{

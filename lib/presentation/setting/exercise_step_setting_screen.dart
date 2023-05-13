@@ -413,9 +413,11 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                         child: BlocBuilder<TimerLabelController, TimerLabelState>(
                           bloc: timerLabelController,
                           builder: (context, state){
-                            String label = '00:00';
                             if (state.isTimerSelected){
-                              label = (state as TimerLabelSelected).timerSelected!;
+                              List<String> label = (state as TimerLabelSelected)
+                                  .timerSelected!.split(':');
+                              minutesLabel = label[0];
+                              secondsLabel = label[1];
                             } else {
                               if(state.isMinuteLabelDefined){
                                 minutesLabel = state.value ?? '00';
@@ -427,11 +429,10 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                                 minutesLabel = '00';
                                 secondsLabel = '00';
                               }
-                              label = '$minutesLabel:$secondsLabel';
                             }
 
                             return HeroButton(
-                              buttonLabel: label,
+                              buttonLabel: '$minutesLabel:$secondsLabel',
                               heroTag: heroTimerPopUpStep,
                               hasError: stepTimerKey.currentState
                                   != null &&
@@ -597,7 +598,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                                 buttonLabel = context.translate.get('stepPage.nextExercise');
 
                                 if(state.isNextStep){
-                                  if(state.value != steps.length){
+                                  if((state.value + 1) != steps.length){
                                     buttonLabel = context.translate.get('stepPage.nextExercise');
                                   } else {
                                     buttonLabel = context.translate.get('train');

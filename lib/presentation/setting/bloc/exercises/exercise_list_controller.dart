@@ -32,13 +32,6 @@ class ExerciseListDefinitionController extends Cubit<ExerciseListDefinitionState
         hasAdditionalTime: hasAdditionalTime,
         isAutoRest: isAutoRest
     );
-
-    // if(_exercises.isNotEmpty){
-    //   _exercises.removeWhere((exerciseRegistered) => exerciseRegistered.id == exerciseDefined.id);
-    // }
-    //
-    // _exercises.add(exerciseDefined);
-
     emit(const SingleExerciseDefined());
     return exerciseDefined;
   }
@@ -47,8 +40,20 @@ class ExerciseListDefinitionController extends Cubit<ExerciseListDefinitionState
     emit(ExerciseListDefined(exercises));
   }
 
+  void executeCurrent(){
+    emit(const CurrentExerciseExecuting());
+  }
+
+  void restCurrent(){
+    emit(const CurrentExerciseResting());
+  }
+
   void nextExercise(int nextExercise){
     emit(NextExercise(nextExercise));
+  }
+
+  void nextExerciseSet(int nextExerciseSet){
+    emit(CurrentExerciseNextSet(nextExerciseSet));
   }
 
   void finishCurrentRest(){
@@ -56,6 +61,10 @@ class ExerciseListDefinitionController extends Cubit<ExerciseListDefinitionState
   }
 
   void finishCurrentExecute(){
+    emit(const CurrentExerciseExecuteFinished());
+  }
+
+  void finishCurrentExercise(){
     emit(const CurrentExerciseExecuteFinished());
   }
 
