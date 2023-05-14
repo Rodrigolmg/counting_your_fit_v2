@@ -14,6 +14,7 @@ import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/indivi
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
@@ -54,6 +55,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   final threeSecondsPlayer = AudioPlayer(playerId: 'three')..setReleaseMode(ReleaseMode.stop);
   final finalTimePlayer = AudioPlayer(playerId: 'final')..setReleaseMode(ReleaseMode.stop);
   List<StreamSubscription> streams = [];
+  double volume = 1.0;
 
   // LOGICAL VALUE FOR PLAY FINAL BEEP ONLY ONE TIME
   int finalBeepPlayQuantity = 0;
@@ -73,6 +75,12 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
     configPlayer(tenSecondsPlayer, 'sounds/ten_seconds_beep.mp3');
     configPlayer(threeSecondsPlayer, 'sounds/beep_a.mp3');
     configPlayer(finalTimePlayer, 'sounds/final_beep.mp3');
+  }
+
+  void setPlayerVolume(){
+    tenSecondsPlayer.setVolume(volume);
+    threeSecondsPlayer.setVolume(volume);
+    finalTimePlayer.setVolume(volume);
   }
 
   void play(AudioPlayer player, int stopTime) async {
@@ -568,6 +576,38 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                     );
                   },
                 ),
+              ),
+              Positioned(
+                bottom: height * .11,
+                child: SizedBox(
+                  width: width * .8,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        FeatherIcons.volume2,
+                        size: 30,
+                        color: ColorApp.mainColor,
+                      ),
+                      SizedBox(
+                        width: width * .7,
+                        child: Slider(
+                          value: volume,
+                          onChanged: (value){
+                            setState(() {
+                              volume = value;
+                            });
+                            setPlayerVolume();
+                          },
+                          max: 1.0,
+                          min: .0,
+                          activeColor: ColorApp.mainColor,
+                          inactiveColor: Colors.grey,
+                        ),
+                      )
+                    ],
+                  ),
+                )
               )
             ],
           ),
