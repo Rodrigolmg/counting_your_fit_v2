@@ -140,6 +140,9 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
                 elevation: 2,
               ),
               onPressed: () {
+                if(!stepsController.state.isStepDefined){
+                  stepsController.setSteps(2);
+                }
                 Navigator.pushReplacementNamed(
                     context, CountingYourFitRoutes.exerciseStepSetting);
               },

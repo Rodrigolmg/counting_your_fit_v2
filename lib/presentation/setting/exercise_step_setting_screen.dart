@@ -280,12 +280,10 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if(stepController.state.isStepDefined){
-        steps = List.from(stepController.steps);
-      }
-
-    });
+    currentStepIndex = 0;
+    if(stepController.state.isStepDefined){
+      steps = List.from(stepController.steps);
+    }
   }
 
   @override
@@ -321,7 +319,6 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                     steps = stepController.steps;
                   } else if(state.isNextStep){
                     currentStepIndex = (state.value as int);
-                    // selectExercise(currentStepIndex);
                   } else if (state.isStepSelected){
                     currentStepIndex = (state.value as int);
                   }
