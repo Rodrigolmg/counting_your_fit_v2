@@ -337,9 +337,15 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                     child: Text(
                       context.translate.get('train'),
                       style: TextStyle(
-                          color: ColorApp.backgroundColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
+                        color: ColorApp.backgroundColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        shadows: const [
+                          Shadow(
+                            offset: Offset(1, 1),
+                            color: Colors.black26
+                          )
+                        ]
                       ),
                     )
                 ),
