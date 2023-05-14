@@ -1,9 +1,12 @@
 import 'package:counting_your_fit_v2/color_app.dart';
+import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/presentation/setting/pages/exercise_list_page.dart';
 import 'package:counting_your_fit_v2/presentation/setting/pages/individual_exercise_page.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/timer_settings_state_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get_it/get_it.dart';
 
 class TimerSettingsScreen extends StatefulWidget {
@@ -18,16 +21,95 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
   final PageController _pageController = PageController();
   final _timeScreenController = GetIt.I.get<TimerSettingsStateController>();
 
+  Future<bool> onCancel() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            backgroundColor: ColorApp.mainColor,
+            elevation: 2,
+            actions: [
+              TextButton(
+                  onPressed: (){
+                    SystemNavigator.pop(animated: true);
+                  },
+                  child: Text(
+                    context.translate.get('yes'),
+                    style: TextStyle(
+                        color: ColorApp.errorColor2,
+                        fontSize: 20,
+                        shadows: const [
+                          Shadow(
+                              color: Colors.black54,
+                              offset: Offset(1, 1)
+                          )
+                        ]
+                    ),
+                  )
+              ),
+              TextButton(
+                  onPressed: (){
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    context.translate.get('no'),
+                    style: TextStyle(
+                        color: ColorApp.backgroundColor,
+                        fontSize: 20,
+                        shadows: const [
+                          Shadow(
+                              color: Colors.black54,
+                              offset: Offset(1, 1)
+                          )
+                        ]
+                    ),
+                  )
+              ),
+            ],
+            title: Text(
+              context.translate.get('closeAppTitle'),
+              style: TextStyle(
+                  color: ColorApp.backgroundColor,
+                  shadows: const [
+                    Shadow(
+                        color: Colors.black54,
+                        offset: Offset(1, 1)
+                    )
+                  ]
+              ),
+            ),
+            content: Text(
+              context.translate.get('closeAppDescription'),
+              style: TextStyle(
+                  color: ColorApp.backgroundColor,
+                  shadows: const [
+                    Shadow(
+                        color: Colors.black54,
+                        offset: Offset(1, 1)
+                    )
+                  ]
+              ),
+            ),
+          );
+        }
+    );
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      onWillPop: onCancel,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            onPressed: (){},
-            icon: const Icon(Icons.watch_off),
+            onPressed: (){
+              onCancel();
+            },
+            icon: const Icon(FeatherIcons.xOctagon),
             color: ColorApp.mainColor,
           ),
         ),
@@ -58,9 +140,6 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
           },
         )
     ),
-      onWillPop: () async {
-        return true;
-      }
     );
   }
 
