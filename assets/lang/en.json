@@ -22,6 +22,7 @@
   },
   "individualExercise": {
     "set": "Set",
+    "lastSet": "Last set",
     "of": "of",
     "resting": "Resting",
     "toRest": "Rest",

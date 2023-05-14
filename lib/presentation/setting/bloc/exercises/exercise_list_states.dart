@@ -8,7 +8,7 @@ extension ExerciseListDefinitionStatesX on ExerciseListDefinitionStates{
   bool get isSingleExerciseSelected => this is ExerciseSelected;
   bool get isExerciseListDefined => this is ExerciseListDefined;
   bool get isCurrentResting => this is CurrentExerciseResting;
-  bool get isCurrentExecuting => this is CurrentExerciseResting;
+  bool get isCurrentExecuting => this is CurrentExerciseExecuting;
   bool get isCurrentRestFinished => this is CurrentExerciseRestFinished;
   bool get isCurrentExecuteFinished => this is CurrentExerciseExecuteFinished;
   bool get isCurrentExerciseFinished => this is CurrentExerciseFinished;
