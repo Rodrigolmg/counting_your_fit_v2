@@ -83,9 +83,12 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
 
     hasAdditionalExercise = (int.parse(additionalMinutesLabel) > 0 ||
         int.parse(additionalSecondsLabel) > 0);
-
+    if(stepController.state.isNextStep){
+      currentStepIndex = stepController.state.value as int;
+    }
+    int id = steps[currentStepIndex];
     ExerciseSettingEntity exercise = await exerciseListDefinitionController.registerSingleExercise(
-      id: steps[currentStepIndex],
+      id: id,
       set: sets,
       minute: int.parse(minutesLabel),
       seconds: int.parse(secondsLabel),
@@ -107,10 +110,9 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
     } else {
       exercises.add(exercise);
     }
-
-    stepController.nextStep(++currentStepIndex);
-    if(exercises.asMap().containsKey(currentStepIndex)){
-      selectExercise(currentStepIndex);
+    stepController.nextStep(currentStepIndex);
+    if(exercises.asMap().containsKey(stepController.state.value as int)){
+      selectExercise(stepController.state.value as int);
     } else {
       timerLabelController.resetTimer();
       additionalTimerLabelController.resetAdditionalTimer();
@@ -123,7 +125,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
       });
     }
 
-    if(currentStepIndex == steps.length){
+    if(exercises.length == steps.length){
       exerciseListDefinitionController.defineExerciseList(exercises);
       if(context.mounted){
         Navigator.pushReplacementNamed(context,
@@ -166,6 +168,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
       setState(() {
         hasAdditionalExercise = exercise!.hasAdditionalTime ?? false;
         isAutoRest = exercise.isAutoRest ?? false;
+
       });
     } else {
       stepController.selectStep(stepIndex);
@@ -317,9 +320,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
 
                   if(state.isStepDefined){
                     steps = stepController.steps;
-                  } else if(state.isNextStep){
-                    currentStepIndex = (state.value as int);
-                  } else if (state.isStepSelected){
+                  } else if (state.isStepSelected || state.isNextStep){
                     currentStepIndex = (state.value as int);
                   }
 

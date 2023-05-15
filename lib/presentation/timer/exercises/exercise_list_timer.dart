@@ -57,6 +57,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
   final finalTimePlayer = AudioPlayer(playerId: 'final2')..setReleaseMode(ReleaseMode.stop);
   List<StreamSubscription> streams = [];
   double volume = 1.0;
+  IconData? volumeIcon;
 
   // LOGICAL VALUE FOR PLAY FINAL BEEP ONLY ONE TIME
   int finalBeepPlayQuantity = 0;
@@ -616,7 +617,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          FeatherIcons.volume2,
+                          volumeIcon ?? FeatherIcons.volume2,
                           size: 30,
                           color: ColorApp.mainColor,
                         ),
@@ -627,6 +628,15 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
                             onChanged: (value){
                               setState(() {
                                 volume = value;
+                                if(volume > .5 && volume <= 1){
+                                  volumeIcon = FeatherIcons.volume2;
+                                } else if (volume > .3 && volume <= .5){
+                                  volumeIcon = FeatherIcons.volume1;
+                                } else if(volume > 0 && volume <= .3){
+                                  volumeIcon = FeatherIcons.volume;
+                                } else {
+                                  volumeIcon = FeatherIcons.volumeX;
+                                }
                               });
                               setPlayerVolume();
                             },

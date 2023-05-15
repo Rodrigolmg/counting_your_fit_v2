@@ -30,6 +30,8 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   late final StopWatchTimer stopWatchTimer;
   final individualExerciseController = GetIt.I.get<IndividualExerciseController>();
 
+  IconData? volumeIcon;
+
   // EXERCISE VALUES CONTROLLER
   final setsController = GetIt.I.get<SetsStateController>();
   final minuteController = GetIt.I.get<MinuteStateController>();
@@ -585,7 +587,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        FeatherIcons.volume2,
+                        volumeIcon ?? FeatherIcons.volume2,
                         size: 30,
                         color: ColorApp.mainColor,
                       ),
@@ -596,7 +598,17 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                           onChanged: (value){
                             setState(() {
                               volume = value;
+                              if(volume > .5 && volume <= 1){
+                                volumeIcon = FeatherIcons.volume2;
+                              } else if (volume > .3 && volume <= .5){
+                                volumeIcon = FeatherIcons.volume1;
+                              } else if(volume > 0 && volume <= .3){
+                                volumeIcon = FeatherIcons.volume;
+                              } else {
+                                volumeIcon = FeatherIcons.volumeX;
+                              }
                             });
+
                             setPlayerVolume();
                           },
                           max: 1.0,
