@@ -18,6 +18,7 @@ class StepStateController extends Cubit<StepsState>{
   }
 
   void nextStep(int nextStepValue){
+    nextStepValue++;
     emit(NextStep(nextStepValue));
   }
 

@@ -30,6 +30,18 @@
     "cancelTitle": "Parar exercício?",
     "cancelDescription": "Quer mesmo parar o exercício atual?"
   },
+  "exerciseTimer": {
+    "exercise": "Exercício",
+    "set": "Série",
+    "lastSet": "Última série",
+    "of": "de",
+    "resting": "Descansando",
+    "toRest": "Descansar",
+    "toExecute": "Executar isometria/exercício",
+    "executing": "Executando",
+    "cancelTitle": "Parar exercício?",
+    "cancelDescription": "Quer mesmo parar o exercício atual?"
+  },
   "sets": "Séries",
   "rest": "Descanso",
   "additionalExercise": "Isometria/Execução",

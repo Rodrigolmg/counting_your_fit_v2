@@ -10,9 +10,7 @@ class ExerciseListDefinitionController extends Cubit<ExerciseListDefinitionState
     ExerciseListDefinitionStates initialState = const InitialState()
   ]) : super(initialState);
 
-  final List<ExerciseSettingEntity> _exercises = [];
-
-  void registerSingleExercise({
+  Future<ExerciseSettingEntity> registerSingleExercise({
     required int id,
     required int? set,
     required int? minute,
@@ -34,30 +32,44 @@ class ExerciseListDefinitionController extends Cubit<ExerciseListDefinitionState
         hasAdditionalTime: hasAdditionalTime,
         isAutoRest: isAutoRest
     );
-
-    if(_exercises.isNotEmpty){
-      _exercises.removeWhere((exerciseRegistered) => exerciseRegistered.id == exerciseDefined.id);
-    }
-
-    _exercises.add(exerciseDefined);
-
     emit(const SingleExerciseDefined());
+    return exerciseDefined;
   }
 
-  void defineExerciseList(){
-    emit(ExerciseListDefined(_exercises));
+  void defineExerciseList(List<ExerciseSettingEntity> exercises){
+    emit(ExerciseListDefined(exercises));
   }
 
-  void nextStep(int nextStep){
-    emit(NextStep(nextStep));
+  void executeCurrent(){
+    emit(const CurrentExerciseExecuting());
   }
 
-  void selectExercise(int index){
-    if(_exercises.isNotEmpty && _exercises.length >= index + 1){
-      emit(ExerciseSelected(exerciseSelected: _exercises[index]));
-    } else {
-      emit(const ExerciseSelected());
-    }
+  void restCurrent(){
+    emit(const CurrentExerciseResting());
+  }
+
+  void nextExercise(int nextExercise){
+    emit(NextExercise(nextExercise));
+  }
+
+  void nextExerciseSet(int nextExerciseSet){
+    emit(CurrentExerciseNextSet(nextExerciseSet));
+  }
+
+  void finishCurrentRest(){
+    emit(const CurrentExerciseRestFinished());
+  }
+
+  void finishCurrentExecute(){
+    emit(const CurrentExerciseExecuteFinished());
+  }
+
+  void finishCurrentExercise(){
+    emit(const CurrentExerciseExecuteFinished());
+  }
+
+  void selectExercise({ExerciseSettingEntity? exercise}){
+    emit(ExerciseSelected(exerciseSelected: exercise));
   }
 
 }

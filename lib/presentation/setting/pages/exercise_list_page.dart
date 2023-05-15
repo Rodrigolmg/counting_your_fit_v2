@@ -140,15 +140,24 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
                 elevation: 2,
               ),
               onPressed: () {
+                if(!stepsController.state.isStepDefined){
+                  stepsController.setSteps(2);
+                }
                 Navigator.pushReplacementNamed(
                     context, CountingYourFitRoutes.exerciseStepSetting);
               },
               child: Text(
                 context.translate.get('exerciseList.configureExercises'),
                 style: TextStyle(
-                    color: ColorApp.backgroundColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
+                  color: ColorApp.backgroundColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  shadows: const [
+                    Shadow(
+                        offset: Offset(1, 1),
+                        color: Colors.black26
+                    )
+                  ]
                 ),
               )
             ),

@@ -5,32 +5,33 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
+import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/minute/additional_minute_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/seconds/additional_seconds_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_states.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
+import 'package:counting_your_fit_v2/presentation/components/exercise_counter_title.dart';
+import 'package:counting_your_fit_v2/presentation/components/set_counter_title.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
-class IndividualExerciseTimer extends StatefulWidget {
-  const IndividualExerciseTimer({Key? key}) : super(key: key);
+class ExerciseListTimer extends StatefulWidget {
+  const ExerciseListTimer({Key? key}) : super(key: key);
 
   @override
-  State<IndividualExerciseTimer> createState() => _IndividualExerciseTimerState();
+  State<ExerciseListTimer> createState() => _ExerciseListTimerState();
 }
 
-class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
+class _ExerciseListTimerState extends State<ExerciseListTimer> {
 
   late final StopWatchTimer stopWatchTimer;
-  final individualExerciseController = GetIt.I.get<IndividualExerciseController>();
-
-  IconData? volumeIcon;
+  final exerciseListDefinitionController = GetIt.I.get<ExerciseListDefinitionController>();
 
   // EXERCISE VALUES CONTROLLER
   final setsController = GetIt.I.get<SetsStateController>();
@@ -40,12 +41,10 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   final additionalSecondsController = GetIt.I.get<AdditionalSecondsStateController>();
 
   // EXERCISES VALUES
-  int setQuantity = 0;
+  List<ExerciseSettingEntity> exercises = [];
+  late ExerciseSettingEntity currentExercise;
+  int exerciseIndex = 0;
   int currentSet = 1;
-  int minuteValue = 0;
-  int secondsValue = 0;
-  int? additionalMinuteValue;
-  int? additionalSecondsValue;
   double circularValue = 0.0;
   String actionLabel = '';
   bool isAutoRest = false;
@@ -53,11 +52,12 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   bool hasEnded = false;
 
   // AUDIO PLAYERS
-  final tenSecondsPlayer = AudioPlayer(playerId: 'ten')..setReleaseMode(ReleaseMode.stop);
-  final threeSecondsPlayer = AudioPlayer(playerId: 'three')..setReleaseMode(ReleaseMode.stop);
-  final finalTimePlayer = AudioPlayer(playerId: 'final')..setReleaseMode(ReleaseMode.stop);
+  final tenSecondsPlayer = AudioPlayer(playerId: 'ten2')..setReleaseMode(ReleaseMode.stop);
+  final threeSecondsPlayer = AudioPlayer(playerId: 'three2')..setReleaseMode(ReleaseMode.stop);
+  final finalTimePlayer = AudioPlayer(playerId: 'final2')..setReleaseMode(ReleaseMode.stop);
   List<StreamSubscription> streams = [];
   double volume = 1.0;
+  IconData? volumeIcon;
 
   // LOGICAL VALUE FOR PLAY FINAL BEEP ONLY ONE TIME
   int finalBeepPlayQuantity = 0;
@@ -116,7 +116,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   }
 
   void finishExercise(){
-    individualExerciseController.finishExercise();
+    exerciseListDefinitionController.finishCurrentExercise();
     setsController.resetSet();
     minuteController.resetMinute();
     secondsController.resetSeconds();
@@ -211,36 +211,58 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
     return false;
   }
 
+  int getInitialTime(){
+    int? additionalMinuteValue = currentExercise.additionalMinute;
+    int? additionalSecondsValue = currentExercise.additionalSeconds;
+
+    int presetMilli = StopWatchTimer.getMilliSecFromMinute(
+        (additionalMinuteValue != null && additionalMinuteValue > 0) ? additionalMinuteValue
+            : currentExercise.minute) +
+        StopWatchTimer.getMilliSecFromSecond((additionalSecondsValue != null && additionalSecondsValue > 0)
+            ? additionalSecondsValue : currentExercise.seconds);
+
+    return presetMilli;
+  }
+
+  int getTime(){
+
+    int presetMilli = StopWatchTimer.getMilliSecFromMinute(currentExercise.minute) +
+        StopWatchTimer.getMilliSecFromSecond(currentExercise.seconds);
+
+    return presetMilli;
+  }
+
+  int getAdditionalTime(){
+
+    int presetMilli = StopWatchTimer.getMilliSecFromMinute(currentExercise.additionalMinute!) +
+        StopWatchTimer.getMilliSecFromSecond(currentExercise.additionalSeconds!);
+
+    return presetMilli;
+  }
+
 
   @override
   void initState() {
     super.initState();
     configPlayers();
 
-    if(individualExerciseController.state.isExerciseDefined){
-      ExerciseDefined exerciseDefined = individualExerciseController.state
-      as ExerciseDefined;
+    if(exerciseListDefinitionController.state.isExerciseListDefined){
+      ExerciseListDefined exerciseDefined = exerciseListDefinitionController.state
+        as ExerciseListDefined;
 
-      minuteValue = exerciseDefined.minute;
-      secondsValue = exerciseDefined.seconds;
-      setQuantity = exerciseDefined.set;
+      exercises = List.from(exerciseDefined.exercises);
+      currentExercise = exercises[exerciseIndex];
 
-      if(exerciseDefined.additionalMinute != null){
-        additionalMinuteValue = exerciseDefined.additionalMinute!;
+      if((currentExercise.additionalMinute != null && currentExercise.additionalMinute! > 0) ||
+          (currentExercise.additionalSeconds != null && currentExercise.additionalSeconds! > 0)){
         isToExecute = true;
       }
 
-      if(exerciseDefined.additionalSeconds != null){
-        additionalSecondsValue = exerciseDefined.additionalSeconds!;
-        isToExecute = true;
-      }
-
-      isAutoRest = exerciseDefined.isAutoRest;
+      isAutoRest = currentExercise.isAutoRest ?? false;
 
     }
 
-    int presetMilli = StopWatchTimer.getMilliSecFromMinute(additionalMinuteValue ?? minuteValue) +
-        StopWatchTimer.getMilliSecFromSecond(additionalSecondsValue ?? secondsValue);
+    int presetMilli = getInitialTime();
 
     stopWatchTimer = StopWatchTimer(
       mode: StopWatchMode.countDown,
@@ -260,20 +282,18 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
         if(!hasEnded){
           stopWatchTimer.onStopTimer();
 
-          if(individualExerciseController.state.isResting){
-            individualExerciseController.finishResting();
-            isToExecute = (additionalMinuteValue != null && additionalMinuteValue! > 0)
-                || (additionalSecondsValue != null && additionalSecondsValue! > 0);
-          } else if (individualExerciseController.state.isExecuting){
-            individualExerciseController.finishExecuting();
+          if(exerciseListDefinitionController.state.isCurrentResting){
+            exerciseListDefinitionController.finishCurrentRest();
+            isToExecute = currentExercise.hasAdditionalTime ?? false;
+          } else if (exerciseListDefinitionController.state.isCurrentExecuting){
+            exerciseListDefinitionController.finishCurrentExecute();
             isToExecute = false;
           }
 
-          if(individualExerciseController.state.isExecuteFinished){
-            presetMilli = StopWatchTimer.getMilliSecFromMinute(minuteValue) +
-                StopWatchTimer.getMilliSecFromSecond(secondsValue);
+          if(exerciseListDefinitionController.state.isCurrentExecuteFinished){
+            presetMilli = getTime();
             stopWatchTimer.setPresetTime(mSec: presetMilli, add: false);
-            if(isAutoRest){
+            if(currentExercise.isAutoRest!){
               Future.delayed(
                 const Duration(seconds: 1),
                 (){
@@ -281,21 +301,32 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                 }
               );
             }
-          } else if(individualExerciseController.state.isRestFinished) {
+          } else if(exerciseListDefinitionController.state.isCurrentRestFinished) {
 
-            if((additionalMinuteValue != null && additionalMinuteValue! > 0)
-                || (additionalSecondsValue != null && additionalSecondsValue! > 0)){
-              presetMilli = StopWatchTimer.getMilliSecFromMinute(additionalMinuteValue!) +
-                  StopWatchTimer.getMilliSecFromSecond(additionalSecondsValue!);
+            if(currentExercise.hasAdditionalTime!){
+              presetMilli = getAdditionalTime();
               stopWatchTimer.setPresetTime(mSec: presetMilli, add: false);
             }
 
-            individualExerciseController.setNextSet(currentSet);
-            if(currentSet == setQuantity){
+            if(currentSet < currentExercise.set){
+              exerciseListDefinitionController.nextExerciseSet(++currentSet);
+            } else {
+              exerciseListDefinitionController.nextExercise(++exerciseIndex);
+              currentSet = 1;
+            }
 
+            if(((exerciseIndex + 1) > exercises.length)){
               finishExercise();
               Navigator.pushReplacementNamed(context,
                   CountingYourFitRoutes.timerSetting);
+            } else {
+              currentExercise = exercises[exerciseIndex];
+              if((currentExercise.additionalMinute != null && currentExercise.additionalMinute! > 0) ||
+                  (currentExercise.additionalSeconds != null && currentExercise.additionalSeconds! > 0)){
+                isToExecute = true;
+              }
+              presetMilli = getInitialTime();
+              stopWatchTimer.setPresetTime(mSec: presetMilli, add: false);
             }
           }
           hasEnded = true;
@@ -311,9 +342,9 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
       hasEnded = false;
     });
     if(isToExecute){
-      individualExerciseController.execute();
+      exerciseListDefinitionController.executeCurrent();
     } else {
-      individualExerciseController.rest();
+      exerciseListDefinitionController.restCurrent();
     }
   }
 
@@ -345,68 +376,66 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
             fit: StackFit.expand,
             children: [
               Positioned(
-                top: height * .13,
-                left: width * .22,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      context.translate.get('individualExercise.set'),
-                      style: const TextStyle(
-                        fontSize: 35,
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    BlocBuilder<IndividualExerciseController, IndividualExerciseState>(
-                        bloc: individualExerciseController,
-                        builder: (context, state){
-                          if (state.isNextSet){
-                            currentSet = (state as NextSet).nextSet;
-                          }
+                  top: height * .09,
+                  left: width * .102,
+                  child: BlocBuilder<ExerciseListDefinitionController,
+                      ExerciseListDefinitionStates>(
+                      bloc: exerciseListDefinitionController,
+                      builder: (context, state){
 
-                          return Text(
-                            '$currentSet',
-                            style: TextStyle(
-                              fontSize: 50,
-                              color: ColorApp.mainColor,
-                            ),
-                          );
+                        if(state.isNextExercise){
+                          exerciseIndex = (state as NextExercise).nextExercise;
                         }
-                    ),
-                    const SizedBox(width: 15),
-                    Text(
-                      context.translate.get('individualExercise.of'),
-                      style: const TextStyle(
-                          fontSize: 35
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    Text(
-                    '$setQuantity',
-                    style: TextStyle(
-                      fontSize: 50,
-                      color: ColorApp.mainColor,
-                    ),
-                  ),
-                ],
-              )
+
+                        return SizedBox(
+                          width: width * .8,
+                          child: ExerciseCounterTitle(
+                            currentExercise: exerciseIndex + 1,
+                            totalExerciseQuantity: exercises.length
+                          ),
+                        );
+                      }
+                  )
               ),
               Positioned(
-                top: height * .22,
+                  top: height * .17,
+                  left: width * .11,
+                  child: BlocBuilder<ExerciseListDefinitionController,
+                      ExerciseListDefinitionStates>(
+                      bloc: exerciseListDefinitionController,
+                      builder: (context, state) {
+
+                        if(state.isNextExercise){
+                          exerciseIndex = (state as NextExercise).nextExercise;
+                        }
+
+                        return SizedBox(
+                          width: width * .8,
+                          child: SetCounterTitle(
+                            currentSet: currentSet,
+                            setQuantity: currentExercise.set
+                          ),
+                        );
+                      }
+                  )
+              ),
+              Positioned(
+                top: height * .25,
                 left: width * .3,
-                child: BlocBuilder<IndividualExerciseController, IndividualExerciseState>(
-                  bloc: individualExerciseController,
-                  buildWhen: (oldState, currentState) => currentState.isNextSet,
+                child: BlocBuilder<ExerciseListDefinitionController, ExerciseListDefinitionStates>(
+                  bloc: exerciseListDefinitionController,
+                  buildWhen: (oldState, currentState) =>
+                    currentState.isCurrentNextSet || currentState.isCurrentRestFinished,
                   builder: (context, state){
 
-                    int set = state is NextSet ?
+                    int set = state is CurrentExerciseNextSet ?
                       state.nextSet : 1;
 
                     return AnimatedOpacity(
-                      opacity: set == setQuantity ? 1 : 0,
+                      opacity: set == currentExercise.set ? 1 : 0,
                       duration: const Duration(milliseconds: 550),
                       child: Text(
-                        'Última série',
+                        context.translate.get('exerciseTimer.lastSet'),
                         style: TextStyle(
                           color: ColorApp.errorColor2,
                           fontSize: 30,
@@ -423,15 +452,16 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                   },
                 )
               ),
-              BlocBuilder<IndividualExerciseController, IndividualExerciseState>(
-                bloc: individualExerciseController,
-                buildWhen: (oldState, currentState) => currentState.isNextSet,
+              BlocBuilder<ExerciseListDefinitionController, ExerciseListDefinitionStates>(
+                bloc: exerciseListDefinitionController,
+                buildWhen: (oldState, currentState) =>
+                  currentState.isCurrentNextSet || currentState.isCurrentRestFinished,
                 builder: (context, state){
 
-                  int set = state is NextSet ? state.nextSet : 1;
+                  int set = state is CurrentExerciseNextSet ? state.nextSet : 1;
 
                   return AnimatedPositioned(
-                    top: height * (set == setQuantity ? .29 : .27),
+                    top: height * (set == currentExercise.set ? .32 : .30),
                     left: width * .19,
                     duration: const Duration(milliseconds: 300),
                     child: SizedBox(
@@ -452,13 +482,13 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                           return Stack(
                             fit: StackFit.expand,
                             children: [
-                              BlocBuilder<IndividualExerciseController, IndividualExerciseState>(
-                                bloc: individualExerciseController,
+                              BlocBuilder<ExerciseListDefinitionController, ExerciseListDefinitionStates>(
+                                bloc: exerciseListDefinitionController,
                                 builder: (context, state){
                                   return CircularProgressIndicator(
                                     strokeWidth: 8,
                                     backgroundColor: state
-                                        .isExerciseDefined ? Colors.grey : ColorApp.mainColor,
+                                        .isExerciseListDefined ? Colors.grey : ColorApp.mainColor,
                                     valueColor: const AlwaysStoppedAnimation<Color>(Colors.grey),
                                     value: circularValue,
                                   );
@@ -468,7 +498,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                                 child: GestureDetector(
                                   onTap: () {
 
-                                    if(state.isResting || state.isExecuting){
+                                    if(state.isCurrentResting || state.isCurrentExecuting){
                                       return;
                                     }
 
@@ -519,9 +549,9 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                 },
               ),
               Positioned(
-                bottom: height * .21,
-                child: BlocBuilder<IndividualExerciseController, IndividualExerciseState>(
-                  bloc: individualExerciseController,
+                bottom: height * .19,
+                child: BlocBuilder<ExerciseListDefinitionController, ExerciseListDefinitionStates>(
+                  bloc: exerciseListDefinitionController,
                   builder: (context, state) {
                     String actionText = '';
 
@@ -531,9 +561,9 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                       actionText = context.translate.get('individualExercise.toRest');
                     }
 
-                    if (state.isExecuting){
+                    if (state.isCurrentExecuting){
                       actionText = context.translate.get('individualExercise.executing');
-                    } else if(state.isResting){
+                    } else if(state.isCurrentResting){
                       actionText = context.translate.get('individualExercise.resting');
                     }
 
@@ -553,7 +583,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                               ]
                           ),
                         ),
-                        if(state.isResting || state.isExecuting)
+                        if(state.isCurrentExecuting || state.isCurrentResting)
                           AnimatedTextKit(
                             animatedTexts: [
                               TyperAnimatedText(
@@ -580,46 +610,45 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                 ),
               ),
               Positioned(
-                bottom: height * .11,
-                child: SizedBox(
-                  width: width * .8,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        volumeIcon ?? FeatherIcons.volume2,
-                        size: 30,
-                        color: ColorApp.mainColor,
-                      ),
-                      SizedBox(
-                        width: width * .7,
-                        child: Slider(
-                          value: volume,
-                          onChanged: (value){
-                            setState(() {
-                              volume = value;
-                              if(volume > .5 && volume <= 1){
-                                volumeIcon = FeatherIcons.volume2;
-                              } else if (volume > .3 && volume <= .5){
-                                volumeIcon = FeatherIcons.volume1;
-                              } else if(volume > 0 && volume <= .3){
-                                volumeIcon = FeatherIcons.volume;
-                              } else {
-                                volumeIcon = FeatherIcons.volumeX;
-                              }
-                            });
-
-                            setPlayerVolume();
-                          },
-                          max: 1.0,
-                          min: .0,
-                          activeColor: ColorApp.mainColor,
-                          inactiveColor: Colors.grey,
+                  bottom: height * .11,
+                  child: SizedBox(
+                    width: width * .8,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          volumeIcon ?? FeatherIcons.volume2,
+                          size: 30,
+                          color: ColorApp.mainColor,
                         ),
-                      )
-                    ],
-                  ),
-                )
+                        SizedBox(
+                          width: width * .7,
+                          child: Slider(
+                            value: volume,
+                            onChanged: (value){
+                              setState(() {
+                                volume = value;
+                                if(volume > .5 && volume <= 1){
+                                  volumeIcon = FeatherIcons.volume2;
+                                } else if (volume > .3 && volume <= .5){
+                                  volumeIcon = FeatherIcons.volume1;
+                                } else if(volume > 0 && volume <= .3){
+                                  volumeIcon = FeatherIcons.volume;
+                                } else {
+                                  volumeIcon = FeatherIcons.volumeX;
+                                }
+                              });
+                              setPlayerVolume();
+                            },
+                            max: 1.0,
+                            min: .0,
+                            activeColor: ColorApp.mainColor,
+                            inactiveColor: Colors.grey,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
               )
             ],
           ),
@@ -631,7 +660,9 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   @override
   void dispose() {
     stopWatchTimer.dispose();
-    streams.forEach((element) => element.cancel());
+    for (var element in streams) {
+      element.cancel();
+    }
     super.dispose();
   }
 }

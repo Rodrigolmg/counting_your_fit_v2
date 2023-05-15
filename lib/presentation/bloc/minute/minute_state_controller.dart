@@ -16,8 +16,6 @@ class MinuteStateController extends Cubit<MinuteState>{
   }
 
   void selectMinute(int minuteSelected){
-    final timerLabel = GetIt.I.get<TimerLabelController>();
-    timerLabel.setMinuteLabel(minuteSelected);
     emit(MinuteSelected(minuteSelected));
   }
 
