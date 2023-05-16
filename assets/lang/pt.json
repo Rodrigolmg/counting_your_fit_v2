@@ -42,6 +42,19 @@
     "cancelTitle": "Parar exercício?",
     "cancelDescription": "Quer mesmo parar o exercício atual?"
   },
+  "notification": {
+    "restingTitle": "Descanso",
+    "restingBody": "Descansando da série",
+    "executingTitle": "Isometria/execução",
+    "executingBody": "Executando exercício/isometria",
+    "remaining": "Faltam",
+    "remainingSingular": "Falta",
+    "finished": "finalizado(a)",
+    "nextExercise": "Vamos para o exercício",
+    "nextSet": "Vamos para a série",
+    "exerciseFinished": "Vamos contar outro exercício!"
+  },
+  "set": "Série",
   "sets": "Séries",
   "rest": "Descanso",
   "additionalExercise": "Isometria/Execução",

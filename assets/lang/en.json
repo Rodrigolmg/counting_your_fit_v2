@@ -31,6 +31,18 @@
     "cancelTitle": "Stop exercise?",
     "cancelDescription": "Do you really want to stop the current exercise?"
   },
+  "notification": {
+    "restingTitle": "Rest",
+    "restingBody": "Resting of set",
+    "executingTitle": "Isometrics/execution",
+    "executingBody": "Execution exercise/isometrics",
+    "remaining": "Remain",
+    "remainingSingular": "Remain",
+    "finished": "finished",
+    "nextExercise": "Let's go to the exercise",
+    "nextSet": "Let's go to the set",
+    "exerciseFinished": "Let's count another exercise!"
+  },
   "sets": "Sets",
   "rest": "Time rest",
   "additionalExercise": "Isometrics/Execution",

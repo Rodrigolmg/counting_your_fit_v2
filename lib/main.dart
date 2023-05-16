@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:counting_your_fit_v2/app_injector.dart';
 import 'package:counting_your_fit_v2/app_localizations.dart';
 import 'package:counting_your_fit_v2/color_app.dart';
@@ -9,6 +12,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  initNotification();
   initInjector();
   runApp(
     const CountingYourFit()
@@ -18,6 +22,21 @@ void main() {
 void initInjector(){
   AppInjector appInjector = AppInjector();
   appInjector.setup();
+}
+
+void initNotification(){
+  AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelKey: 'ind',
+        channelName: 'Individual Exercise',
+        channelDescription: 'Channel for individual exercise notification',
+        defaultColor: ColorApp.backgroundColor,
+        onlyAlertOnce: true,
+      )
+    ]
+  );
 }
 
 class CountingYourFit extends StatelessWidget {
