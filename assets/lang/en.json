@@ -39,6 +39,7 @@
     "remaining": "Remain",
     "remainingSingular": "Remain",
     "finished": "finished",
+    "finishedPlural": "finished",
     "nextExercise": "Let's go to the exercise",
     "nextSet": "Let's go to the set",
     "exerciseFinished": "Let's count another exercise!"
@@ -50,6 +51,7 @@
   "timeLabel": "Time",
   "train": "Workout",
   "oneExercise": "Exercise",
+  "exercises": "Exercises",
   "yes": "Yes",
   "no": "No",
   "closeAppTitle": "No more count?",

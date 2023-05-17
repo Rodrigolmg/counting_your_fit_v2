@@ -50,9 +50,11 @@
     "remaining": "Faltam",
     "remainingSingular": "Falta",
     "finished": "finalizado(a)",
+    "finishedPlural": "finalizados",
     "nextExercise": "Vamos para o exercício",
     "nextSet": "Vamos para a série",
-    "exerciseFinished": "Vamos contar outro exercício!"
+    "exerciseFinished": "Vamos contar outro exercício!",
+    "exerciseFinishedPlural": "Vamos contar outros exercícios!"
   },
   "set": "Série",
   "sets": "Séries",
@@ -62,6 +64,7 @@
   "timeLabel": "Tempo",
   "train": "Treinar",
   "oneExercise": "Exercício",
+  "exercises": "Exercícios",
   "yes": "Sim",
   "no": "Não",
   "closeAppTitle": "Sem mais contagem?",

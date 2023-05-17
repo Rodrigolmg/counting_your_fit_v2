@@ -34,7 +34,14 @@ void initNotification(){
         channelDescription: 'Channel for individual exercise notification',
         defaultColor: ColorApp.backgroundColor,
         onlyAlertOnce: true,
-      )
+      ),
+      NotificationChannel(
+        channelKey: 'list',
+        channelName: 'Exercises',
+        channelDescription: 'Channel for exercise list notification',
+        defaultColor: ColorApp.backgroundColor,
+        onlyAlertOnce: true,
+      ),
     ]
   );
 }
