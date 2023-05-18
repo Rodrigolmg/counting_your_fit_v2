@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:counting_your_fit_v2/app_localizations.dart';
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
@@ -13,6 +14,7 @@ import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_con
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_states.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
+import 'package:counting_your_fit_v2/presentation/util/notification/notification_label_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -32,6 +34,10 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   final individualExerciseController = GetIt.I.get<IndividualExerciseController>();
 
   IconData? volumeIcon;
+  late bool isPortuguese;
+
+  // NOTIFICATION
+  late NotificationLabelBuilder notificationBuilder;
 
   // EXERCISE VALUES CONTROLLER
   final setsController = GetIt.I.get<SetsStateController>();
@@ -88,34 +94,12 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
 
   void notificate(IndividualExerciseState state) async {
 
-    String notificationTitle = '';
-    String notificationBody = '';
+    notificationBuilder = NotificationLabelBuilder(context, individualState: state);
 
-    if(state.isResting){
-      notificationTitle = context.translate.get('notification.restingTitle');
-      notificationBody = '${context.translate.get('notification.restingBody')} $currentSet';
-    } else if(state.isExecuting){
-      notificationTitle = context.translate.get('notification.executingTitle');
-      notificationBody = context.translate.get('notification.executingBody');
-    } else if (state.isRestFinished || state.isNextSet){
-      if(currentSet < setQuantity){
-        String remainingLabel = context.translate.get('notification.remaining');
-        String setLabel = context.translate.get('sets').toLowerCase();
-        int remainingValue = setQuantity - currentSet;
-        if(remainingValue == 1){
-          remainingLabel = context.translate.get('notification.remainingSingular');
-          setLabel = context.translate.get('set').toLowerCase();
-        } else {
-          remainingLabel = context.translate.get('notification.remaining');
-          setLabel = context.translate.get('sets').toLowerCase();
-        }
-        notificationTitle = '${context.translate.get('set')} $currentSet ${context.translate.get('notification.finished')}';
-        notificationBody = '$remainingLabel ${setQuantity - currentSet} $setLabel. ${context.translate.get('notification.nextSet')} ${currentSet + 1}.';
-      }
-    } else if (state.isExerciseFinished){
-      notificationTitle = '${context.translate.get('oneExercise')} ${context.translate.get('notification.finished')}';
-      notificationBody = context.translate.get('notification.exerciseFinished');
-    }
+    Map<String, String> labels = notificationBuilder.build(currentSet: currentSet, setQuantity: setQuantity);
+
+    String notificationTitle = labels['title']!;
+    String notificationBody = labels['body']!;
 
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
@@ -367,6 +351,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
 
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    isPortuguese = context.translate.isPortuguese;
 
     return WillPopScope(
       onWillPop: onCancel,
@@ -391,7 +376,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
             children: [
               Positioned(
                 top: height * .13,
-                left: width * .22,
+                left: width * (isPortuguese ? .22 : .26),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -438,7 +423,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
               ),
               Positioned(
                 top: height * .22,
-                left: width * .3,
+                left: width * (isPortuguese ? .3 : .364),
                 child: BlocBuilder<IndividualExerciseController, IndividualExerciseState>(
                   bloc: individualExerciseController,
                   buildWhen: (oldState, currentState) => currentState.isNextSet,
@@ -451,7 +436,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                       opacity: set == setQuantity ? 1 : 0,
                       duration: const Duration(milliseconds: 550),
                       child: Text(
-                        'Última série',
+                        context.translate.get('exerciseTimer.lastSet'),
                         style: TextStyle(
                           color: ColorApp.errorColor2,
                           fontSize: 30,

@@ -1,3 +1,4 @@
+import 'package:counting_your_fit_v2/app_localizations.dart';
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
@@ -33,6 +34,8 @@ class ExerciseStepSettingScreen extends StatefulWidget {
 }
 
 class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
+
+  late bool isPortuguese;
 
   final stepController = GetIt.I.get<StepStateController>();
   final timerLabelController = GetIt.I.get<TimerLabelController>();
@@ -294,6 +297,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    isPortuguese = context.translate.isPortuguese;
 
     return WillPopScope(
       onWillPop: onCancelSetting,
@@ -388,7 +392,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                   height: 15,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: width * .085),
+                  padding: EdgeInsets.only(right: width * (isPortuguese ? .085 : .11)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

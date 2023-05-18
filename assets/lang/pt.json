@@ -1,4 +1,5 @@
 {
+  "lang": "pt",
   "intro": {
     "firstPageLabel": "Você já esqueceu em qual série vocês estava?",
     "secondPageLabel": "Seus problemas estão resolvidos!",
@@ -46,7 +47,8 @@
     "restingTitle": "Descanso",
     "restingBody": "Descansando da série",
     "executingTitle": "Isometria/execução",
-    "executingBody": "Executando exercício/isometria",
+    "executingBody": "Executando exercício/isometria da série",
+    "executionFinishedBody": "Fim da execução/isometria. Vamos descansar da série",
     "remaining": "Faltam",
     "remainingSingular": "Falta",
     "finished": "finalizado(a)",

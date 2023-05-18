@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:counting_your_fit_v2/app_localizations.dart';
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
@@ -16,6 +17,7 @@ import 'package:counting_your_fit_v2/presentation/components/exercise_counter_ti
 import 'package:counting_your_fit_v2/presentation/components/set_counter_title.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_states.dart';
+import 'package:counting_your_fit_v2/presentation/util/notification/notification_label_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -31,8 +33,12 @@ class ExerciseListTimer extends StatefulWidget {
 
 class _ExerciseListTimerState extends State<ExerciseListTimer> {
 
+  late bool isPortuguese;
   late final StopWatchTimer stopWatchTimer;
   final exerciseListDefinitionController = GetIt.I.get<ExerciseListDefinitionController>();
+
+  // NOTIFICATION
+  late NotificationLabelBuilder notificationBuilder;
 
   // EXERCISE VALUES CONTROLLER
   final setsController = GetIt.I.get<SetsStateController>();
@@ -243,43 +249,21 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
 
   void notificate(ExerciseListDefinitionStates state) async {
 
-    String notificationTitle = '';
-    String notificationBody = '';
-    String currentExerciseLabel = '${context.translate.get('oneExercise')} ${exerciseIndex + 1}';
+    notificationBuilder = NotificationLabelBuilder(context, exerciseListDefinitionState: state);
 
-    if(state.isCurrentResting){
-      notificationTitle = '${context.translate.get('notification.restingTitle')}. $currentExerciseLabel';
-      notificationBody = '${context.translate.get('notification.restingBody')} $currentSet';
-    } else if(state.isCurrentExecuting){
-      notificationTitle = '${context.translate.get('notification.executingTitle')}. $currentExerciseLabel';
-      notificationBody = context.translate.get('notification.executingBody');
-    } else if (state.isCurrentRestFinished || state.isCurrentNextSet){
-      if(currentSet < currentExercise.set){
-        String remainingLabel = context.translate.get('notification.remaining');
-        String setLabel = context.translate.get('sets').toLowerCase();
-        int remainingValue = currentExercise.set - currentSet;
-        if(remainingValue == 1){
-          remainingLabel = context.translate.get('notification.remainingSingular');
-          setLabel = context.translate.get('set').toLowerCase();
-        } else {
-          remainingLabel = context.translate.get('notification.remaining');
-          setLabel = context.translate.get('sets').toLowerCase();
-        }
-        notificationTitle = '${context.translate.get('set')} $currentSet ${context.translate.get('notification.finished')}. $currentExerciseLabel';
-        notificationBody = '$remainingLabel ${currentExercise.set - currentSet} $setLabel. ${context.translate.get('notification.nextSet')} ${currentSet + 1}.';
-      }
-    } else if (state.isExerciseListFinished){
-      notificationTitle = '${context.translate.get('exercises')} ${context.translate.get('notification.finishedPlural')}';
-      notificationBody = context.translate.get('notification.exerciseFinishedPlural');
-    }
+    Map<String, String> labels = notificationBuilder.build(
+      currentSet: currentSet,
+      setQuantity: currentExercise.set,
+      exerciseIndex: exerciseIndex
+    );
 
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: 2,
         channelKey: 'list',
         notificationLayout: NotificationLayout.BigText,
-        title: notificationTitle,
-        body: notificationBody
+        title: labels['title'],
+        body: labels['body']
       )
     );
   }
@@ -332,7 +316,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
             exerciseListDefinitionController.finishCurrentExecute();
             isToExecute = false;
           }
-
+          notificate(exerciseListDefinitionController.state);
           if(exerciseListDefinitionController.state.isCurrentExecuteFinished){
             presetMilli = getTime();
             stopWatchTimer.setPresetTime(mSec: presetMilli, add: false);
@@ -373,7 +357,6 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
             }
           }
           hasEnded = true;
-          notificate(exerciseListDefinitionController.state);
         }
       }
     );
@@ -398,6 +381,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
 
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    isPortuguese = context.translate.isPortuguese;
 
     return WillPopScope(
       onWillPop: onCancel,
@@ -466,7 +450,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
               ),
               Positioned(
                 top: height * .25,
-                left: width * .3,
+                left: width * (isPortuguese ? .3 : .364),
                 child: BlocBuilder<ExerciseListDefinitionController, ExerciseListDefinitionStates>(
                   bloc: exerciseListDefinitionController,
                   buildWhen: (oldState, currentState) =>

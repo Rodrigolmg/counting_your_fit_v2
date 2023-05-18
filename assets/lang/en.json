@@ -1,4 +1,5 @@
 {
+  "lang": "en",
   "intro": {
     "firstPageLabel": "Did you forget what set you were during your workout?",
     "secondPageLabel": "Your problems are solved!",
@@ -20,6 +21,18 @@
     "cancelTitle": "Stop exercises defining?",
     "cancelDescription": "Do you really want to stop setting your exercises?"
   },
+  "exerciseTimer": {
+    "exercise": "Exercise",
+    "set": "Set",
+    "lastSet": "Last set",
+    "of": "of",
+    "resting": "Resting",
+    "toRest": "Rest",
+    "toExecute": "Execute isometrics/exercise",
+    "executing": "Executing",
+    "cancelTitle": "Stop exercise?",
+    "cancelDescription": "Do you really want to stop the current exercise?"
+  },
   "individualExercise": {
     "set": "Set",
     "lastSet": "Last set",
@@ -36,7 +49,8 @@
     "restingBody": "Resting of set",
     "executingTitle": "Isometrics/execution",
     "executingBody": "Execution exercise/isometrics",
-    "remaining": "Remain",
+    "executionFinishedBody": "Execution/isometrics finished. Let's rest of set",
+    "remaining": "more setLabel to go.",
     "remainingSingular": "Remain",
     "finished": "finished",
     "finishedPlural": "finished",
@@ -45,6 +59,7 @@
     "exerciseFinished": "Let's count another exercise!"
   },
   "sets": "Sets",
+  "set": "Set",
   "rest": "Time rest",
   "additionalExercise": "Isometrics/Execution",
   "autoRest": "Auto rest",
