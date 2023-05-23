@@ -33,7 +33,8 @@ class NotificationLabelBuilder {
 
     String notificationTitle = '';
     String notificationBody = '';
-    String currentExerciseLabel = '${context.translate.get('oneExercise')} ${exerciseIndex + 1}';
+    int currentExercise = exerciseIndex + 1;
+    String currentExerciseLabel = '${context.translate.get('oneExercise')} $currentExercise';
 
 
     if(exerciseListDefinitionState!.isCurrentResting){
@@ -84,8 +85,8 @@ class NotificationLabelBuilder {
           }
         }
       } else {
-        notificationTitle = '${context.translate.get('oneExercise')} ${context.translate.get('notification.finished')}. $currentExerciseLabel';
-        notificationBody = context.translate.get('notification.nextExercise');
+        notificationTitle = '${context.translate.get('oneExercise')} $currentExercise ${context.translate.get('notification.finished')}.';
+        notificationBody = '${context.translate.get('notification.nextExercise')} ${currentExercise + 1}!';
       }
     } else if (exerciseListDefinitionState!.isExerciseListFinished){
       notificationTitle = '${context.translate.get('exercises')} ${context.translate.get('notification.finishedPlural')}';
