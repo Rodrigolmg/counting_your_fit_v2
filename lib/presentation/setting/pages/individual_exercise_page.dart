@@ -1,12 +1,11 @@
+import 'package:counting_your_fit_v2/app_localizations.dart';
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/additional_timer_label_state.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/additional_timer_label_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/minute/additional_minute_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/seconds/additional_seconds_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
@@ -51,6 +50,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
   String additionalMinutes = '00';
   String additionalSeconds = '00';
   int sets = 1;
+  late bool isPortuguese;
 
   void trainCallback(){
     bool hasNoRestTime = minuteLabel == '00' &&
@@ -109,6 +109,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    isPortuguese = context.translate.isPortuguese;
 
     return Stack(
       children: [
@@ -167,7 +168,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                 height: 15,
               ),
               Padding(
-                padding: EdgeInsets.only(right: width * .085),
+                padding: EdgeInsets.only(right: width * (isPortuguese ? .085 : .11)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -264,52 +265,55 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
               AnimatedOpacity(
                 opacity: hasAdditionalExercise ? 1 : 0,
                 duration: const Duration(milliseconds: 100),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${context.translate.get('timeLabel')}:',
-                      style: TextStyle(
-                          color: ColorApp.mainColor ,
-                          fontSize: 20
+                child: Padding(
+                  padding: EdgeInsets.only(left: isPortuguese ? 0 : 3),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${context.translate.get('timeLabel')}:',
+                        style: TextStyle(
+                            color: ColorApp.mainColor ,
+                            fontSize: 20
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    ShakeError(
-                      key: _shakeAdditionalKey,
-                      duration: const Duration(milliseconds: 550),
-                      shakeCount: 3,
-                      shakeOffset: 10,
-                      child: BlocBuilder<AdditionalTimerLabelController,
-                          AdditionalTimerLabelState>(
-                        bloc: additionalTimerLabelController,
-                        builder: (context, state) {
-
-                          if(state.isAdditionalMinuteLabelDefined){
-                            additionalMinutes = state.value ?? '00';
-                          } else if (state.isAdditionalSecondsLabelDefined){
-                            additionalSeconds = state.value ?? '00';
-                          }
-
-                          return HeroButton(
-                            heroTag: heroAdditionalPopUp,
-                            hasError: _shakeAdditionalKey.currentState != null &&
-                                _shakeAdditionalKey.currentState!
-                                    .animationController.status
-                                    == AnimationStatus.forward,
-                            buttonLabel: '$additionalMinutes:$additionalSeconds',
-                            variant: HeroAdditionalTimer(),
-                          );
-                        },
+                      const SizedBox(
+                        width: 8,
                       ),
-                    ),
-                    const SizedBox(
-                      width: 3,
-                    ),
-                  ],
+                      ShakeError(
+                        key: _shakeAdditionalKey,
+                        duration: const Duration(milliseconds: 550),
+                        shakeCount: 3,
+                        shakeOffset: 10,
+                        child: BlocBuilder<AdditionalTimerLabelController,
+                            AdditionalTimerLabelState>(
+                          bloc: additionalTimerLabelController,
+                          builder: (context, state) {
+
+                            if(state.isAdditionalMinuteLabelDefined){
+                              additionalMinutes = state.value ?? '00';
+                            } else if (state.isAdditionalSecondsLabelDefined){
+                              additionalSeconds = state.value ?? '00';
+                            }
+
+                            return HeroButton(
+                              heroTag: heroAdditionalPopUp,
+                              hasError: _shakeAdditionalKey.currentState != null &&
+                                  _shakeAdditionalKey.currentState!
+                                      .animationController.status
+                                      == AnimationStatus.forward,
+                              buttonLabel: '$additionalMinutes:$additionalSeconds',
+                              variant: HeroAdditionalTimer(),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 3,
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],

@@ -23,7 +23,6 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
 
   final _timeScreenController = GetIt.I.get<TimerSettingsStateController>();
   final stepsController = GetIt.I.get<StepStateController>();
-  bool _wantRegister = false;
   int stepQuantity = 2;
 
 
@@ -49,84 +48,50 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
         Positioned(
           top: height * .31,
           left: width * .15,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${context.translate.get('exerciseList.quantity')}:',
-                      style: TextStyle(
-                          color: ColorApp.mainColor,
-                          fontSize: 20
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    SizedBox(
-                      width: width * .3,
-                      child: BlocBuilder<StepStateController, StepsState>(
-                        bloc: stepsController,
-                        buildWhen: (oldState, currentState) =>
-                          currentState.isStepDefined,
-                        builder: (context, state){
-
-                          if(state.isStepDefined){
-                            stepQuantity = (state as StepDefined).steps;
-                          }
-
-                          return HeroButton(
-                            buttonLabel: stepQuantity.toString(),
-                            heroTag: heroStepQuantityPopUp,
-                            variant: HeroSteps(),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Checkbox(
-                    value: _wantRegister,
-                    onChanged: (value){
-                      setState(() {
-                        _wantRegister = value ?? false;
-                      });
-                    },
-                    checkColor: ColorApp.backgroundColor,
-                    activeColor: ColorApp.mainColor,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
                   Text(
-                    context.translate.get('exerciseList.historyRegister'),
+                    '${context.translate.get('exerciseList.quantity')}:',
                     style: TextStyle(
-                        color: _wantRegister ?
-                        ColorApp.mainColor : Colors.black26,
+                        color: ColorApp.mainColor,
                         fontSize: 20
                     ),
-                  )
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                    width: width * .3,
+                    child: BlocBuilder<StepStateController, StepsState>(
+                      bloc: stepsController,
+                      buildWhen: (oldState, currentState) =>
+                      currentState.isStepDefined,
+                      builder: (context, state){
+
+                        if(state.isStepDefined){
+                          stepQuantity = (state as StepDefined).steps;
+                        }
+
+                        return HeroButton(
+                          buttonLabel: stepQuantity.toString(),
+                          heroTag: heroStepQuantityPopUp,
+                          variant: HeroSteps(),
+                        );
+                      },
+                    ),
+                  ),
                 ],
-              )
-            ],
+              ),
+            ),
           ),
         ),
         Positioned(
-          top: height * .48,
+          bottom: height * .41,
           left: width * .105,
           child: SizedBox(
             width: width * .8,

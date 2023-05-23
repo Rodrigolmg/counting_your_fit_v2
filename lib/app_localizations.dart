@@ -68,3 +68,8 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations>{
   }
 
 }
+
+extension AppLocalizationLang on AppLocalizations{
+  bool get isPortuguese => locale.languageCode == 'pt';
+  bool get isEnglish => locale.languageCode == 'en';
+}
