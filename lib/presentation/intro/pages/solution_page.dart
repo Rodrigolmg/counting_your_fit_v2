@@ -1,6 +1,7 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:rive/rive.dart';
 
 class SolutionPage extends StatelessWidget {
   const SolutionPage({Key? key}) : super(key: key);
@@ -16,9 +17,15 @@ class SolutionPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Image(
-              image: AssetImage('assets/images/light_idea.png'),
-              height: 250,
+            const Center(
+              child: SizedBox(
+                width: 300,
+                height: 300,
+                child: RiveAnimation.asset(
+                  'assets/anims/lightbulb.riv',
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
             const SizedBox(
               height: 40,
