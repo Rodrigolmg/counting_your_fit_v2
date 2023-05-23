@@ -92,7 +92,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
     finalTimePlayer.setVolume(volume);
   }
 
-  void notificate(IndividualExerciseState state) async {
+  void notify(IndividualExerciseState state) async {
 
     notificationBuilder = NotificationLabelBuilder(context, individualState: state);
 
@@ -326,7 +326,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
             }
           }
           hasEnded = true;
-          notificate(individualExerciseController.state);
+          notify(individualExerciseController.state);
         }
       }
     );
@@ -343,7 +343,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
     } else {
       individualExerciseController.rest();
     }
-    notificate(individualExerciseController.state);
+    notify(individualExerciseController.state);
   }
 
   @override

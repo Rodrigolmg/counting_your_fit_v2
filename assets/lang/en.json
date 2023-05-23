@@ -56,7 +56,8 @@
     "finishedPlural": "finished",
     "nextExercise": "Let's go to the exercise",
     "nextSet": "Let's go to the set",
-    "exerciseFinished": "Let's count another exercise!"
+    "exerciseFinished": "Let's count another exercise!",
+    "exerciseFinishedPlural": "Let's count others exercises!"
   },
   "sets": "Sets",
   "set": "Set",

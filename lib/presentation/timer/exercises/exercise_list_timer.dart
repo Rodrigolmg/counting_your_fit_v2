@@ -247,7 +247,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
     return presetMilli;
   }
 
-  void notificate(ExerciseListDefinitionStates state) async {
+  void notify(ExerciseListDefinitionStates state) async {
 
     notificationBuilder = NotificationLabelBuilder(context, exerciseListDefinitionState: state);
 
@@ -316,7 +316,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
             exerciseListDefinitionController.finishCurrentExecute();
             isToExecute = false;
           }
-          notificate(exerciseListDefinitionController.state);
+          notify(exerciseListDefinitionController.state);
           if(exerciseListDefinitionController.state.isCurrentExecuteFinished){
             presetMilli = getTime();
             stopWatchTimer.setPresetTime(mSec: presetMilli, add: false);
@@ -344,6 +344,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
 
             if(((exerciseIndex + 1) > exercises.length)){
               finishExercise();
+              notify(exerciseListDefinitionController.state);
               Navigator.pushReplacementNamed(context,
                   CountingYourFitRoutes.timerSetting);
             } else {
@@ -373,7 +374,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
     } else {
       exerciseListDefinitionController.restCurrent();
     }
-    notificate(exerciseListDefinitionController.state);
+    notify(exerciseListDefinitionController.state);
   }
 
   @override
