@@ -91,7 +91,8 @@ class _IntroScreenState extends State<IntroScreen> {
                 child: Text(
                   context.translate.get('intro.go'),
                   style: TextStyle(
-                    color: ColorApp.mainColor
+                    color: ColorApp.mainColor,
+                    fontWeight: FontWeight.bold,
                   ),
                 )
               )

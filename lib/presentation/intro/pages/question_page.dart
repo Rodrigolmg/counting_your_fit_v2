@@ -1,6 +1,7 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:rive/rive.dart';
 
 class QuestionPage extends StatelessWidget {
   const QuestionPage({Key? key}) : super(key: key);
@@ -16,20 +17,30 @@ class QuestionPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Image(
-              image: AssetImage('assets/images/question.png'),
-              height: 200,
+            const Center(
+              child: SizedBox(
+                width: 300,
+                height: 300,
+                child: RiveAnimation.asset(
+                  'assets/anims/jumpquestionmark.riv',
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
             const SizedBox(
               height: 40,
             ),
-            Text(
-              context.translate.get('intro.firstPageLabel'),
-              style: TextStyle(
-                color: ColorApp.mainColor,
-                fontSize: 25,
+            SizedBox(
+              width: 300,
+              child: Text(
+                context.translate.get('intro.firstPageLabel'),
+                style: TextStyle(
+                  color: ColorApp.mainColor,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             )
           ],
         ),

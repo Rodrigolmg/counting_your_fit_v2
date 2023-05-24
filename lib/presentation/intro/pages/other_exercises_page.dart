@@ -1,6 +1,7 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:rive/rive.dart';
 
 class OtherExercisesPage extends StatelessWidget {
   const OtherExercisesPage({Key? key}) : super(key: key);
@@ -16,22 +17,30 @@ class OtherExercisesPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(
-              width: 150,
-              child: Image(
-                image: AssetImage('assets/images/plus.png'),
+            const Center(
+              child: SizedBox(
+                width: 300,
+                height: 300,
+                child: RiveAnimation.asset(
+                  'assets/anims/plus.riv',
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
             const SizedBox(
               height: 40,
             ),
-            Text(
-              context.translate.get('intro.fourthPageLabel'),
-              style: TextStyle(
+            SizedBox(
+              width: 300,
+              child: Text(
+                context.translate.get('intro.fourthPageLabel'),
+                style: TextStyle(
                   color: ColorApp.mainColor,
-                  fontSize: 24
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             )
           ],
         ),
