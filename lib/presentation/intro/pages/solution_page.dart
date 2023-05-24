@@ -34,7 +34,8 @@ class SolutionPage extends StatelessWidget {
               context.translate.get('intro.secondPageLabel'),
               style: TextStyle(
                 color: ColorApp.mainColor,
-                fontSize: 25
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             )

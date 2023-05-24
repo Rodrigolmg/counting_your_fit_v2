@@ -30,13 +30,17 @@ class QuestionPage extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
-            Text(
-              context.translate.get('intro.firstPageLabel'),
-              style: TextStyle(
-                color: ColorApp.mainColor,
-                fontSize: 25,
+            SizedBox(
+              width: 300,
+              child: Text(
+                context.translate.get('intro.firstPageLabel'),
+                style: TextStyle(
+                  color: ColorApp.mainColor,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             )
           ],
         ),

@@ -1,6 +1,7 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:rive/rive.dart';
 
 class WorkoutPage extends StatelessWidget {
   const WorkoutPage({Key? key}) : super(key: key);
@@ -16,9 +17,15 @@ class WorkoutPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Image(
-              image: AssetImage('assets/images/training.png'),
-              height: 200,
+            const Center(
+              child: SizedBox(
+                width: 300,
+                height: 300,
+                child: RiveAnimation.asset(
+                  'assets/anims/biceps.riv',
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
             const SizedBox(
               height: 40,
@@ -26,8 +33,9 @@ class WorkoutPage extends StatelessWidget {
             Text(
               context.translate.get('intro.fifthPageLabel'),
               style: TextStyle(
-                  color: ColorApp.mainColor,
-                  fontSize: 25
+                color: ColorApp.mainColor,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             )
