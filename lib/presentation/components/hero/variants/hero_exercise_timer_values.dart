@@ -15,10 +15,12 @@ import 'package:numberpicker/numberpicker.dart';
 class HeroExerciseTimerValues extends StatefulWidget {
 
   final String? heroTag;
+  final bool? isStepConfig;
 
   const HeroExerciseTimerValues({
     super.key,
     required this.heroTag,
+    this.isStepConfig = false
   });
 
   @override
@@ -76,7 +78,11 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
                             if(state.isMinuteDefined){
                               minutes = (state as MinuteDefined).minute;
                               if(minutes == 0 && seconds == 0){
-                                timerLabel.checkAdditional(false);
+                                if(widget.isStepConfig != null && !widget.isStepConfig!){
+                                  timerLabel.checkAdditional(false);
+                                } else {
+                                  timerLabel.checkStepAdditional(false);
+                                }
                                 additionalMinute.resetAdditionalMinute();
                                 additionalTimerLabel.resetAdditionalTimer();
                               }
@@ -86,7 +92,11 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
                             } else if (state.isMinuteSelected){
                               minutes = (state as MinuteSelected).minuteSelected;
                               if(minutes == 0 && seconds == 0){
-                                timerLabel.checkAdditional(false);
+                                if(widget.isStepConfig != null && !widget.isStepConfig!){
+                                  timerLabel.checkAdditional(false);
+                                } else {
+                                  timerLabel.checkStepAdditional(false);
+                                }
                                 additionalMinute.resetAdditionalMinute();
                                 additionalTimerLabel.resetAdditionalTimer();
                               }
@@ -132,7 +142,11 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
                               if(state.isSecondsDefined){
                                 seconds = (state as SecondsDefined).seconds;
                                 if(minutes == 0 && seconds == 0){
-                                  timerLabel.checkAdditional(false);
+                                  if(widget.isStepConfig != null && !widget.isStepConfig!){
+                                    timerLabel.checkAdditional(false);
+                                  } else {
+                                    timerLabel.checkStepAdditional(false);
+                                  }
                                   additionalSeconds.resetAdditionalSeconds();
                                   additionalTimerLabel.resetAdditionalTimer();
                                 }
@@ -142,7 +156,11 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
                               } else if (state.isSecondsSelected){
                                 seconds = (state as SecondsSelected).secondsSelected;
                                 if(minutes == 0 && seconds == 0){
-                                  timerLabel.checkAdditional(false);
+                                  if(widget.isStepConfig != null && !widget.isStepConfig!){
+                                    timerLabel.checkAdditional(false);
+                                  } else {
+                                    timerLabel.checkStepAdditional(false);
+                                  }
                                   additionalSeconds.resetAdditionalSeconds();
                                   additionalTimerLabel.resetAdditionalTimer();
                                 }

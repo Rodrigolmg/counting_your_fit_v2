@@ -9,6 +9,7 @@ extension TimerLabelStateX on AdditionalTimerLabelState{
   bool get isAdditionalTimerReset => this is AdditionalTimerReset;
   bool get isAdditionalTimerSelected => this is AdditionalTimeLabelSelected;
   bool get isAutoRestDefined => this is AutoRestDefined;
+  bool get isStepAutoRestDefined => this is StepAutoRestDefined;
 }
 
 class InitialAdditionalTimerLabel implements AdditionalTimerLabelState<String?> {
@@ -63,5 +64,16 @@ class AutoRestDefined implements AdditionalTimerLabelState<bool> {
 
   @override
   bool get value => iAutoRest;
+}
 
+class StepAutoRestDefined implements AdditionalTimerLabelState<bool> {
+
+  final bool iAutoRest;
+
+  const StepAutoRestDefined({
+    required this.iAutoRest,
+  });
+
+  @override
+  bool get value => iAutoRest;
 }

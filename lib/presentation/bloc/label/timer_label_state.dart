@@ -9,6 +9,7 @@ extension TimerLabelStateX on TimerLabelState{
   bool get isTimerReset => this is TimerReset;
   bool get isTimerSelected => this is TimerLabelSelected;
   bool get hasAdditionalExercise => this is AdditionalExerciseDefined;
+  bool get hasStepAdditionalExercise => this is StepAdditionalExerciseDefined;
 }
 
 class InitialTimerLabel implements TimerLabelState<String?> {
@@ -61,6 +62,15 @@ class AdditionalExerciseDefined implements TimerLabelState<bool>{
 
   @override
   bool get value => hasAdditionalExercise;
+}
 
+class StepAdditionalExerciseDefined implements TimerLabelState<bool>{
+  final bool hasAdditionalExercise;
 
+  const StepAdditionalExerciseDefined({
+    required this.hasAdditionalExercise,
+  });
+
+  @override
+  bool get value => hasAdditionalExercise;
 }

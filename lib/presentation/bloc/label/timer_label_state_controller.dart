@@ -33,4 +33,10 @@ class TimerLabelController extends Cubit<TimerLabelState>{
     );
   }
 
+  void checkStepAdditional(bool hasAdditionalExercise){
+    emit(StepAdditionalExerciseDefined(
+      hasAdditionalExercise: hasAdditionalExercise)
+    );
+  }
+
 }

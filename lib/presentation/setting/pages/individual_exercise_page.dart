@@ -411,7 +411,6 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                                   state.isAutoRestDefined ?
                                   (checkValue){
                                     additionalTimerLabelController.checkAutoRest(checkValue ?? false);
-                                    // isAutoRest = checkValue ?? false;
                               } : null,
                               checkColor: ColorApp.backgroundColor,
                               activeColor: ColorApp.mainColor,
