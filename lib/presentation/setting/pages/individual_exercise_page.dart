@@ -224,7 +224,6 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                 children: [
                   BlocBuilder<TimerLabelController, TimerLabelState>(
                     bloc: timerLabelController,
-                    buildWhen: (oldState, currentState) => currentState.hasAdditionalExercise,
                     builder: (context, state){
 
                       if(minuteLabel == '00' && secondsLabel == '00'){
@@ -239,9 +238,6 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                             secondsLabel != '00' ?
                             (checkValue){
                               timerLabelController.checkAdditional(checkValue ?? false);
-                          // setState(() {
-                          //   hasAdditionalExercise = checkValue ?? false;
-                          // });
                         } : null,
                         checkColor: ColorApp.backgroundColor,
                         activeColor: ColorApp.mainColor,
@@ -263,6 +259,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
               ),
               BlocBuilder<TimerLabelController, TimerLabelState>(
                 bloc: timerLabelController,
+                buildWhen: (oldState, currentState) => currentState.hasAdditionalExercise,
                 builder: (context, state){
 
                   if(state.hasAdditionalExercise){
@@ -302,6 +299,9 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                                   additionalMinutes = state.value ?? '00';
                                 } else if (state.isAdditionalSecondsLabelDefined){
                                   additionalSeconds = state.value ?? '00';
+                                } else if (state.isAdditionalTimerReset){
+                                  additionalMinutes = '00';
+                                  additionalSeconds = '00';
                                 }
 
                                 return HeroButton(
