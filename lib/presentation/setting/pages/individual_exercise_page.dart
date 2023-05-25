@@ -15,7 +15,7 @@ import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart'
 import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_variant.dart';
 import 'package:counting_your_fit_v2/presentation/components/shake_error.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/timer_settings_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/definition/settings_definition_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +30,7 @@ class IndividualExercisePage extends StatefulWidget {
 
 class _IndividualExercisePageState extends State<IndividualExercisePage> {
 
-  final _timeScreenController = GetIt.I.get<TimerSettingsStateController>();
+  final _timeScreenController = GetIt.I.get<SettingsDefinitionStateController>();
   final individualExerciseController = GetIt.I.get<IndividualExerciseController>();
   final timerLabelController = GetIt.I.get<TimerLabelController>();
   final additionalTimerLabelController = GetIt.I.get<AdditionalTimerLabelController>();

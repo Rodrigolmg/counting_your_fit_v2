@@ -7,7 +7,7 @@ import 'package:counting_your_fit_v2/presentation/components/directional_button.
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_button.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_variant.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/timer_settings_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/definition/settings_definition_state_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -21,7 +21,7 @@ class ExerciseListPage extends StatefulWidget {
 
 class _ExerciseListPageState extends State<ExerciseListPage> {
 
-  final _timeScreenController = GetIt.I.get<TimerSettingsStateController>();
+  final _timeScreenController = GetIt.I.get<SettingsDefinitionStateController>();
   final stepsController = GetIt.I.get<StepStateController>();
   int stepQuantity = 2;
 
