@@ -247,13 +247,23 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                   const SizedBox(
                     width: 8,
                   ),
-                  Text(
-                    context.translate.get('additionalExercise'),
-                    style: TextStyle(
-                        color: hasAdditionalExercise ?
-                        ColorApp.mainColor : Colors.black26,
-                        fontSize: 20
-                    ),
+                  BlocBuilder<TimerLabelController, TimerLabelState>(
+                    bloc: timerLabelController,
+                    builder: (context, state){
+
+                      if (state.hasAdditionalExercise){
+                        hasAdditionalExercise = (state as AdditionalExerciseDefined).value;
+                      }
+
+                      return Text(
+                        context.translate.get('additionalExercise'),
+                        style: TextStyle(
+                            color: hasAdditionalExercise ?
+                            ColorApp.mainColor : Colors.black26,
+                            fontSize: 20
+                        ),
+                      );
+                    }
                   )
                 ],
               ),
