@@ -390,16 +390,18 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                               isAdditionalMinuteDefined = (state.value as String) != '00';
                             } else if (state.isAdditionalSecondsLabelDefined){
                               isAdditionalSecondsDefined = (state.value as String) != '00';
+                            } else if (state.isAutoRestDefined){
+                              isAutoRest = (state as AutoRestDefined).value;
                             }
 
                             return Checkbox(
                               value: isAutoRest,
-                              onChanged: isAdditionalMinuteDefined ||
-                                  isAdditionalSecondsDefined ?
+                              onChanged: (isAdditionalMinuteDefined ||
+                                  isAdditionalSecondsDefined) ||
+                                  state.isAutoRestDefined ?
                                   (checkValue){
-                                setState(() {
-                                  isAutoRest = checkValue ?? false;
-                                });
+                                    additionalTimerLabelController.checkAutoRest(checkValue ?? false);
+                                    // isAutoRest = checkValue ?? false;
                               } : null,
                               checkColor: ColorApp.backgroundColor,
                               activeColor: ColorApp.mainColor,
