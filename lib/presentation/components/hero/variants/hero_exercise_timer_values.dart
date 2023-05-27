@@ -77,6 +77,7 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
 
                             if(state.isMinuteDefined){
                               minutes = (state as MinuteDefined).minute;
+                              timerLabel.setMinuteLabel(minutes);
                               if(minutes == 0 && seconds == 0){
                                 if(widget.isStepConfig != null && widget.isStepConfig!){
                                   timerLabel.checkStepAdditional(false);
@@ -141,6 +142,7 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
 
                               if(state.isSecondsDefined){
                                 seconds = (state as SecondsDefined).seconds;
+                                timerLabel.setSecondsLabel(seconds);
                                 if(minutes == 0 && seconds == 0){
                                   if(widget.isStepConfig != null && widget.isStepConfig!){
                                     timerLabel.checkStepAdditional(false);

@@ -135,10 +135,10 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
 
   void selectExercise(int stepIndex){
     ExerciseSettingEntity? exercise;
+    selectedStepIndex = stepIndex;
     if(exercises.isNotEmpty){
       if(exercises.asMap().containsKey(stepIndex)){
         exercise = exercises[stepIndex];
-        selectedStepIndex = stepIndex;
       }
     }
 
@@ -643,6 +643,8 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
 
                                   if (state.isStepAutoRestDefined){
                                     isAutoRest = (state as StepAutoRestDefined).value;
+                                  } else if (state.isAdditionalTimerReset){
+                                    isAutoRest = false;
                                   }
 
                                   return Checkbox(

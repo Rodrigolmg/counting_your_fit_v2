@@ -42,6 +42,8 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
 
   bool hasAdditionalExercise = false;
   bool isAutoRest = false;
+  bool hasMinuteTime = false;
+  bool hasSecondsTime = false;
   final _shakeTimerKey = GlobalKey<ShakeErrorState>();
   final _shakeAdditionalKey = GlobalKey<ShakeErrorState>();
 
@@ -226,16 +228,31 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                     bloc: timerLabelController,
                     builder: (context, state){
 
-                      if(minuteLabel == '00' && secondsLabel == '00'){
-                        timerLabelController.checkAdditional(false);
+                      if(state.isMinuteLabelDefined){
+                        if((state.value as String) == '00'){
+                          if(!hasSecondsTime){
+                            timerLabelController.checkAdditional(false);
+                          }
+                          hasMinuteTime = false;
+                        } else {
+                          hasMinuteTime = true;
+                        }
+                      } else if (state.isSecondsLabelDefined){
+                        if((state.value as String) == '00'){
+                          if(!hasMinuteTime){
+                            timerLabelController.checkAdditional(false);
+                          }
+                          hasSecondsTime = false;
+                        } else {
+                          hasSecondsTime = true;
+                        }
                       } else if (state.hasAdditionalExercise){
                         hasAdditionalExercise = (state as AdditionalExerciseDefined).value;
                       }
 
                       return Checkbox(
                         value: hasAdditionalExercise,
-                        onChanged: minuteLabel != '00' ||
-                            secondsLabel != '00' ?
+                        onChanged: (hasMinuteTime || hasSecondsTime) ?
                             (checkValue){
                               timerLabelController.checkAdditional(checkValue ?? false);
                         } : null,
@@ -402,6 +419,8 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                               isAdditionalSecondsDefined = (state.value as String) != '00';
                             } else if (state.isAutoRestDefined){
                               isAutoRest = (state as AutoRestDefined).value;
+                            } else if (state.isAdditionalTimerReset){
+                              isAutoRest = false;
                             }
 
                             return Checkbox(
