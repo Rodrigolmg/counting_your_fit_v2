@@ -8,6 +8,7 @@ extension StepsStateX on StepsState{
   bool get isStepDefined => this is StepDefined;
   bool get isNextStep => this is NextStep;
   bool get isStepSelected => this is StepSelected;
+  bool get isStepReset => this is StepSelected;
 }
 
 class InitialStep implements StepsState {
@@ -40,4 +41,13 @@ class StepSelected implements StepsState{
 
   @override
   get value => stepSelected;
+}
+
+class StepReset implements StepsState {
+
+  StepReset();
+
+  @override
+  get value => null;
+
 }

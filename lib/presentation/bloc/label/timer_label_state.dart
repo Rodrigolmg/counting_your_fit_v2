@@ -7,7 +7,7 @@ extension TimerLabelStateX on TimerLabelState{
   bool get isMinuteLabelDefined => this is MinuteLabelDefined;
   bool get isSecondsLabelDefined => this is SecondsLabelDefined;
   bool get isTimerReset => this is TimerReset;
-  bool get isTimerSelected => this is TimerLabelSelected;
+  bool get isTimerLabelSelected => this is TimerLabelSelected;
   bool get hasAdditionalExercise => this is AdditionalExerciseDefined;
   bool get hasStepAdditionalExercise => this is StepAdditionalExerciseDefined;
 }

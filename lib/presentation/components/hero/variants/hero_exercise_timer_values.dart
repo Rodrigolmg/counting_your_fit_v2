@@ -78,10 +78,10 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
                             if(state.isMinuteDefined){
                               minutes = (state as MinuteDefined).minute;
                               if(minutes == 0 && seconds == 0){
-                                if(widget.isStepConfig != null && !widget.isStepConfig!){
-                                  timerLabel.checkAdditional(false);
-                                } else {
+                                if(widget.isStepConfig != null && widget.isStepConfig!){
                                   timerLabel.checkStepAdditional(false);
+                                } else {
+                                  timerLabel.checkAdditional(false);
                                 }
                                 additionalMinute.resetAdditionalMinute();
                                 additionalTimerLabel.resetAdditionalTimer();
@@ -92,10 +92,10 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
                             } else if (state.isMinuteSelected){
                               minutes = (state as MinuteSelected).minuteSelected;
                               if(minutes == 0 && seconds == 0){
-                                if(widget.isStepConfig != null && !widget.isStepConfig!){
-                                  timerLabel.checkAdditional(false);
-                                } else {
+                                if(widget.isStepConfig != null && widget.isStepConfig!){
                                   timerLabel.checkStepAdditional(false);
+                                } else {
+                                  timerLabel.checkAdditional(false);
                                 }
                                 additionalMinute.resetAdditionalMinute();
                                 additionalTimerLabel.resetAdditionalTimer();
@@ -142,10 +142,10 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
                               if(state.isSecondsDefined){
                                 seconds = (state as SecondsDefined).seconds;
                                 if(minutes == 0 && seconds == 0){
-                                  if(widget.isStepConfig != null && !widget.isStepConfig!){
-                                    timerLabel.checkAdditional(false);
-                                  } else {
+                                  if(widget.isStepConfig != null && widget.isStepConfig!){
                                     timerLabel.checkStepAdditional(false);
+                                  } else {
+                                    timerLabel.checkAdditional(false);
                                   }
                                   additionalSeconds.resetAdditionalSeconds();
                                   additionalTimerLabel.resetAdditionalTimer();

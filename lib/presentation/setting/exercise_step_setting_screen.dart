@@ -122,10 +122,6 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
       setsController.resetSet();
       minuteController.resetMinute();
       secondsController.resetSeconds();
-      setState(() {
-        hasAdditionalExercise = false;
-        isAutoRest = false;
-      });
     }
 
     if(exercises.length == steps.length){
@@ -156,6 +152,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
       secondsController.selectSeconds(exercise.seconds);
       String minuteLabel = exercise.minute <= 9 ? '0${exercise.minute}' : exercise.minute.toString();
       String secondsLabel = exercise.seconds <= 9 ? '0${exercise.seconds}' : exercise.seconds.toString();
+      timerLabelController.checkStepAdditional(exercise.hasAdditionalTime ?? false);
       timerLabelController.selectTimer('$minuteLabel:$secondsLabel');
 
       // ADDITIONAL TIME
@@ -168,33 +165,19 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
           exercise.additionalSeconds! <= 9 ? '0${exercise.additionalSeconds}'
           : exercise.additionalSeconds.toString();
       additionalTimerLabelController.selectAdditionalTimer('$additionalMinuteLabel:$additionalSecondsLabel');
-      setState(() {
-        hasAdditionalExercise = exercise!.hasAdditionalTime ?? false;
-        isAutoRest = exercise.isAutoRest ?? false;
-
-      });
+      additionalTimerLabelController.checkStepAutoRest(exercise.isAutoRest ?? false);
     } else {
       stepController.selectStep(stepIndex);
-      setsController.selectSet(1);
-      minuteController.selectMinute(0);
-      secondsController.selectSeconds(0);
-      additionalMinuteController.selectAdditionalMinute(null);
-      additionalSecondsController.selectAdditionalSeconds(null);
-      timerLabelController.selectTimer('00:00');
-      additionalTimerLabelController.selectAdditionalTimer('00:00');
-      setState(() {
-        hasAdditionalExercise = false;
-        isAutoRest = false;
-      });
+      setsController.resetSet();
+      minuteController.resetMinute();
+      secondsController.resetSeconds();
+      additionalMinuteController.resetAdditionalMinute();
+      additionalSecondsController.resetAdditionalSeconds();
+      timerLabelController.checkStepAdditional(false);
+      additionalTimerLabelController.checkStepAutoRest(false);
+      timerLabelController.resetTimer();
+      additionalTimerLabelController.resetAdditionalTimer();
     }
-
-
-    // if(exerciseListDefinitionController.state.isSingleExerciseSelected){
-    //   exercise = (exerciseListDefinitionController.state as ExerciseSelected)
-    //       .exerciseSelected;
-    //
-    //
-    // }
   }
 
   void cancelExercise() async {
@@ -407,33 +390,34 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                       const SizedBox(
                         width: 10,
                       ),
-                      ShakeError(
-                        key: stepTimerKey,
-                        duration: const Duration(milliseconds: 550),
-                        shakeCount: 3,
-                        shakeOffset: 10,
-                        child: BlocBuilder<TimerLabelController, TimerLabelState>(
-                          bloc: timerLabelController,
-                          builder: (context, state){
-                            if (state.isTimerSelected){
-                              List<String> label = (state as TimerLabelSelected)
-                                  .timerSelected!.split(':');
-                              minutesLabel = label[0];
-                              secondsLabel = label[1];
-                            } else {
-                              if(state.isMinuteLabelDefined){
-                                minutesLabel = state.value ?? '00';
-                              } else if (state.isSecondsLabelDefined){
-                                secondsLabel = state.value ?? '00';
-                              }
+                      BlocBuilder<TimerLabelController, TimerLabelState>(
+                        bloc: timerLabelController,
+                        builder: (context, state){
 
-                              if (state.isTimerReset){
-                                minutesLabel = '00';
-                                secondsLabel = '00';
-                              }
+                          if (state.isTimerLabelSelected){
+                            List<String> label = (state as TimerLabelSelected)
+                                .timerSelected!.split(':');
+                            minutesLabel = label[0];
+                            secondsLabel = label[1];
+                          } else {
+                            if(state.isMinuteLabelDefined){
+                              minutesLabel = state.value ?? '00';
+                            } else if (state.isSecondsLabelDefined){
+                              secondsLabel = state.value ?? '00';
                             }
 
-                            return HeroButton(
+                            if (state.isTimerReset){
+                              minutesLabel = '00';
+                              secondsLabel = '00';
+                            }
+                          }
+
+                          return ShakeError(
+                            key: stepTimerKey,
+                            duration: const Duration(milliseconds: 550),
+                            shakeCount: 3,
+                            shakeOffset: 10,
+                            child: HeroButton(
                               buttonLabel: '$minutesLabel:$secondsLabel',
                               heroTag: heroTimerPopUpStep,
                               hasError: stepTimerKey.currentState
@@ -443,9 +427,9 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                                       == AnimationStatus.forward,
                               isStepConfig: true,
                               variant: HeroTimer(),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -470,7 +454,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                         return Checkbox(
                           value: hasAdditionalExercise,
                           onChanged: (minutesLabel != '00' ||
-                              secondsLabel != '00') || state.isTimerSelected ?
+                              secondsLabel != '00') || state.isTimerLabelSelected ?
                           (checkValue){
                             timerLabelController.checkStepAdditional(checkValue ?? false);
                             additionalTimerLabelController.resetAdditionalTimer();
@@ -683,9 +667,9 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                                 return Text(
                                   context.translate.get('autoRest'),
                                   style: TextStyle(
-                                      color: isAutoRest ?
-                                      ColorApp.mainColor : Colors.black26,
-                                      fontSize: 20
+                                    color: isAutoRest ?
+                                    ColorApp.mainColor : Colors.black26,
+                                    fontSize: 20
                                   ),
                                 );
                               },
