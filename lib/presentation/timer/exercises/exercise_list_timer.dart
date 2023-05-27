@@ -17,6 +17,8 @@ import 'package:counting_your_fit_v2/presentation/components/exercise_counter_ti
 import 'package:counting_your_fit_v2/presentation/components/set_counter_title.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_states.dart';
+import 'package:counting_your_fit_v2/presentation/timer/exercises/bloc/exercises_beep_volume_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/timer/exercises/bloc/exercises_beep_volume_states.dart';
 import 'package:counting_your_fit_v2/presentation/util/notification/notification_label_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,6 +48,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
   final secondsController = GetIt.I.get<SecondsStateController>();
   final additionalMinuteController = GetIt.I.get<AdditionalMinuteStateController>();
   final additionalSecondsController = GetIt.I.get<AdditionalSecondsStateController>();
+  final volumeController = ExercisesBeepVolumeStateController();
 
   // EXERCISES VALUES
   List<ExerciseSettingEntity> exercises = [];
@@ -63,7 +66,6 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
   final threeSecondsPlayer = AudioPlayer(playerId: 'three2')..setReleaseMode(ReleaseMode.stop);
   final finalTimePlayer = AudioPlayer(playerId: 'final2')..setReleaseMode(ReleaseMode.stop);
   List<StreamSubscription> streams = [];
-  double volume = 1.0;
   IconData? volumeIcon;
 
   // LOGICAL VALUE FOR PLAY FINAL BEEP ONLY ONE TIME
@@ -86,7 +88,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
     configPlayer(finalTimePlayer, 'sounds/final_beep.mp3');
   }
 
-  void setPlayerVolume(){
+  void setPlayerVolume(double volume){
     tenSecondsPlayer.setVolume(volume);
     threeSecondsPlayer.setVolume(volume);
     finalTimePlayer.setVolume(volume);
@@ -642,40 +644,45 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
                   bottom: height * .11,
                   child: SizedBox(
                     width: width * .8,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          volumeIcon ?? FeatherIcons.volume2,
-                          size: 30,
-                          color: ColorApp.mainColor,
-                        ),
-                        SizedBox(
-                          width: width * .7,
-                          child: Slider(
-                            value: volume,
-                            onChanged: (value){
-                              setState(() {
-                                volume = value;
-                                if(volume > .5 && volume <= 1){
-                                  volumeIcon = FeatherIcons.volume2;
-                                } else if (volume > .3 && volume <= .5){
-                                  volumeIcon = FeatherIcons.volume1;
-                                } else if(volume > 0 && volume <= .3){
-                                  volumeIcon = FeatherIcons.volume;
-                                } else {
-                                  volumeIcon = FeatherIcons.volumeX;
-                                }
-                              });
-                              setPlayerVolume();
-                            },
-                            max: 1.0,
-                            min: .0,
-                            activeColor: ColorApp.mainColor,
-                            inactiveColor: Colors.grey,
-                          ),
-                        )
-                      ],
+                    child: BlocBuilder<ExercisesBeepVolumeStateController, ExercisesBeepVolumeState>(
+                      bloc: volumeController,
+                      builder: (context, state){
+
+                        if(state.isFullVolume){
+                          volumeIcon = FeatherIcons.volume2;
+                        } else if (state.isMidVolume){
+                          volumeIcon = FeatherIcons.volume1;
+                        } else if (state.isLowVolume){
+                          volumeIcon = FeatherIcons.volume;
+                        } else {
+                          volumeIcon = FeatherIcons.volumeX;
+                        }
+
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              volumeIcon ?? FeatherIcons.volume2,
+                              size: 30,
+                              color: ColorApp.mainColor,
+                            ),
+                            SizedBox(
+                              width: width * .7,
+                              child: Slider(
+                                value: state.volume,
+                                onChanged: (volume){
+                                  volumeController.setVolume(volume);
+                                  setPlayerVolume(volume);
+                                },
+                                max: 1.0,
+                                min: .0,
+                                activeColor: ColorApp.mainColor,
+                                inactiveColor: Colors.grey,
+                              ),
+                            )
+                          ],
+                        );
+                      },
                     ),
                   )
               )

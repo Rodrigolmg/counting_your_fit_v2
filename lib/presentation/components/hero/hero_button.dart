@@ -9,6 +9,7 @@ class HeroButton extends StatefulWidget {
   final String? buttonLabel;
   final String? heroTag;
   final bool hasError;
+  final bool isStepConfig;
   final HeroVariant variant;
 
   const HeroButton({
@@ -17,6 +18,7 @@ class HeroButton extends StatefulWidget {
     required this.heroTag,
     required this.variant,
     this.hasError = false,
+    this.isStepConfig = false,
   });
 
 
@@ -66,7 +68,8 @@ class _HeroButtonState extends State<HeroButton> {
             Navigator.of(context).push(
               HeroRoute(
                 builder: (context) {
-                  return widget.variant(widget.heroTag!);
+                  return widget.variant(widget.heroTag!,
+                      isStepConfig: widget.isStepConfig);
                 }
               )
             );

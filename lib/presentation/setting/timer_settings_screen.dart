@@ -1,8 +1,9 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/definition/settings_definition_states.dart';
 import 'package:counting_your_fit_v2/presentation/setting/pages/exercise_list_page.dart';
 import 'package:counting_your_fit_v2/presentation/setting/pages/individual_exercise_page.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/timer_settings_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/definition/settings_definition_state_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +20,7 @@ class TimerSettingsScreen extends StatefulWidget {
 class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
 
   final PageController _pageController = PageController();
-  final _timeScreenController = GetIt.I.get<TimerSettingsStateController>();
+  final _timeScreenController = GetIt.I.get<SettingsDefinitionStateController>();
 
   Future<bool> onCancel() async {
     showDialog(
@@ -113,20 +114,20 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
             color: ColorApp.mainColor,
           ),
         ),
-        body: BlocBuilder<TimerSettingsStateController, TimerSettingsStates>(
+        body: BlocBuilder<SettingsDefinitionStateController, SettingsDefinitionStates>(
           bloc: _timeScreenController,
           builder: (context, state){
-            if(state.isFirstPage){
+            if(state.isFirstPageClicked){
               _pageController.animateToPage(
                   0,
-                  duration: const Duration(milliseconds: 250),
-                  curve: Curves.easeInSine
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeInOut
               );
-            } else if(state.isSecondPage){
+            } else if(state.isSecondPageClicked){
               _pageController.animateToPage(
                   1,
-                  duration: const Duration(milliseconds: 250),
-                  curve: Curves.easeInSine
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeInOut
               );
             }
 
@@ -136,6 +137,9 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
                 IndividualExercisePage(),
                 ExerciseListPage()
               ],
+              onPageChanged: (pageIndex){
+                _timeScreenController.changePageOnScroll(pageIndex);
+              },
             );
           },
         )

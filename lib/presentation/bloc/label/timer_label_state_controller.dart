@@ -27,4 +27,16 @@ class TimerLabelController extends Cubit<TimerLabelState>{
     emit(TimerLabelSelected(timerSelected: timerSelected));
   }
 
+  void checkAdditional(bool hasAdditionalExercise){
+    emit(AdditionalExerciseDefined(
+        hasAdditionalExercise: hasAdditionalExercise)
+    );
+  }
+
+  void checkStepAdditional(bool hasAdditionalExercise){
+    emit(StepAdditionalExerciseDefined(
+      hasAdditionalExercise: hasAdditionalExercise)
+    );
+  }
+
 }

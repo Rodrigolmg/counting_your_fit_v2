@@ -1,6 +1,9 @@
 import 'package:counting_your_fit_v2/color_app.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/label/additional_timer_label_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/minute/additional_minute_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/seconds/additional_seconds_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state_controller.dart';
@@ -12,10 +15,12 @@ import 'package:numberpicker/numberpicker.dart';
 class HeroExerciseTimerValues extends StatefulWidget {
 
   final String? heroTag;
+  final bool? isStepConfig;
 
   const HeroExerciseTimerValues({
     super.key,
     required this.heroTag,
+    this.isStepConfig = false
   });
 
   @override
@@ -27,6 +32,9 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
   final minuteController = GetIt.I.get<MinuteStateController>();
   final secondsController = GetIt.I.get<SecondsStateController>();
   final timerLabel = GetIt.I.get<TimerLabelController>();
+  final additionalTimerLabel = GetIt.I.get<AdditionalTimerLabelController>();
+  final additionalMinute = GetIt.I.get<AdditionalMinuteStateController>();
+  final additionalSeconds = GetIt.I.get<AdditionalSecondsStateController>();
 
   int minutes = 0;
   int seconds = 0;
@@ -69,11 +77,30 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
 
                             if(state.isMinuteDefined){
                               minutes = (state as MinuteDefined).minute;
+                              timerLabel.setMinuteLabel(minutes);
+                              if(minutes == 0 && seconds == 0){
+                                if(widget.isStepConfig != null && widget.isStepConfig!){
+                                  timerLabel.checkStepAdditional(false);
+                                } else {
+                                  timerLabel.checkAdditional(false);
+                                }
+                                additionalMinute.resetAdditionalMinute();
+                                additionalTimerLabel.resetAdditionalTimer();
+                              }
                             } else if(state.isMinuteReset){
                               minutes = 0;
                               timerLabel.resetTimer();
                             } else if (state.isMinuteSelected){
                               minutes = (state as MinuteSelected).minuteSelected;
+                              if(minutes == 0 && seconds == 0){
+                                if(widget.isStepConfig != null && widget.isStepConfig!){
+                                  timerLabel.checkStepAdditional(false);
+                                } else {
+                                  timerLabel.checkAdditional(false);
+                                }
+                                additionalMinute.resetAdditionalMinute();
+                                additionalTimerLabel.resetAdditionalTimer();
+                              }
                             }
 
                             return NumberPicker(
@@ -115,11 +142,30 @@ class _HeroExerciseTimerValuesState extends State<HeroExerciseTimerValues> {
 
                               if(state.isSecondsDefined){
                                 seconds = (state as SecondsDefined).seconds;
+                                timerLabel.setSecondsLabel(seconds);
+                                if(minutes == 0 && seconds == 0){
+                                  if(widget.isStepConfig != null && widget.isStepConfig!){
+                                    timerLabel.checkStepAdditional(false);
+                                  } else {
+                                    timerLabel.checkAdditional(false);
+                                  }
+                                  additionalSeconds.resetAdditionalSeconds();
+                                  additionalTimerLabel.resetAdditionalTimer();
+                                }
                               } else if(state.isSecondsReset){
                                 seconds = 0;
                                 timerLabel.resetTimer();
                               } else if (state.isSecondsSelected){
                                 seconds = (state as SecondsSelected).secondsSelected;
+                                if(minutes == 0 && seconds == 0){
+                                  if(widget.isStepConfig != null && !widget.isStepConfig!){
+                                    timerLabel.checkAdditional(false);
+                                  } else {
+                                    timerLabel.checkStepAdditional(false);
+                                  }
+                                  additionalSeconds.resetAdditionalSeconds();
+                                  additionalTimerLabel.resetAdditionalTimer();
+                                }
                               }
 
 

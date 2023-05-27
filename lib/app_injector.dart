@@ -9,7 +9,7 @@ import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controlle
 import 'package:counting_your_fit_v2/presentation/bloc/steps/step_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/timer_settings_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/setting/bloc/definition/settings_definition_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state_controller.dart';
 import 'package:get_it/get_it.dart';
 
@@ -27,8 +27,8 @@ class AppInjector {
         RegisterSingleExerciseListUseCaseImpl());
 
     // BLOC CONTROLLERS
-    injector.registerLazySingleton<TimerSettingsStateController>(() =>
-        TimerSettingsStateController());
+    injector.registerLazySingleton<SettingsDefinitionStateController>(() =>
+        SettingsDefinitionStateController());
 
     injector.registerLazySingleton<IndividualExerciseController>(() =>
         IndividualExerciseController());

@@ -28,4 +28,12 @@ class AdditionalTimerLabelController extends Cubit<AdditionalTimerLabelState>{
     emit(const AdditionalTimerReset());
   }
 
+  void checkAutoRest(bool isAutoRest){
+    emit(AutoRestDefined(iAutoRest: isAutoRest));
+  }
+
+  void checkStepAutoRest(bool isAutoRest){
+    emit(StepAutoRestDefined(iAutoRest: isAutoRest));
+  }
+
 }
