@@ -14,6 +14,8 @@ import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_con
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_states.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
+import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/individual_beep_volume_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/individual_beep_volume_states.dart';
 import 'package:counting_your_fit_v2/presentation/util/notification/notification_label_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,6 +47,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   final secondsController = GetIt.I.get<SecondsStateController>();
   final additionalMinuteController = GetIt.I.get<AdditionalMinuteStateController>();
   final additionalSecondsController = GetIt.I.get<AdditionalSecondsStateController>();
+  final volumeController = IndividualBeepVolumeStateController();
 
   // EXERCISES VALUES
   int setQuantity = 0;
@@ -86,7 +89,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
     configPlayer(finalTimePlayer, 'sounds/final_beep.mp3');
   }
 
-  void setPlayerVolume(){
+  void setPlayerVolume(double volume){
     tenSecondsPlayer.setVolume(volume);
     threeSecondsPlayer.setVolume(volume);
     finalTimePlayer.setVolume(volume);
@@ -616,35 +619,42 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        volumeIcon ?? FeatherIcons.volume2,
-                        size: 30,
-                        color: ColorApp.mainColor,
+                      BlocBuilder<IndividualBeepVolumeStateController, IndividualBeepVolumeState>(
+                        bloc: volumeController,
+                        builder: (context, state){
+                          if(state.isFullVolume){
+                            volumeIcon = FeatherIcons.volume2;
+                          } else if (state.isMidVolume){
+                            volumeIcon = FeatherIcons.volume1;
+                          } else if (state.isLowVolume){
+                            volumeIcon = FeatherIcons.volume;
+                          } else {
+                            volumeIcon = FeatherIcons.volumeX;
+                          }
+                          return Icon(
+                            volumeIcon ?? FeatherIcons.volume2,
+                            size: 30,
+                            color: ColorApp.mainColor,
+                          );
+                        },
                       ),
                       SizedBox(
                         width: width * .7,
-                        child: Slider(
-                          value: volume,
-                          onChanged: (value){
-                            setState(() {
-                              volume = value;
-                              if(volume > .5 && volume <= 1){
-                                volumeIcon = FeatherIcons.volume2;
-                              } else if (volume > .3 && volume <= .5){
-                                volumeIcon = FeatherIcons.volume1;
-                              } else if(volume > 0 && volume <= .3){
-                                volumeIcon = FeatherIcons.volume;
-                              } else {
-                                volumeIcon = FeatherIcons.volumeX;
-                              }
-                            });
-
-                            setPlayerVolume();
+                        child: BlocBuilder<IndividualBeepVolumeStateController, IndividualBeepVolumeState>(
+                          bloc: volumeController,
+                          builder: (context, state){
+                            return Slider(
+                              value: state.volume,
+                              onChanged: (volume){
+                                volumeController.setVolume(volume);
+                                setPlayerVolume(volume);
+                              },
+                              max: 1.0,
+                              min: .0,
+                              activeColor: ColorApp.mainColor,
+                              inactiveColor: Colors.grey,
+                            );
                           },
-                          max: 1.0,
-                          min: .0,
-                          activeColor: ColorApp.mainColor,
-                          inactiveColor: Colors.grey,
                         ),
                       )
                     ],
