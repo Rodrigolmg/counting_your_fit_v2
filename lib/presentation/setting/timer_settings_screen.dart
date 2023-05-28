@@ -21,6 +21,8 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
 
   final PageController _pageController = PageController();
   final _timeScreenController = GetIt.I.get<SettingsDefinitionStateController>();
+  double helpPageValue = 0.0;
+  AnimationController? animationController;
 
   Future<bool> onCancel() async {
     showDialog(
@@ -129,20 +131,252 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
                   duration: const Duration(milliseconds: 400),
                   curve: Curves.easeInOut
               );
+            } else if (state.isHelpCalled){
+              helpPageValue = (state as HelpCalled).pageSize;
+            } else if (state.isHelpClosed){
+              helpPageValue = (state as HelpClosed).pageSize;
             }
 
-            return PageView(
-              controller: _pageController,
-              children: const [
-                IndividualExercisePage(),
-                ExerciseListPage()
+            return Stack(
+              children: [
+                PageView(
+                  controller: _pageController,
+                  children: const [
+                    IndividualExercisePage(),
+                    ExerciseListPage()
+                  ],
+                  onPageChanged: (pageIndex){
+                    _timeScreenController.changePageOnScroll(pageIndex);
+                  },
+                ),
               ],
-              onPageChanged: (pageIndex){
-                _timeScreenController.changePageOnScroll(pageIndex);
-              },
             );
           },
-        )
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            showModalBottomSheet(
+                context: context,
+                backgroundColor: ColorApp.mainColor,
+                isDismissible: true,
+                barrierColor: Colors.transparent,
+                elevation: 5,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(35),
+                      topRight: Radius.circular(35),
+                    )
+                ),
+                builder: (_){
+                  return DraggableScrollableSheet(
+                      minChildSize: helpPageValue,
+                      initialChildSize: helpPageValue,
+                      maxChildSize: 1,
+                      builder: (context, scrollController){
+                        return Stack(
+                          fit: StackFit.passthrough,
+                          children: [
+                            Positioned(
+                              right: 10,
+                              top: 10,
+                              child: IconButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  icon: Icon(
+                                    Icons.close_rounded,
+                                    size: 25,
+                                    color: ColorApp.backgroundColor,
+                                  )
+                              ),
+                            ),
+                            Center(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: context.width * .8,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            context.translate.get('sets'),
+                                            style: TextStyle(
+                                                color: ColorApp.backgroundColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 25,
+                                                shadows: const [
+                                                  Shadow(
+                                                      color: Colors.black26,
+                                                      offset: Offset(1, 1)
+                                                  )
+                                                ]
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            context.translate.get('helpPage.timerPage.setsHelp'),
+                                            style: TextStyle(
+                                                color: ColorApp.backgroundColor,
+                                                fontSize: 18,
+                                                shadows: const [
+                                                  Shadow(
+                                                      color: Colors.black26,
+                                                      offset: Offset(1, 1)
+                                                  )
+                                                ]
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Divider(
+                                      height: .8,
+                                      color: ColorApp.backgroundColor,
+                                    ),
+                                    SizedBox(
+                                      width: context.width,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            context.translate.get('rest'),
+                                            style: TextStyle(
+                                                color: ColorApp.backgroundColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 25,
+                                                shadows: const [
+                                                  Shadow(
+                                                      color: Colors.black26,
+                                                      offset: Offset(1, 1)
+                                                  )
+                                                ]
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            context.translate.get('helpPage.timerPage.restHelp'),
+                                            style: TextStyle(
+                                                color: ColorApp.backgroundColor,
+                                                fontSize: 18,
+                                                shadows: const [
+                                                  Shadow(
+                                                      color: Colors.black26,
+                                                      offset: Offset(1, 1)
+                                                  )
+                                                ]
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    SizedBox(
+                                      width: context.width,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            context.translate.get('additionalExercise'),
+                                            style: TextStyle(
+                                                color: ColorApp.backgroundColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 25,
+                                                shadows: const [
+                                                  Shadow(
+                                                      color: Colors.black26,
+                                                      offset: Offset(1, 1)
+                                                  )
+                                                ]
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            context.translate.get('helpPage.timerPage.isometricsHelp'),
+                                            style: TextStyle(
+                                                color: ColorApp.backgroundColor,
+                                                fontSize: 18,
+                                                shadows: const [
+                                                  Shadow(
+                                                      color: Colors.black26,
+                                                      offset: Offset(1, 1)
+                                                  )
+                                                ]
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    SizedBox(
+                                      width: context.width,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            context.translate.get('autoRest'),
+                                            style: TextStyle(
+                                                color: ColorApp.backgroundColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 25,
+                                                shadows: const [
+                                                  Shadow(
+                                                      color: Colors.black26,
+                                                      offset: Offset(1, 1)
+                                                  )
+                                                ]
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            context.translate.get('helpPage.timerPage.autoRestHelp'),
+                                            style: TextStyle(
+                                                color: ColorApp.backgroundColor,
+                                                fontSize: 18,
+                                                shadows: const [
+                                                  Shadow(
+                                                      color: Colors.black26,
+                                                      offset: Offset(1, 1)
+                                                  )
+                                                ]
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      }
+                  );
+                }
+            );
+            _timeScreenController.callHelp();
+          },
+          backgroundColor: ColorApp.mainColor,
+          child: Icon(
+            Icons.question_mark_rounded,
+            color: ColorApp.backgroundColor,
+          ),
+        ),
     ),
     );
   }

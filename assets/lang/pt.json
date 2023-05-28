@@ -7,6 +7,14 @@
     "fifthPageLabel": "Então, vamos treinar?!",
     "go": "VAMOS"
   },
+  "helpPage": {
+    "timerPage": {
+      "setsHelp": "É onde se escolhe o número total de séries que serão executadas.",
+      "restHelp": "É onde se define os minutos e segundos totais de descanso da série.",
+      "isometricsHelp": "É onde se define o tempo total da isometria ou o tempo total em que um exercício será executado.",
+      "autoRestHelp": "É onde você escolhe, caso tenha um tempo de execução ou de isometria, se após ter decorrido o tempo da isometria ou execução comece a contar o tempo de descanso automaticamente."
+    }
+  },
   "exerciseList": {
     "quantity": "Quantidade",
     "historyRegister": "Registrar para histórico",

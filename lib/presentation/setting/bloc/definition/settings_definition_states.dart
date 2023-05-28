@@ -5,6 +5,9 @@ extension SettingsDefinitionStateX on SettingsDefinitionStates{
   bool get isSecondPageClicked => this is SecondPageClicked;
   bool get isFirstPageScrolled => this is FirstPageScrolled;
   bool get isSecondPageScrolled => this is SecondPageScrolled;
+  bool get isHelpCalled => this is HelpCalled;
+  bool get isHelpClosed => this is HelpClosed;
+  bool get isInitial => this is InitialState;
 }
 
 class InitialState implements SettingsDefinitionStates{
@@ -24,3 +27,21 @@ class FirstPageScrolled implements SettingsDefinitionStates{
 class SecondPageScrolled implements SettingsDefinitionStates{
   const SecondPageScrolled();
 }
+
+class HelpCalled implements SettingsDefinitionStates{
+  final double pageSize;
+
+  const HelpCalled({
+    required this.pageSize
+  });
+}
+
+class HelpClosed implements SettingsDefinitionStates{
+  final double pageSize;
+
+  const HelpClosed({
+    required this.pageSize
+  });
+}
+
+

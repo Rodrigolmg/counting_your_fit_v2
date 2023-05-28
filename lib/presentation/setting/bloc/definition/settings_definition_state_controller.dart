@@ -16,4 +16,11 @@ class SettingsDefinitionStateController extends Cubit<SettingsDefinitionStates> 
     emit(index == 0 ? const FirstPageScrolled() : const SecondPageScrolled());
   }
 
+  void callHelp(){
+    emit(const HelpCalled(pageSize: 1));
+  }
+
+  void closeHelp(){
+    emit(const HelpClosed(pageSize: 0));
+  }
 }
