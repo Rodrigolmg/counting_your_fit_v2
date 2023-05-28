@@ -138,8 +138,9 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                   Text(
                     '${context.translate.get('sets')}:',
                     style: TextStyle(
-                        color: ColorApp.mainColor,
-                        fontSize: 20
+                      color: ColorApp.mainColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                   const SizedBox(
@@ -178,8 +179,9 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                     Text(
                       '${context.translate.get('rest')}:',
                       style: TextStyle(
-                          color: ColorApp.mainColor,
-                          fontSize: 20
+                        color: ColorApp.mainColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold
                       ),
                     ),
                     const SizedBox(
@@ -275,9 +277,10 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                       return Text(
                         context.translate.get('additionalExercise'),
                         style: TextStyle(
-                            color: hasAdditionalExercise ?
-                            ColorApp.mainColor : Colors.black26,
-                            fontSize: 20
+                          color: hasAdditionalExercise ?
+                          ColorApp.mainColor : Colors.black26,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
                         ),
                       );
                     }
@@ -442,9 +445,10 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                       Text(
                         context.translate.get('autoRest'),
                         style: TextStyle(
-                            color: isAutoRest ?
-                            ColorApp.mainColor : Colors.black26,
-                            fontSize: 20
+                          color: isAutoRest ?
+                          ColorApp.mainColor : Colors.black26,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
                         ),
                       )
                     ],

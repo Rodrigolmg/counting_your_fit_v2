@@ -30,14 +30,17 @@ class SolutionPage extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
-            Text(
-              context.translate.get('intro.secondPageLabel'),
-              style: TextStyle(
-                color: ColorApp.mainColor,
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
+            SizedBox(
+              width: context.width * .8,
+              child: Text(
+                context.translate.get('intro.secondPageLabel'),
+                style: TextStyle(
+                  color: ColorApp.mainColor,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             )
           ],
         ),

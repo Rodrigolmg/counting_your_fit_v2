@@ -15,6 +15,7 @@ import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/steps/step_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/steps/steps_state.dart';
+import 'package:counting_your_fit_v2/presentation/components/exercises_helper_sheet.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_button.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_variant.dart';
@@ -687,6 +688,32 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
             ),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            showModalBottomSheet(
+                context: context,
+                backgroundColor: ColorApp.mainColor,
+                isDismissible: true,
+                barrierColor: Colors.transparent,
+                elevation: 5,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(35),
+                      topRight: Radius.circular(35),
+                    )
+                ),
+                builder: (_){
+                  return const ExercisesHelperSheet();
+                }
+            );
+            // _timeScreenController.callHelp();
+          },
+          backgroundColor: ColorApp.mainColor,
+          child: Icon(
+            Icons.question_mark_rounded,
+            color: ColorApp.backgroundColor,
+          ),
+      ),
     )
     );
   }

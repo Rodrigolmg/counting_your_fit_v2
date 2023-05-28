@@ -1,6 +1,6 @@
 {
   "intro": {
-    "firstPageLabel": "Você já esqueceu em qual série vocês estava?",
+    "firstPageLabel": "Você já esqueceu em qual série você estava?",
     "secondPageLabel": "Seus problemas estão resolvidos!",
     "thirdPageLabel": "Me fale suas séries e quanto tempo você irá descansar que eu te ajudo!",
     "fourthPageLabel": "Ah! E se tiver ou uma isometria ou um tempo de execução de exercício, você pode me falar também!",
@@ -10,9 +10,14 @@
   "helpPage": {
     "timerPage": {
       "setsHelp": "É onde se escolhe o número total de séries que serão executadas.",
-      "restHelp": "É onde se define os minutos e segundos totais de descanso da série.",
-      "isometricsHelp": "É onde se define o tempo total da isometria ou o tempo total em que um exercício será executado.",
-      "autoRestHelp": "É onde você escolhe, caso tenha um tempo de execução ou de isometria, se após ter decorrido o tempo da isometria ou execução comece a contar o tempo de descanso automaticamente."
+      "restHelp": "É onde se define os minutos e segundos totais de descanso de cada série.",
+      "isometricsHelp": "É onde se define o tempo total da isometria ou o tempo total em que um exercício será executado. Alguns exemplos são prancha (Isometria) ou uma corrida (Execução)",
+      "autoRestHelp": "É onde você escolhe, caso tenha um tempo de execução ou de isometria, se após ter decorrido o tempo da isometria ou execução comece a contar o tempo de descanso automaticamente.",
+      "stepHelp": "São os exercícios a definir ou que já foram definidos. Caso tenha definido, pode clicar no número correspondente para poder editá-lo.",
+      "stepHelpTitle": "Número do exercício"
+    },
+    "exerciseListSettingPage": {
+      "stepQuantityHelp": "É a quantidade de exercícios que serão feitos."
     }
   },
   "exerciseList": {
@@ -27,16 +32,6 @@
     "editExercise": "Editar exercício",
     "cancelTitle": "Parar definição de exercícios?",
     "cancelDescription": "Quer realmente parar de configurar seus exercícios?"
-  },
-  "individualExercise": {
-    "set": "Série",
-    "of": "de",
-    "resting": "Descansando",
-    "toRest": "Descansar",
-    "toExecute": "Executar isometria/exercício",
-    "executing": "Executando",
-    "cancelTitle": "Parar exercício?",
-    "cancelDescription": "Quer mesmo parar o exercício atual?"
   },
   "exerciseTimer": {
     "exercise": "Exercício",

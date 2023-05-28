@@ -1,5 +1,7 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
+import 'package:counting_your_fit_v2/presentation/components/individual_exercise_helper_sheet.dart';
+import 'package:counting_your_fit_v2/presentation/components/step_helper_sheet.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/definition/settings_definition_states.dart';
 import 'package:counting_your_fit_v2/presentation/setting/pages/exercise_list_page.dart';
 import 'package:counting_your_fit_v2/presentation/setting/pages/individual_exercise_page.dart';
@@ -22,7 +24,7 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
   final PageController _pageController = PageController();
   final _timeScreenController = GetIt.I.get<SettingsDefinitionStateController>();
   double helpPageValue = 0.0;
-  AnimationController? animationController;
+  Widget sheet = const IndividualExerciseHelperSheet();
 
   Future<bool> onCancel() async {
     showDialog(
@@ -119,22 +121,25 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
         body: BlocBuilder<SettingsDefinitionStateController, SettingsDefinitionStates>(
           bloc: _timeScreenController,
           builder: (context, state){
+
             if(state.isFirstPageClicked){
               _pageController.animateToPage(
                   0,
                   duration: const Duration(milliseconds: 400),
                   curve: Curves.easeInOut
               );
+              sheet = const IndividualExerciseHelperSheet();
             } else if(state.isSecondPageClicked){
               _pageController.animateToPage(
                   1,
                   duration: const Duration(milliseconds: 400),
                   curve: Curves.easeInOut
               );
-            } else if (state.isHelpCalled){
-              helpPageValue = (state as HelpCalled).pageSize;
-            } else if (state.isHelpClosed){
-              helpPageValue = (state as HelpClosed).pageSize;
+              sheet = const StepHelperSheet();
+            } else if (state.isFirstPageScrolled){
+              sheet = const IndividualExerciseHelperSheet();
+            } else if (state.isSecondPageScrolled){
+              sheet = const StepHelperSheet();
             }
 
             return Stack(
@@ -168,208 +173,10 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
                     )
                 ),
                 builder: (_){
-                  return DraggableScrollableSheet(
-                      minChildSize: helpPageValue,
-                      initialChildSize: helpPageValue,
-                      maxChildSize: 1,
-                      builder: (context, scrollController){
-                        return Stack(
-                          fit: StackFit.passthrough,
-                          children: [
-                            Positioned(
-                              right: 10,
-                              top: 10,
-                              child: IconButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  icon: Icon(
-                                    Icons.close_rounded,
-                                    size: 25,
-                                    color: ColorApp.backgroundColor,
-                                  )
-                              ),
-                            ),
-                            Center(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: context.width * .8,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            context.translate.get('sets'),
-                                            style: TextStyle(
-                                                color: ColorApp.backgroundColor,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 25,
-                                                shadows: const [
-                                                  Shadow(
-                                                      color: Colors.black26,
-                                                      offset: Offset(1, 1)
-                                                  )
-                                                ]
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          Text(
-                                            context.translate.get('helpPage.timerPage.setsHelp'),
-                                            style: TextStyle(
-                                                color: ColorApp.backgroundColor,
-                                                fontSize: 18,
-                                                shadows: const [
-                                                  Shadow(
-                                                      color: Colors.black26,
-                                                      offset: Offset(1, 1)
-                                                  )
-                                                ]
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Divider(
-                                      height: .8,
-                                      color: ColorApp.backgroundColor,
-                                    ),
-                                    SizedBox(
-                                      width: context.width,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            context.translate.get('rest'),
-                                            style: TextStyle(
-                                                color: ColorApp.backgroundColor,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 25,
-                                                shadows: const [
-                                                  Shadow(
-                                                      color: Colors.black26,
-                                                      offset: Offset(1, 1)
-                                                  )
-                                                ]
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          Text(
-                                            context.translate.get('helpPage.timerPage.restHelp'),
-                                            style: TextStyle(
-                                                color: ColorApp.backgroundColor,
-                                                fontSize: 18,
-                                                shadows: const [
-                                                  Shadow(
-                                                      color: Colors.black26,
-                                                      offset: Offset(1, 1)
-                                                  )
-                                                ]
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    SizedBox(
-                                      width: context.width,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            context.translate.get('additionalExercise'),
-                                            style: TextStyle(
-                                                color: ColorApp.backgroundColor,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 25,
-                                                shadows: const [
-                                                  Shadow(
-                                                      color: Colors.black26,
-                                                      offset: Offset(1, 1)
-                                                  )
-                                                ]
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          Text(
-                                            context.translate.get('helpPage.timerPage.isometricsHelp'),
-                                            style: TextStyle(
-                                                color: ColorApp.backgroundColor,
-                                                fontSize: 18,
-                                                shadows: const [
-                                                  Shadow(
-                                                      color: Colors.black26,
-                                                      offset: Offset(1, 1)
-                                                  )
-                                                ]
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    SizedBox(
-                                      width: context.width,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            context.translate.get('autoRest'),
-                                            style: TextStyle(
-                                                color: ColorApp.backgroundColor,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 25,
-                                                shadows: const [
-                                                  Shadow(
-                                                      color: Colors.black26,
-                                                      offset: Offset(1, 1)
-                                                  )
-                                                ]
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          Text(
-                                            context.translate.get('helpPage.timerPage.autoRestHelp'),
-                                            style: TextStyle(
-                                                color: ColorApp.backgroundColor,
-                                                fontSize: 18,
-                                                shadows: const [
-                                                  Shadow(
-                                                      color: Colors.black26,
-                                                      offset: Offset(1, 1)
-                                                  )
-                                                ]
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        );
-                      }
-                  );
+                  return sheet;
                 }
             );
-            _timeScreenController.callHelp();
+            // _timeScreenController.callHelp();
           },
           backgroundColor: ColorApp.mainColor,
           child: Icon(
@@ -377,7 +184,7 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
             color: ColorApp.backgroundColor,
           ),
         ),
-    ),
+      ),
     );
   }
 
