@@ -58,8 +58,9 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
                   Text(
                     '${context.translate.get('exerciseList.quantity')}:',
                     style: TextStyle(
-                        color: ColorApp.mainColor,
-                        fontSize: 20
+                      color: ColorApp.mainColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                   const SizedBox(

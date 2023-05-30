@@ -55,10 +55,9 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
   late bool isPortuguese;
 
   void trainCallback(){
-    bool hasNoRestTime = minuteLabel == '00' &&
-        secondsLabel == '00';
+    timerLabelController.isTimeDefined(minuteLabel, secondsLabel);
 
-    if(hasNoRestTime) {
+    if(timerLabelController.state.hasNoTime) {
       _shakeTimerKey.currentState?.shake();
       return;
     }
@@ -75,10 +74,9 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
         CountingYourFitRoutes.individualTimer
       );
     } else {
-      bool hasAdditionalTime = additionalMinutes != '00' ||
-          additionalSeconds != '00';
+      additionalTimerLabelController.isTimeDefined(additionalMinutes, additionalSeconds);
 
-      if(!hasAdditionalTime){
+      if(additionalTimerLabelController.state.hasNoAdditionalTime){
         _shakeAdditionalKey.currentState?.shake();
         return;
       }
@@ -138,8 +136,9 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                   Text(
                     '${context.translate.get('sets')}:',
                     style: TextStyle(
-                        color: ColorApp.mainColor,
-                        fontSize: 20
+                      color: ColorApp.mainColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                   const SizedBox(
@@ -178,8 +177,9 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                     Text(
                       '${context.translate.get('rest')}:',
                       style: TextStyle(
-                          color: ColorApp.mainColor,
-                          fontSize: 20
+                        color: ColorApp.mainColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold
                       ),
                     ),
                     const SizedBox(
@@ -205,10 +205,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                           return HeroButton(
                             buttonLabel: '$minuteLabel:$secondsLabel',
                             heroTag: heroTimerPopUp,
-                            hasError: _shakeTimerKey.currentState != null &&
-                                _shakeTimerKey
-                                    .currentState!.animationController.status
-                                    == AnimationStatus.forward,
+                            hasError: state.hasNoTime,
                             variant: HeroTimer(),
                           );
                         }
@@ -275,9 +272,10 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                       return Text(
                         context.translate.get('additionalExercise'),
                         style: TextStyle(
-                            color: hasAdditionalExercise ?
-                            ColorApp.mainColor : Colors.black26,
-                            fontSize: 20
+                          color: hasAdditionalExercise ?
+                          ColorApp.mainColor : Colors.black26,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
                         ),
                       );
                     }
@@ -333,10 +331,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
 
                                 return HeroButton(
                                   heroTag: heroAdditionalPopUp,
-                                  hasError: _shakeAdditionalKey.currentState != null &&
-                                      _shakeAdditionalKey.currentState!
-                                          .animationController.status
-                                          == AnimationStatus.forward,
+                                  hasError: state.hasNoAdditionalTime,
                                   buttonLabel: '$additionalMinutes:$additionalSeconds',
                                   variant: HeroAdditionalTimer(),
                                 );
@@ -442,9 +437,10 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                       Text(
                         context.translate.get('autoRest'),
                         style: TextStyle(
-                            color: isAutoRest ?
-                            ColorApp.mainColor : Colors.black26,
-                            fontSize: 20
+                          color: isAutoRest ?
+                          ColorApp.mainColor : Colors.black26,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
                         ),
                       )
                     ],

@@ -17,6 +17,7 @@ import 'package:counting_your_fit_v2/presentation/components/exercise_counter_ti
 import 'package:counting_your_fit_v2/presentation/components/set_counter_title.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_states.dart';
+import 'package:counting_your_fit_v2/presentation/sheet/timer_helper_sheet.dart';
 import 'package:counting_your_fit_v2/presentation/timer/exercises/bloc/exercises_beep_volume_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/timer/exercises/bloc/exercises_beep_volume_states.dart';
 import 'package:counting_your_fit_v2/presentation/util/notification/notification_label_builder.dart';
@@ -191,7 +192,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
             ),
           ],
           title: Text(
-            context.translate.get('individualExercise.cancelTitle'),
+            context.translate.get('exerciseTimer.cancelTitle'),
             style: TextStyle(
               color: ColorApp.backgroundColor,
               shadows: const [
@@ -203,7 +204,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
             ),
           ),
           content: Text(
-            context.translate.get('individualExercise.cancelDescription'),
+            context.translate.get('exerciseTimer.cancelDescription'),
             style: TextStyle(
                 color: ColorApp.backgroundColor,
                 shadows: const [
@@ -587,15 +588,15 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
                     String actionText = '';
 
                     if(isToExecute){
-                      actionText = context.translate.get('individualExercise.toExecute');
+                      actionText = context.translate.get('exerciseTimer.toExecute');
                     } else {
-                      actionText = context.translate.get('individualExercise.toRest');
+                      actionText = context.translate.get('exerciseTimer.toRest');
                     }
 
                     if (state.isCurrentExecuting){
-                      actionText = context.translate.get('individualExercise.executing');
+                      actionText = context.translate.get('exerciseTimer.executing');
                     } else if(state.isCurrentResting){
-                      actionText = context.translate.get('individualExercise.resting');
+                      actionText = context.translate.get('exerciseTimer.resting');
                     }
 
                     return Row(
@@ -603,15 +604,9 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
                         Text(
                           actionText,
                           style: TextStyle(
-                              fontSize: 25,
-                              color: ColorApp.mainColor,
-                              shadows: const [
-                                Shadow(
-                                    color: Colors.black54,
-                                    offset: Offset(.1, .1),
-                                    blurRadius: .5
-                                )
-                              ]
+                            fontSize: 25,
+                            color: ColorApp.mainColor,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         if(state.isCurrentExecuting || state.isCurrentResting)
@@ -689,6 +684,32 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
             ],
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            showModalBottomSheet(
+                context: context,
+                backgroundColor: ColorApp.mainColor,
+                isDismissible: true,
+                barrierColor: Colors.transparent,
+                elevation: 5,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(35),
+                      topRight: Radius.circular(35),
+                    )
+                ),
+                builder: (_){
+                  return const TimerHelperSheet();
+                }
+            );
+            // _timeScreenController.callHelp();
+          },
+          backgroundColor: ColorApp.mainColor,
+          child: Icon(
+            Icons.question_mark_rounded,
+            color: ColorApp.backgroundColor,
+          ),
+    ),
       ),
     );
   }

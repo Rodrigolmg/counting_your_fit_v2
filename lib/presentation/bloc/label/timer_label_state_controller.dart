@@ -39,4 +39,18 @@ class TimerLabelController extends Cubit<TimerLabelState>{
     );
   }
 
+  void isTimeDefined(String minute, String seconds){
+    if(minute == '00' &&
+        seconds == '00'){
+      emit(HasNoTime());
+    }
+  }
+
+  void isStepTimeDefined(String minute, String seconds){
+    if(minute == '00' &&
+        seconds == '00'){
+      emit(HasNoStepTime());
+    }
+  }
+
 }

@@ -7,6 +7,23 @@
     "fifthPageLabel": "So, let's go?!",
     "go": "GO"
   },
+  "helpPage": {
+    "timerPage": {
+      "setsHelp": "This is where you select the total number of sets that will be performed.",
+      "restHelp": "This is where the total duration of rest for each set, in minutes and seconds, is defined.",
+      "isometricsHelp": "This is where the total duration of isometric/execution exercise is defined. Some examples could be a plank (Isometric exercise) or a running (Execution exercise)",
+      "autoRestHelp": "This is where, in case there is either an execution or isometric exercise, you can choose whether the rest time should automatically elapse after the isometric/execution exercise time has ended.",
+      "stepHelp": "These are the exercises that can be either defined or have already been defined. If an exercise has been defined, you can click on the corresponding number to edit it.",
+      "stepHelpTitle": "Exercise number"
+    },
+    "exerciseListSettingPage": {
+      "stepQuantityHelp": "This indicates the number of exercises that will be performed."
+    },
+    "timeCountPage": {
+      "time": "Time",
+      "timeBeep": "When time reaches 10 seconds, it will emit a single beep. During the 3 last seconds, it will once per second."
+    }
+  },
   "exerciseList": {
     "quantity": "Quantity",
     "historyRegister": "Register for history",
@@ -27,28 +44,17 @@
     "of": "of",
     "resting": "Resting",
     "toRest": "Rest",
-    "toExecute": "Execute isometrics/exercise",
-    "executing": "Executing",
-    "cancelTitle": "Stop exercise?",
-    "cancelDescription": "Do you really want to stop the current exercise?"
-  },
-  "individualExercise": {
-    "set": "Set",
-    "lastSet": "Last set",
-    "of": "of",
-    "resting": "Resting",
-    "toRest": "Rest",
-    "toExecute": "Execute isometrics/exercise",
-    "executing": "Executing",
+    "toExecute": "Perform isometric/execute exercise",
+    "executing": "Performing",
     "cancelTitle": "Stop exercise?",
     "cancelDescription": "Do you really want to stop the current exercise?"
   },
   "notification": {
     "restingTitle": "Rest",
     "restingBody": "Resting of set",
-    "executingTitle": "Isometrics/execution",
-    "executingBody": "Execution exercise/isometrics",
-    "executionFinishedBody": "Execution/isometrics finished. Let's rest of set",
+    "executingTitle": "Isometric/execution exercise",
+    "executingBody": "Performing execution/isometric exercise",
+    "executionFinishedBody": "Execution/isometric exercise finished. Let's rest of set",
     "remaining": "more setLabel to go.",
     "remainingSingular": "Remain",
     "finished": "finished",
@@ -61,7 +67,7 @@
   "sets": "Sets",
   "set": "Set",
   "rest": "Time rest",
-  "additionalExercise": "Isometrics/Execution",
+  "additionalExercise": "Isometric exercise/Execution",
   "autoRest": "Auto rest",
   "timeLabel": "Time",
   "train": "Workout",

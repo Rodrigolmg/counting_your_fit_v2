@@ -1,5 +1,7 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
+import 'package:counting_your_fit_v2/presentation/components/individual_exercise_helper_sheet.dart';
+import 'package:counting_your_fit_v2/presentation/sheet/step_helper_sheet.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/definition/settings_definition_states.dart';
 import 'package:counting_your_fit_v2/presentation/setting/pages/exercise_list_page.dart';
 import 'package:counting_your_fit_v2/presentation/setting/pages/individual_exercise_page.dart';
@@ -21,6 +23,8 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
 
   final PageController _pageController = PageController();
   final _timeScreenController = GetIt.I.get<SettingsDefinitionStateController>();
+  double helpPageValue = 0.0;
+  Widget sheet = const IndividualExerciseHelperSheet();
 
   Future<bool> onCancel() async {
     showDialog(
@@ -117,33 +121,70 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
         body: BlocBuilder<SettingsDefinitionStateController, SettingsDefinitionStates>(
           bloc: _timeScreenController,
           builder: (context, state){
+
             if(state.isFirstPageClicked){
               _pageController.animateToPage(
                   0,
                   duration: const Duration(milliseconds: 400),
                   curve: Curves.easeInOut
               );
+              sheet = const IndividualExerciseHelperSheet();
             } else if(state.isSecondPageClicked){
               _pageController.animateToPage(
                   1,
                   duration: const Duration(milliseconds: 400),
                   curve: Curves.easeInOut
               );
+              sheet = const StepHelperSheet();
+            } else if (state.isFirstPageScrolled){
+              sheet = const IndividualExerciseHelperSheet();
+            } else if (state.isSecondPageScrolled){
+              sheet = const StepHelperSheet();
             }
 
-            return PageView(
-              controller: _pageController,
-              children: const [
-                IndividualExercisePage(),
-                ExerciseListPage()
+            return Stack(
+              children: [
+                PageView(
+                  controller: _pageController,
+                  children: const [
+                    IndividualExercisePage(),
+                    ExerciseListPage()
+                  ],
+                  onPageChanged: (pageIndex){
+                    _timeScreenController.changePageOnScroll(pageIndex);
+                  },
+                ),
               ],
-              onPageChanged: (pageIndex){
-                _timeScreenController.changePageOnScroll(pageIndex);
-              },
             );
           },
-        )
-    ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            showModalBottomSheet(
+                context: context,
+                backgroundColor: ColorApp.mainColor,
+                isDismissible: true,
+                barrierColor: Colors.transparent,
+                elevation: 5,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(35),
+                      topRight: Radius.circular(35),
+                    )
+                ),
+                builder: (_){
+                  return sheet;
+                }
+            );
+            // _timeScreenController.callHelp();
+          },
+          backgroundColor: ColorApp.mainColor,
+          child: Icon(
+            Icons.question_mark_rounded,
+            color: ColorApp.backgroundColor,
+          ),
+        ),
+      ),
     );
   }
 
