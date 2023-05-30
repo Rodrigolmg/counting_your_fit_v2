@@ -37,14 +37,14 @@ class AdditionalTimerLabelController extends Cubit<AdditionalTimerLabelState>{
   }
 
   void isTimeDefined(String minuteLabel, String secondsLabel){
-    if(minuteLabel == '00' ||
+    if(minuteLabel == '00' &&
         secondsLabel == '00'){
       emit(HasNoAdditionalTime());
     }
   }
 
   void isStepTimeDefined(String minuteLabel, String secondsLabel){
-    if(minuteLabel == '00' ||
+    if(minuteLabel == '00' &&
         secondsLabel == '00'){
       emit(HasNoStepAdditionalTime());
     }

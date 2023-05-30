@@ -15,7 +15,7 @@ import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/steps/step_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/steps/steps_state.dart';
-import 'package:counting_your_fit_v2/presentation/components/exercises_helper_sheet.dart';
+import 'package:counting_your_fit_v2/presentation/sheet/exercises_helper_sheet.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_button.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart';
 import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_variant.dart';
@@ -116,6 +116,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
     if(exercises.asMap().containsKey(stepController.state.value as int)){
       selectExercise(stepController.state.value as int);
     } else {
+      timerLabelController.checkStepAdditional(false);
       timerLabelController.resetTimer();
       additionalTimerLabelController.resetAdditionalTimer();
       setsController.resetSet();

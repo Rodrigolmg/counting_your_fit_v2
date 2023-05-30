@@ -14,6 +14,7 @@ import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_con
 import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_states.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
+import 'package:counting_your_fit_v2/presentation/sheet/timer_helper_sheet.dart';
 import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/individual_beep_volume_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/individual_beep_volume_states.dart';
 import 'package:counting_your_fit_v2/presentation/util/notification/notification_label_builder.dart';
@@ -577,13 +578,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                           style: TextStyle(
                               fontSize: 25,
                               color: ColorApp.mainColor,
-                              shadows: const [
-                                Shadow(
-                                    color: Colors.black54,
-                                    offset: Offset(.1, .1),
-                                    blurRadius: .5
-                                )
-                              ]
+                              fontWeight: FontWeight.w600
                           ),
                         ),
                         if(state.isResting || state.isExecuting)
@@ -662,6 +657,32 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                 )
               )
             ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            showModalBottomSheet(
+                context: context,
+                backgroundColor: ColorApp.mainColor,
+                isDismissible: true,
+                barrierColor: Colors.transparent,
+                elevation: 5,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(35),
+                      topRight: Radius.circular(35),
+                    )
+                ),
+                builder: (_){
+                  return const TimerHelperSheet();
+                }
+            );
+            // _timeScreenController.callHelp();
+          },
+          backgroundColor: ColorApp.mainColor,
+          child: Icon(
+            Icons.question_mark_rounded,
+            color: ColorApp.backgroundColor,
           ),
         ),
       ),

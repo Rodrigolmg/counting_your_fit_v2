@@ -18,6 +18,10 @@
     },
     "exerciseListSettingPage": {
       "stepQuantityHelp": "É a quantidade de exercícios que serão feitos."
+    },
+    "timeCountPage": {
+      "time": "Tempo",
+      "timeBeep": "Quando o tempo chegar aos 10 segundos, vai emitir um único bipe. Durante os último 3 segundos, vai bipar uma vez por segundo."
     }
   },
   "exerciseList": {
