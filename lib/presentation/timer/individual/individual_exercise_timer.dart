@@ -212,7 +212,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
             ),
           ],
           title: Text(
-            context.translate.get('individualExercise.cancelTitle'),
+            context.translate.get('exerciseTimer.cancelTitle'),
             style: TextStyle(
               color: ColorApp.backgroundColor,
               shadows: const [
@@ -224,7 +224,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
             ),
           ),
           content: Text(
-            context.translate.get('individualExercise.cancelDescription'),
+            context.translate.get('exerciseTimer.cancelDescription'),
             style: TextStyle(
                 color: ColorApp.backgroundColor,
                 shadows: const [
@@ -384,7 +384,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      context.translate.get('individualExercise.set'),
+                      context.translate.get('exerciseTimer.set'),
                       style: const TextStyle(
                         fontSize: 35,
                       ),
@@ -408,7 +408,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                     ),
                     const SizedBox(width: 15),
                     Text(
-                      context.translate.get('individualExercise.of'),
+                      context.translate.get('exerciseTimer.of'),
                       style: const TextStyle(
                           fontSize: 35
                       ),
@@ -559,15 +559,15 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                     String actionText = '';
 
                     if(isToExecute){
-                      actionText = context.translate.get('individualExercise.toExecute');
+                      actionText = context.translate.get('exerciseTimer.toExecute');
                     } else {
-                      actionText = context.translate.get('individualExercise.toRest');
+                      actionText = context.translate.get('exerciseTimer.toRest');
                     }
 
                     if (state.isExecuting){
-                      actionText = context.translate.get('individualExercise.executing');
+                      actionText = context.translate.get('exerciseTimer.executing');
                     } else if(state.isResting){
-                      actionText = context.translate.get('individualExercise.resting');
+                      actionText = context.translate.get('exerciseTimer.resting');
                     }
 
                     return Row(

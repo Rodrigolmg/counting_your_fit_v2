@@ -10,6 +10,8 @@ extension TimerLabelStateX on AdditionalTimerLabelState{
   bool get isAdditionalTimerSelected => this is AdditionalTimeLabelSelected;
   bool get isAutoRestDefined => this is AutoRestDefined;
   bool get isStepAutoRestDefined => this is StepAutoRestDefined;
+  bool get hasNoAdditionalTime => this is HasNoAdditionalTime;
+  bool get hasNoStepAdditionalTime => this is HasNoStepAdditionalTime;
 }
 
 class InitialAdditionalTimerLabel implements AdditionalTimerLabelState<String?> {
@@ -76,4 +78,22 @@ class StepAutoRestDefined implements AdditionalTimerLabelState<bool> {
 
   @override
   bool get value => iAutoRest;
+}
+
+class HasNoAdditionalTime implements AdditionalTimerLabelState<dynamic> {
+
+  HasNoAdditionalTime();
+
+  @override
+  get value => null;
+
+}
+
+class HasNoStepAdditionalTime implements AdditionalTimerLabelState<dynamic> {
+
+  HasNoStepAdditionalTime();
+
+  @override
+  get value => null;
+
 }

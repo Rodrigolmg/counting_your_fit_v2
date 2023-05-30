@@ -67,19 +67,17 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
   final List<ExerciseSettingEntity> exercises = [];
 
   void trainCallback() async {
-    bool hasNoRestTime = minutesLabel == '00' &&
-        secondsLabel == '00';
+    timerLabelController.isStepTimeDefined(minutesLabel, secondsLabel);
 
-    if(hasNoRestTime) {
+    if(timerLabelController.state.hasNoStepTime) {
       stepTimerKey.currentState?.shake();
       return;
     }
 
     if(hasAdditionalExercise) {
-      bool hasAdditionalTime = additionalMinutesLabel != '00' ||
-          additionalSecondsLabel != '00';
+      additionalTimerLabelController.isStepTimeDefined(additionalMinutesLabel, additionalSecondsLabel);
 
-      if (!hasAdditionalTime) {
+      if (additionalTimerLabelController.state.hasNoStepAdditionalTime) {
         stepTimerAdditionalKey.currentState?.shake();
         return;
       }
@@ -276,12 +274,19 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
     }
   }
 
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    isPortuguese = context.translate.isPortuguese;
+  }
+
   @override
   Widget build(BuildContext context) {
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    isPortuguese = context.translate.isPortuguese;
+
 
     return WillPopScope(
       onWillPop: onCancelSetting,
@@ -304,6 +309,10 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
               height: height * .17,
               child: BlocBuilder<StepStateController, StepsState>(
                 bloc: stepController,
+                buildWhen: (oldState, currentState) =>
+                currentState.isStepDefined ||
+                currentState.isStepSelected ||
+                currentState.isNextStep,
                 builder: (context, state) {
 
                   if(state.isStepDefined){
@@ -344,8 +353,9 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                     Text(
                       '${context.translate.get('sets')}:',
                       style: TextStyle(
-                          color: ColorApp.mainColor,
-                          fontSize: 20
+                        color: ColorApp.mainColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold
                       ),
                     ),
                     const SizedBox(
@@ -353,6 +363,10 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                     ),
                     BlocBuilder<SetsStateController, SetsState>(
                       bloc: setsController,
+                      buildWhen: (oldState, currentState) =>
+                        currentState.isSetSelected ||
+                        currentState.isSetReset ||
+                        currentState.isSetDefined,
                       builder: (context, state) {
 
                         if(state.isSetDefined){
@@ -384,8 +398,9 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                       Text(
                         '${context.translate.get('rest')}:',
                         style: TextStyle(
-                            color: ColorApp.mainColor,
-                            fontSize: 20
+                          color: ColorApp.mainColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
                         ),
                       ),
                       const SizedBox(
@@ -393,6 +408,12 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                       ),
                       BlocBuilder<TimerLabelController, TimerLabelState>(
                         bloc: timerLabelController,
+                        buildWhen: (oldState, currentState) =>
+                          currentState.isTimerLabelSelected ||
+                          currentState.isMinuteLabelDefined ||
+                          currentState.isSecondsLabelDefined ||
+                          currentState.isTimerReset ||
+                          currentState.hasNoStepTime,
                         builder: (context, state){
 
                           if (state.isTimerLabelSelected){
@@ -421,11 +442,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                             child: HeroButton(
                               buttonLabel: '$minutesLabel:$secondsLabel',
                               heroTag: heroTimerPopUpStep,
-                              hasError: stepTimerKey.currentState
-                                  != null &&
-                                  stepTimerKey.currentState!
-                                      .animationController.status
-                                      == AnimationStatus.forward,
+                              hasError: state.hasNoStepTime,
                               isStepConfig: true,
                               variant: HeroTimer(),
                             ),
@@ -444,10 +461,11 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                   children: [
                     BlocBuilder<TimerLabelController, TimerLabelState>(
                       bloc: timerLabelController,
+                      buildWhen: (oldState, currentState) => currentState.hasStepAdditionalExercise,
                       builder: (context, state){
 
                         if(minutesLabel == '00' && secondsLabel == '00'){
-                          timerLabelController.checkAdditional(false);
+                          timerLabelController.checkStepAdditional(false);
                         } else if (state.hasStepAdditionalExercise){
                           hasAdditionalExercise = (state as StepAdditionalExerciseDefined).value;
                         }
@@ -470,6 +488,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                     ),
                     BlocBuilder<TimerLabelController, TimerLabelState>(
                       bloc: timerLabelController,
+                      buildWhen: (oldState, currentState) => currentState.hasStepAdditionalExercise,
                       builder: (context, state){
                         if (state.hasStepAdditionalExercise){
                           hasAdditionalExercise = (state as StepAdditionalExerciseDefined).value;
@@ -477,9 +496,10 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                         return Text(
                           context.translate.get('additionalExercise'),
                           style: TextStyle(
-                              color: hasAdditionalExercise ?
-                              ColorApp.mainColor : Colors.black26,
-                              fontSize: 20
+                            color: hasAdditionalExercise ?
+                            ColorApp.mainColor : Colors.black26,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
                           ),
                         );
                       },
@@ -488,6 +508,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                 ),
                 BlocBuilder<TimerLabelController, TimerLabelState>(
                   bloc: timerLabelController,
+                  buildWhen: (oldState, currentState) => currentState.hasStepAdditionalExercise,
                   builder: (context, state){
 
                     if(state.hasStepAdditionalExercise){
@@ -543,10 +564,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
 
                                 return HeroButton(
                                   heroTag: heroAdditionalPopUpStep,
-                                  hasError: stepTimerAdditionalKey.currentState != null &&
-                                      stepTimerAdditionalKey.currentState!
-                                          .animationController.status
-                                          == AnimationStatus.forward,
+                                  hasError: state.hasNoStepAdditionalTime,
                                   buttonLabel: label,
                                   variant: HeroAdditionalTimer(),
                                 );
@@ -565,6 +583,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
             ),
             BlocBuilder<TimerLabelController, TimerLabelState>(
               bloc: timerLabelController,
+              buildWhen: (oldState, currentState) => currentState.hasStepAdditionalExercise,
               builder: (context, state){
                 if(state.hasStepAdditionalExercise){
                   hasAdditionalExercise = (state as StepAdditionalExerciseDefined).value;
@@ -672,7 +691,8 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                                   style: TextStyle(
                                     color: isAutoRest ?
                                     ColorApp.mainColor : Colors.black26,
-                                    fontSize: 20
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold
                                   ),
                                 );
                               },

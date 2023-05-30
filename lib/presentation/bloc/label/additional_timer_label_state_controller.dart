@@ -36,4 +36,18 @@ class AdditionalTimerLabelController extends Cubit<AdditionalTimerLabelState>{
     emit(StepAutoRestDefined(iAutoRest: isAutoRest));
   }
 
+  void isTimeDefined(String minuteLabel, String secondsLabel){
+    if(minuteLabel == '00' ||
+        secondsLabel == '00'){
+      emit(HasNoAdditionalTime());
+    }
+  }
+
+  void isStepTimeDefined(String minuteLabel, String secondsLabel){
+    if(minuteLabel == '00' ||
+        secondsLabel == '00'){
+      emit(HasNoStepAdditionalTime());
+    }
+  }
+
 }
