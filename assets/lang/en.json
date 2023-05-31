@@ -1,31 +1,29 @@
 {
   "intro": {
-    "firstPageLabel": "Did you forget what set you were during your workout?",
-    "secondPageLabel": "Your problems are solved!",
-    "thirdPageLabel": "Tell me your sets and how much time you will rest that I'll help you!",
-    "fourthPageLabel": "Oh! And if there is either an isometrics or an exercise execution time, you can tell me too!",
+    "firstPageLabel": "Did you happen to forget which set you were on during your workout?",
+    "secondPageLabel": "Your problems have been solved!",
+    "thirdPageLabel": "Let me know your sets and how long you plan to rest, and I'll assist you!",
+    "fourthPageLabel": "Oh, and if you have any isometric exercises or specific execution times, please let me know as well!",
     "fifthPageLabel": "So, let's go?!",
     "go": "GO",
     "allowNotification": "ALLOW",
-    "notificationDialogTitle": "Notification permission",
-    "notificationDialogContent": "Please grant us permission to notify you about the progress of your fitness countdown.",
     "notificationPermission": "Oh, I almost forgot! For a better experience, you will receive notifications about what's happening. If you wish to disable the notifications, you can go to the settings and edit the app permissions."
   },
   "helpPage": {
     "timerPage": {
-      "setsHelp": "This is where you select the total number of sets that will be performed.",
-      "restHelp": "This is where the total duration of rest for each set, in minutes and seconds, is defined.",
-      "isometricsHelp": "This is where the total duration of isometric/execution exercise is defined. Some examples could be a plank (Isometric exercise) or a running (Execution exercise)",
-      "autoRestHelp": "This is where, in case there is either an execution or isometric exercise, you can choose whether the rest time should automatically elapse after the isometric/execution exercise time has ended.",
-      "stepHelp": "These are the exercises that can be either defined or have already been defined. If an exercise has been defined, you can click on the corresponding number to edit it.",
+      "setsHelp": "This is where you can select the total number of sets to be performed.",
+      "restHelp": "This is where you define the total rest duration for each set, in minutes and seconds.",
+      "isometricsHelp": "This is where you define the duration of isometric or execution exercises. For example, an isometric exercise could be a plank, and an execution exercise could be running.",
+      "autoRestHelp": "This is where you can choose whether the rest time should automatically begin after the isometric or execution exercise time has ended, if applicable.",
+      "stepHelp": "These are the exercises that can be defined or have already been defined. If an exercise has been defined, you can click on the corresponding number to edit it.",
       "stepHelpTitle": "Exercise number"
     },
     "exerciseListSettingPage": {
-      "stepQuantityHelp": "This indicates the number of exercises that will be performed."
+      "stepQuantityHelp": "This indicates the number of exercises to be performed."
     },
     "timeCountPage": {
       "time": "Time",
-      "timeBeep": "When time reaches 10 seconds, it will emit a single beep. During the 3 last seconds, it will once per second."
+      "timeBeep": "When the timer reaches 10 seconds, it will emit a single beep. During the last 3 seconds, it will beep once per second."
     }
   },
   "exerciseList": {

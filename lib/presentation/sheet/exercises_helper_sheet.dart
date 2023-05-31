@@ -42,6 +42,48 @@ class ExercisesHelperSheet extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
+                                context.translate.get('helpPage.timerPage.stepHelpTitle'),
+                                style: TextStyle(
+                                    color: ColorApp.backgroundColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25,
+                                    shadows: const [
+                                      Shadow(
+                                          color: Colors.black26,
+                                          offset: Offset(1, 1)
+                                      )
+                                    ]
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                context.translate.get('helpPage.timerPage.stepHelp'),
+                                textAlign: TextAlign.justify,
+                                style: TextStyle(
+                                    color: ColorApp.backgroundColor,
+                                    fontSize: 18,
+                                    shadows: const [
+                                      Shadow(
+                                          color: Colors.black26,
+                                          offset: Offset(1, 1)
+                                      )
+                                    ]
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        SizedBox(
+                          width: context.width * .89,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
                                 context.translate.get('sets'),
                                 style: TextStyle(
                                     color: ColorApp.backgroundColor,
@@ -203,49 +245,7 @@ class ExercisesHelperSheet extends StatelessWidget {
                         ),
                         const SizedBox(
                           height: 15,
-                        ),
-                        SizedBox(
-                          width: context.width * .89,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                context.translate.get('helpPage.timerPage.stepHelpTitle'),
-                                style: TextStyle(
-                                    color: ColorApp.backgroundColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25,
-                                    shadows: const [
-                                      Shadow(
-                                        color: Colors.black26,
-                                        offset: Offset(1, 1)
-                                      )
-                                    ]
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                context.translate.get('helpPage.timerPage.stepHelp'),
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(
-                                    color: ColorApp.backgroundColor,
-                                    fontSize: 18,
-                                    shadows: const [
-                                      Shadow(
-                                          color: Colors.black26,
-                                          offset: Offset(1, 1)
-                                      )
-                                    ]
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
+                        )
                       ],
                     ),
                   ),
