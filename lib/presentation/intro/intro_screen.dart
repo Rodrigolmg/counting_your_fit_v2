@@ -2,11 +2,14 @@ import 'package:counting_your_fit_v2/access_status.dart';
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
+import 'package:counting_your_fit_v2/presentation/intro/bloc/intro_screen_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/intro/pages/fit_registering_page.dart';
+import 'package:counting_your_fit_v2/presentation/intro/pages/notification_permission_page.dart';
 import 'package:counting_your_fit_v2/presentation/intro/pages/other_exercises_page.dart';
 import 'package:counting_your_fit_v2/presentation/intro/pages/question_page.dart';
 import 'package:counting_your_fit_v2/presentation/intro/pages/solution_page.dart';
 import 'package:counting_your_fit_v2/presentation/intro/pages/workout_page.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +24,7 @@ class _IntroScreenState extends State<IntroScreen> {
 
   final PageController _pageController = PageController();
   int _pageIndex = 0;
+  final introStateController = IntroScreenStateController();
 
   _changePage(int pageIndex){
     _pageController.animateToPage(
@@ -39,6 +43,9 @@ class _IntroScreenState extends State<IntroScreen> {
     });
   }
 
+  Widget? navSuffix;
+  bool isNotificationAllowed = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +61,7 @@ class _IntroScreenState extends State<IntroScreen> {
           SolutionPage(),
           FitRegisteringPage(),
           OtherExercisesPage(),
+          NotificationPermissionPage(),
           WorkoutPage()
         ],
       ),
@@ -75,13 +83,13 @@ class _IntroScreenState extends State<IntroScreen> {
             ),
             AnimatedSmoothIndicator(
               activeIndex: _pageIndex,
-              count: 5,
+              count: 6,
               effect: ExpandingDotsEffect(
                 activeDotColor: ColorApp.mainColor,
                 dotColor: Colors.grey
               ),
             ),
-            if(_pageIndex == 4)
+            if(_pageIndex == 5)
               TextButton(
                 onPressed: (){
                   Navigator.pushReplacementNamed(

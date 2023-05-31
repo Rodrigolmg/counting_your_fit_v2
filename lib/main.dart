@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:counting_your_fit_v2/app_injector.dart';
 import 'package:counting_your_fit_v2/app_localizations.dart';
@@ -34,6 +32,7 @@ void initNotification(){
         channelDescription: 'Channel for individual exercise notification',
         defaultColor: ColorApp.backgroundColor,
         onlyAlertOnce: true,
+
       ),
       NotificationChannel(
         channelKey: 'list',
