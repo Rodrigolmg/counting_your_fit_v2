@@ -25,6 +25,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get_it/get_it.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class ExerciseListTimer extends StatefulWidget {
@@ -252,23 +253,28 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
 
   void notify(ExerciseListDefinitionStates state) async {
 
-    notificationBuilder = NotificationLabelBuilder(context, exerciseListDefinitionState: state);
+    if(await Permission.notification.request().isGranted){
+      if(context.mounted){
+        notificationBuilder = NotificationLabelBuilder(context, exerciseListDefinitionState: state);
 
-    Map<String, String> labels = notificationBuilder.build(
-      currentSet: currentSet,
-      setQuantity: currentExercise.set,
-      exerciseIndex: exerciseIndex
-    );
+        Map<String, String> labels = notificationBuilder.build(
+            currentSet: currentSet,
+            setQuantity: currentExercise.set,
+            exerciseIndex: exerciseIndex
+        );
 
-    await AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: 2,
-        channelKey: 'list',
-        notificationLayout: NotificationLayout.BigText,
-        title: labels['title'],
-        body: labels['body']
-      )
-    );
+        await AwesomeNotifications().createNotification(
+            content: NotificationContent(
+                id: 2,
+                channelKey: 'list',
+                notificationLayout: NotificationLayout.BigText,
+                title: labels['title'],
+                body: labels['body']
+            )
+        );
+      }
+    }
+
   }
 
   @override

@@ -5,7 +5,11 @@
     "thirdPageLabel": "Me fale suas séries e quanto tempo você irá descansar que eu te ajudo!",
     "fourthPageLabel": "Ah! E se tiver ou uma isometria ou um tempo de execução de exercício, você pode me falar também!",
     "fifthPageLabel": "Então, vamos treinar?!",
-    "go": "VAMOS"
+    "go": "VAMOS",
+    "allowNotification": "PERMITIR",
+    "notificationDialogTitle": "Permissão de notificação",
+    "notificationDialogContent": "Por favor nos dê permissão de notificar onde está a contagem do seu exercício?",
+    "notificationPermission": "Quase ia esquecendo! Para uma melhor experiência será notificado o que está acontecendo. Se quiser desabilitar as notificações, pode ir em ferramentas e editar as permissões do app."
   },
   "helpPage": {
     "timerPage": {

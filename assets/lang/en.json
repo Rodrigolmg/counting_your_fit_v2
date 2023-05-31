@@ -5,7 +5,11 @@
     "thirdPageLabel": "Tell me your sets and how much time you will rest that I'll help you!",
     "fourthPageLabel": "Oh! And if there is either an isometrics or an exercise execution time, you can tell me too!",
     "fifthPageLabel": "So, let's go?!",
-    "go": "GO"
+    "go": "GO",
+    "allowNotification": "ALLOW",
+    "notificationDialogTitle": "Notification permission",
+    "notificationDialogContent": "Please grant us permission to notify you about the progress of your fitness countdown.",
+    "notificationPermission": "Oh, I almost forgot! For a better experience, you will receive notifications about what's happening. If you wish to disable the notifications, you can go to the settings and edit the app permissions."
   },
   "helpPage": {
     "timerPage": {
