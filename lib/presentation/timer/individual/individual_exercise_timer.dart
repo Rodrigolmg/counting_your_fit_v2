@@ -70,6 +70,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   final finalTimePlayer = AudioPlayer(playerId: 'final')..setReleaseMode(ReleaseMode.stop);
   List<StreamSubscription> streams = [];
   double volume = 1.0;
+  bool fullVolumeSelected = true;
 
   // LOGICAL VALUE FOR PLAY FINAL BEEP ONLY ONE TIME
   int finalBeepPlayQuantity = 0;
@@ -615,35 +616,39 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
               Positioned(
                 bottom: height * .11,
                 child: SizedBox(
-                  width: width * .8,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BlocBuilder<IndividualBeepVolumeStateController, IndividualBeepVolumeState>(
-                        bloc: volumeController,
-                        builder: (context, state){
-                          if(state.isFullVolume){
-                            volumeIcon = FeatherIcons.volume2;
-                          } else if (state.isMidVolume){
-                            volumeIcon = FeatherIcons.volume1;
-                          } else if (state.isLowVolume){
-                            volumeIcon = FeatherIcons.volume;
-                          } else {
-                            volumeIcon = FeatherIcons.volumeX;
-                          }
-                          return Icon(
-                            volumeIcon ?? FeatherIcons.volume2,
-                            size: 30,
-                            color: ColorApp.mainColor,
-                          );
-                        },
-                      ),
-                      SizedBox(
-                        width: width * .7,
-                        child: BlocBuilder<IndividualBeepVolumeStateController, IndividualBeepVolumeState>(
-                          bloc: volumeController,
-                          builder: (context, state){
-                            return Slider(
+                  width: width * .9,
+                  child: BlocBuilder<IndividualBeepVolumeStateController, IndividualBeepVolumeState>(
+                    bloc: volumeController,
+                    builder: (context, state){
+                      if(state.isFullVolume){
+                        volumeIcon = FeatherIcons.volume2;
+                      } else if (state.isMidVolume){
+                        volumeIcon = FeatherIcons.volume1;
+                      } else if (state.isLowVolume){
+                        volumeIcon = FeatherIcons.volume;
+                      } else {
+                        volumeIcon = FeatherIcons.volumeX;
+                      }
+
+                      setPlayerVolume(state.volume);
+
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                              onPressed: (){
+                                // fullVolumeSelected = !fullVolumeSelected;
+                                volumeController.setVolumeOnClick(state.volume);
+                              },
+                              icon: Icon(
+                                volumeIcon ?? FeatherIcons.volume2,
+                                size: 30,
+                                color: ColorApp.mainColor,
+                              )
+                          ),
+                          SizedBox(
+                            width: width * .7,
+                            child: Slider(
                               value: state.volume,
                               onChanged: (volume){
                                 volumeController.setVolume(volume);
@@ -653,11 +658,11 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                               min: .0,
                               activeColor: ColorApp.mainColor,
                               inactiveColor: Colors.grey,
-                            );
-                          },
-                        ),
-                      )
-                    ],
+                            ),
+                          )
+                        ],
+                      );
+                    },
                   ),
                 )
               )

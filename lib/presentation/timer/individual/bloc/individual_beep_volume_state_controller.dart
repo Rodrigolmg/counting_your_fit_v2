@@ -19,4 +19,8 @@ class IndividualBeepVolumeStateController extends Cubit<IndividualBeepVolumeStat
     }
   }
 
+  void setVolumeOnClick(double volume){
+    emit(volume > 0 ? const NoVolume(0) : const FullVolume(1));
+  }
+
 }
