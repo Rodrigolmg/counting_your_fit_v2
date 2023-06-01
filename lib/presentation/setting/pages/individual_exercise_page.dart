@@ -434,14 +434,19 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                       const SizedBox(
                         width: 8,
                       ),
-                      Text(
-                        context.translate.get('autoRest'),
-                        style: TextStyle(
-                          color: isAutoRest ?
-                          ColorApp.mainColor : Colors.black26,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
-                        ),
+                      BlocBuilder<AdditionalTimerLabelController, AdditionalTimerLabelState>(
+                        bloc: additionalTimerLabelController,
+                        builder: (context, state){
+                          return Text(
+                            context.translate.get('autoRest'),
+                            style: TextStyle(
+                                color: isAutoRest ?
+                                ColorApp.mainColor : Colors.black26,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold
+                            ),
+                          );
+                        },
                       )
                     ],
                   ),

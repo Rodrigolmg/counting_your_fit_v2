@@ -69,7 +69,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   final threeSecondsPlayer = AudioPlayer(playerId: 'three')..setReleaseMode(ReleaseMode.stop);
   final finalTimePlayer = AudioPlayer(playerId: 'final')..setReleaseMode(ReleaseMode.stop);
   List<StreamSubscription> streams = [];
-  double volume = 1.0;
+  double oldVolume = 1.0;
   bool fullVolumeSelected = true;
 
   // LOGICAL VALUE FOR PLAY FINAL BEEP ONLY ONE TIME
@@ -93,6 +93,11 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   }
 
   void setPlayerVolume(double volume){
+
+    if(volume > 0){
+      oldVolume = volume;
+    }
+
     tenSecondsPlayer.setVolume(volume);
     threeSecondsPlayer.setVolume(volume);
     finalTimePlayer.setVolume(volume);
@@ -581,10 +586,11 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                       children: [
                         Text(
                           actionText,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 25,
-                              color: ColorApp.mainColor,
-                              fontWeight: FontWeight.w600
+                            fontSize: 25,
+                            color: ColorApp.mainColor,
+                            fontWeight: FontWeight.w600
                           ),
                         ),
                         if(state.isResting || state.isExecuting)

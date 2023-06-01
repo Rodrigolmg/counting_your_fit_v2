@@ -58,6 +58,7 @@
     "restingBody": "Descansando da série",
     "executingTitle": "Isometria/execução",
     "executingBody": "Executando exercício/isometria da série",
+    "executionFinishedTitle": "Execução/isometria",
     "executionFinishedBody": "Fim da execução/isometria. Vamos descansar da série",
     "remaining": "Faltam",
     "remainingSingular": "Falta",

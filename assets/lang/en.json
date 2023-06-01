@@ -46,7 +46,7 @@
     "of": "of",
     "resting": "Resting",
     "toRest": "Rest",
-    "toExecute": "Perform isometric/execute exercise",
+    "toExecute": "Perform isometry/execution",
     "executing": "Performing",
     "cancelTitle": "Stop exercise?",
     "cancelDescription": "Do you really want to stop the current exercise?"
@@ -56,6 +56,7 @@
     "restingBody": "Resting of set",
     "executingTitle": "Isometric/execution exercise",
     "executingBody": "Performing execution/isometric exercise",
+    "executionFinishedTitle": "Execution/isometric exercise",
     "executionFinishedBody": "Execution/isometric exercise finished. Let's rest of set",
     "remaining": "more setLabel to go.",
     "remainingSingular": "Remain",
