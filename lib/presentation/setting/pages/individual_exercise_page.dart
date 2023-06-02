@@ -249,10 +249,16 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
 
                       return Checkbox(
                         value: hasAdditionalExercise,
-                        onChanged: (hasMinuteTime || hasSecondsTime) ?
-                            (checkValue){
-                              timerLabelController.checkAdditional(checkValue ?? false);
-                        } : null,
+                        onChanged: (checkValue){
+
+                          if(hasMinuteTime || hasSecondsTime){
+                            timerLabelController.checkAdditional(checkValue ?? false);
+                          } else {
+                            timerLabelController.isTimeDefined(minuteLabel, secondsLabel);
+                            _shakeTimerKey.currentState?.shake();
+                          }
+
+                        },
                         checkColor: ColorApp.backgroundColor,
                         activeColor: ColorApp.mainColor,
                       );
@@ -420,12 +426,21 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
 
                             return Checkbox(
                               value: isAutoRest,
-                              onChanged: (isAdditionalMinuteDefined ||
-                                  isAdditionalSecondsDefined) ||
-                                  state.isAutoRestDefined ?
-                                  (checkValue){
+                              onChanged: (checkValue){
+                                if(hasMinuteTime || hasSecondsTime){
+                                  if((isAdditionalMinuteDefined ||
+                                      isAdditionalSecondsDefined) ||
+                                      state.isAutoRestDefined){
                                     additionalTimerLabelController.checkAutoRest(checkValue ?? false);
-                              } : null,
+                                  } else {
+                                    additionalTimerLabelController.isTimeDefined(additionalMinutes, additionalSeconds);
+                                    _shakeAdditionalKey.currentState?.shake();
+                                  }
+                                } else {
+                                  timerLabelController.isTimeDefined(minuteLabel, secondsLabel);
+                                  _shakeTimerKey.currentState?.shake();
+                                }
+                              },
                               checkColor: ColorApp.backgroundColor,
                               activeColor: ColorApp.mainColor,
                             );

@@ -473,12 +473,17 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
 
                         return Checkbox(
                           value: hasAdditionalExercise,
-                          onChanged: (minutesLabel != '00' ||
-                              secondsLabel != '00') || state.isTimerLabelSelected ?
-                          (checkValue){
-                            timerLabelController.checkStepAdditional(checkValue ?? false);
-                            additionalTimerLabelController.resetAdditionalTimer();
-                          } : null,
+                          onChanged: (checkValue){
+                            if((minutesLabel != '00' ||
+                                secondsLabel != '00') || state.isTimerLabelSelected){
+                              timerLabelController.checkStepAdditional(checkValue ?? false);
+                              additionalTimerLabelController.resetAdditionalTimer();
+                            } else {
+                              timerLabelController.isStepTimeDefined(minutesLabel, secondsLabel);
+                              stepTimerKey.currentState!.shake();
+                            }
+
+                          },
                           checkColor: ColorApp.backgroundColor,
                           activeColor: ColorApp.mainColor,
                         );
@@ -670,12 +675,23 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
 
                                   return Checkbox(
                                     value: isAutoRest,
-                                    onChanged: (additionalMinutesLabel != '00' ||
-                                        additionalSecondsLabel != '00') ||
-                                        state.isAdditionalTimerSelected ?
-                                        (checkValue){
-                                          additionalTimerLabelController.checkStepAutoRest(checkValue ?? false);
-                                    } : null,
+                                    onChanged: (checkValue){
+                                          if((minutesLabel != '00' ||
+                                              secondsLabel != '00') ||
+                                              timerLabelController.state.isTimerLabelSelected){
+                                            if((additionalMinutesLabel != '00' ||
+                                                additionalSecondsLabel != '00') ||
+                                                state.isAdditionalTimerSelected){
+                                              additionalTimerLabelController.checkStepAutoRest(checkValue ?? false);
+                                            } else {
+                                              additionalTimerLabelController.isStepTimeDefined(additionalMinutesLabel, additionalSecondsLabel);
+                                              stepTimerAdditionalKey.currentState!.shake();
+                                            }
+                                          } else {
+                                            timerLabelController.isStepTimeDefined(minutesLabel, secondsLabel);
+                                            stepTimerKey.currentState!.shake();
+                                          }
+                                    },
                                     checkColor: ColorApp.backgroundColor,
                                     activeColor: ColorApp.mainColor,
                                   );
