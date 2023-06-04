@@ -1,3 +1,5 @@
+import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
+
 abstract class AdditionalMinuteState{}
 
 extension AdditionalMinuteStateX on AdditionalMinuteState {
@@ -5,6 +7,7 @@ extension AdditionalMinuteStateX on AdditionalMinuteState {
   bool get isAdditionalMinuteDefined => this is AdditionalMinuteDefined;
   bool get isAdditionalMinuteReset => this is AdditionalMinuteReset;
   bool get isAdditionalMinuteSelected => this is AdditionalMinuteSelected;
+  bool get isExerciseAdditionalMinuteSelected => this is ExerciseAdditionalMinuteSelected;
 }
 
 class InitialAdditionalMinute implements AdditionalMinuteState {
@@ -20,6 +23,11 @@ class AdditionalMinuteDefined implements AdditionalMinuteState {
 class AdditionalMinuteSelected implements AdditionalMinuteState {
   final int? additionalMinuteSelected;
   const AdditionalMinuteSelected(this.additionalMinuteSelected);
+}
+
+class ExerciseAdditionalMinuteSelected implements AdditionalMinuteState {
+  final ExerciseSettingEntity exerciseSelected;
+  const ExerciseAdditionalMinuteSelected(this.exerciseSelected);
 }
 
 class AdditionalMinuteReset implements AdditionalMinuteState {
