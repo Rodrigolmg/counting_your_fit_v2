@@ -337,7 +337,11 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                     currentStepIndex = (state.value as int);
                   } else if (state.isNextStep){
                     currentStepIndex = (state.value as int);
-                    tempSteps.add(steps[currentStepIndex]);
+                    if(!tempSteps.asMap().containsKey(currentStepIndex)){
+                      if(steps.asMap().containsKey(currentStepIndex)){
+                        tempSteps.add(steps[currentStepIndex]);
+                      }
+                    }
                   }
 
                   return NumberStepper(
