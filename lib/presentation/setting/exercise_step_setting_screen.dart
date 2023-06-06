@@ -56,6 +56,7 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
   bool isAutoRest = false;
   final GlobalKey<ShakeErrorState> stepTimerKey = GlobalKey<ShakeErrorState>();
   final GlobalKey<ShakeErrorState> stepTimerAdditionalKey = GlobalKey<ShakeErrorState>();
+  final GlobalKey<ShakeErrorState> stepAdditionalCheckKey = GlobalKey<ShakeErrorState>();
 
   String minutesLabel = '00';
   String secondsLabel = '00';
@@ -486,69 +487,79 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    BlocBuilder<TimerLabelController, TimerLabelState>(
-                      bloc: timerLabelController,
-                      buildWhen: (oldState, currentState) =>
-                        currentState.hasStepAdditionalExercise ||
-                        currentState.isExerciseTimerLabelSelected,
-                      builder: (context, state){
+                ShakeError(
+                  key: stepAdditionalCheckKey,
+                  shakeOffset: 6,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      BlocBuilder<TimerLabelController, TimerLabelState>(
+                        bloc: timerLabelController,
+                        buildWhen: (oldState, currentState) =>
+                          currentState.hasStepAdditionalExercise ||
+                          currentState.isExerciseTimerLabelSelected ||
+                              currentState.hasStepNoAdditionalTime,
+                        builder: (context, state){
 
-                        if (state.hasStepAdditionalExercise){
-                          if(minutesLabel == '00' && secondsLabel == '00'){
-                            timerLabelController.checkStepAdditional(false);
-                          } else {
-                            hasAdditionalExercise = (state as StepAdditionalExerciseDefined).value;
-                          }
-                        } else if (state.isExerciseTimerLabelSelected){
-                          hasAdditionalExercise = (state as ExerciseTimerLabelSelected).exerciseSelected!.hasAdditionalTime ?? false;
-                        }
-
-                        return Checkbox(
-                          value: hasAdditionalExercise,
-                          onChanged: (checkValue){
-                            if((minutesLabel != '00' ||
-                                secondsLabel != '00') || state.isTimerLabelSelected){
-                              timerLabelController.checkStepAdditional(checkValue ?? false);
-                              additionalTimerLabelController.resetAdditionalTimer();
+                          if (state.hasStepAdditionalExercise){
+                            if(minutesLabel == '00' && secondsLabel == '00'){
+                              timerLabelController.checkStepAdditional(false);
                             } else {
-                              timerLabelController.isStepTimeDefined(minutesLabel, secondsLabel);
-                              stepTimerKey.currentState!.shake();
+                              hasAdditionalExercise = (state as StepAdditionalExerciseDefined).value;
                             }
+                          } else if (state.isExerciseTimerLabelSelected){
+                            hasAdditionalExercise = (state as ExerciseTimerLabelSelected).exerciseSelected!.hasAdditionalTime ?? false;
+                          }
 
-                          },
-                          checkColor: ColorApp.backgroundColor,
-                          activeColor: ColorApp.mainColor,
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    BlocBuilder<TimerLabelController, TimerLabelState>(
-                      bloc: timerLabelController,
-                      buildWhen: (oldState, currentState) =>
-                        currentState.hasStepAdditionalExercise ||
-                        currentState.isExerciseTimerLabelSelected,
-                      builder: (context, state){
-                        if (state.hasStepAdditionalExercise){
-                          hasAdditionalExercise = (state as StepAdditionalExerciseDefined).value;
-                        }
-                        return Text(
-                          context.translate.get('additionalExercise'),
-                          style: TextStyle(
-                            color: hasAdditionalExercise ?
-                            ColorApp.mainColor : Colors.black26,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold
-                          ),
-                        );
-                      },
-                    )
-                  ],
+                          return Checkbox(
+                            value: hasAdditionalExercise,
+                            onChanged: (checkValue){
+                              if((minutesLabel != '00' ||
+                                  secondsLabel != '00') || state.isTimerLabelSelected){
+                                timerLabelController.checkStepAdditional(checkValue ?? false);
+                                additionalTimerLabelController.resetAdditionalTimer();
+                              } else {
+                                timerLabelController.isStepTimeDefined(minutesLabel, secondsLabel);
+                                stepTimerKey.currentState!.shake();
+                              }
+                            },
+                            checkColor: ColorApp.backgroundColor,
+                            activeColor: ColorApp.mainColor,
+                          );
+                        },
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      BlocBuilder<TimerLabelController, TimerLabelState>(
+                        bloc: timerLabelController,
+                        buildWhen: (oldState, currentState) =>
+                          currentState.hasStepAdditionalExercise ||
+                          currentState.isExerciseTimerLabelSelected ||
+                          currentState.hasStepNoAdditionalTime,
+                        builder: (context, state){
+                          Color textColor = Colors.black26;
+
+                          if (state.hasStepAdditionalExercise){
+                            hasAdditionalExercise = (state as StepAdditionalExerciseDefined).value;
+                            textColor = hasAdditionalExercise ?
+                            ColorApp.mainColor : Colors.black26;
+                          } else if(state.hasStepNoAdditionalTime){
+                            textColor = ColorApp.errorColor;
+                          }
+                          return Text(
+                            context.translate.get('additionalExercise'),
+                            style: TextStyle(
+                              color: textColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
                 ),
                 BlocBuilder<TimerLabelController, TimerLabelState>(
                   bloc: timerLabelController,
@@ -725,21 +736,26 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
                                   return Checkbox(
                                     value: isAutoRest,
                                     onChanged: (checkValue){
-                                          if((minutesLabel != '00' ||
-                                              secondsLabel != '00') ||
-                                              timerLabelController.state.isTimerLabelSelected){
-                                            if((additionalMinutesLabel != '00' ||
-                                                additionalSecondsLabel != '00') ||
-                                                state.isAdditionalTimerSelected){
-                                              additionalTimerLabelController.checkStepAutoRest(checkValue ?? false);
-                                            } else {
-                                              additionalTimerLabelController.isStepTimeDefined(additionalMinutesLabel, additionalSecondsLabel);
-                                              stepTimerAdditionalKey.currentState!.shake();
-                                            }
-                                          } else {
-                                            timerLabelController.isStepTimeDefined(minutesLabel, secondsLabel);
-                                            stepTimerKey.currentState!.shake();
+                                        if((minutesLabel != '00' ||
+                                            secondsLabel != '00') ||
+                                            timerLabelController.state.isTimerLabelSelected){
+                                          if(!hasAdditionalExercise){
+                                            timerLabelController.checkStepAutoRestNoTime();
+                                            stepAdditionalCheckKey.currentState!.shake();
+                                            return;
                                           }
+                                          if((additionalMinutesLabel != '00' ||
+                                              additionalSecondsLabel != '00') ||
+                                              state.isAdditionalTimerSelected){
+                                            additionalTimerLabelController.checkStepAutoRest(checkValue ?? false);
+                                          } else {
+                                            additionalTimerLabelController.isStepTimeDefined(additionalMinutesLabel, additionalSecondsLabel);
+                                            stepTimerAdditionalKey.currentState!.shake();
+                                          }
+                                        } else {
+                                          timerLabelController.isStepTimeDefined(minutesLabel, secondsLabel);
+                                          stepTimerKey.currentState!.shake();
+                                        }
                                     },
                                     checkColor: ColorApp.backgroundColor,
                                     activeColor: ColorApp.mainColor,

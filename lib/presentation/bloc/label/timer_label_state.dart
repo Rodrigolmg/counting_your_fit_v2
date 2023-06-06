@@ -14,6 +14,8 @@ extension TimerLabelStateX on TimerLabelState{
   bool get hasAdditionalExercise => this is AdditionalExerciseDefined;
   bool get hasStepAdditionalExercise => this is StepAdditionalExerciseDefined;
   bool get hasNoTime => this is HasNoTime;
+  bool get hasNoAdditionalTime => this is HasNoAdditionalTime;
+  bool get hasStepNoAdditionalTime => this is HasStepNoAdditionalTime;
   bool get hasNoStepTime => this is HasNoStepTime;
 }
 
@@ -97,6 +99,22 @@ class StepAdditionalExerciseDefined implements TimerLabelState<bool>{
 class HasNoTime implements TimerLabelState<dynamic>{
 
   HasNoTime();
+
+  @override
+  get value => null;
+}
+
+class HasNoAdditionalTime implements TimerLabelState<dynamic>{
+
+  HasNoAdditionalTime();
+
+  @override
+  get value => null;
+}
+
+class HasStepNoAdditionalTime implements TimerLabelState<dynamic>{
+
+  HasStepNoAdditionalTime();
 
   @override
   get value => null;

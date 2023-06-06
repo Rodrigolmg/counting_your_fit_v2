@@ -58,4 +58,12 @@ class TimerLabelController extends Cubit<TimerLabelState>{
     }
   }
 
+  void checkAutoRestNoTime(){
+    emit(HasNoAdditionalTime());
+  }
+
+  void checkStepAutoRestNoTime(){
+    emit(HasStepNoAdditionalTime());
+  }
+
 }
