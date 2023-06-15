@@ -70,6 +70,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   final finalTimePlayer = AudioPlayer(playerId: 'final')..setReleaseMode(ReleaseMode.stop);
   List<StreamSubscription> streams = [];
   double oldVolume = 1.0;
+  double iconSize  = 80;
   bool fullVolumeSelected = true;
 
   // LOGICAL VALUE FOR PLAY FINAL BEEP ONLY ONE TIME
@@ -300,8 +301,8 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
       },
       onEnded: () {
         if(!hasEnded){
+          iconSize = 0;
           stopWatchTimer.onStopTimer();
-
           if(individualExerciseController.state.isResting){
             individualExerciseController.finishResting();
             isToExecute = (additionalMinuteValue != null && additionalMinuteValue! > 0)
@@ -341,6 +342,10 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
             }
           }
           hasEnded = true;
+          Future.delayed(
+            const Duration(milliseconds: 200),
+            () => iconSize = 80
+          );
           notify(individualExerciseController.state);
         }
       }
@@ -348,16 +353,23 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   }
 
   void onCountdownTimer(){
+    iconSize = 0;
+    Future.delayed(
+      const Duration(milliseconds: 250),
+      () {
+        if(isToExecute){
+          hasEnded = individualExerciseController.execute();
+        } else {
+          hasEnded = individualExerciseController.rest();
+        }
+      }
+    );
     finalBeepPlayQuantity = 0;
+    Future.delayed(
+      const Duration(milliseconds: 250),
+        () => iconSize = 80
+    );
     stopWatchTimer.onStartTimer();
-    setState(() {
-      hasEnded = false;
-    });
-    if(isToExecute){
-      individualExerciseController.execute();
-    } else {
-      individualExerciseController.rest();
-    }
     notify(individualExerciseController.state);
   }
 
@@ -470,7 +482,6 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
               ),
               BlocBuilder<IndividualExerciseController, IndividualExerciseState>(
                 bloc: individualExerciseController,
-                buildWhen: (oldState, currentState) => currentState.isNextSet,
                 builder: (context, state){
 
                   int set = state is NextSet ? state.nextSet : 1;
@@ -534,23 +545,52 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                                           )
                                         ]
                                     ),
-                                    child: Center(
-                                      child: Text(
-                                        displayTime,
-                                        style: TextStyle(
-                                          color: value >= 3999 ? ColorApp.backgroundColor
-                                              : ColorApp.errorColor2,
-                                          fontSize: 50,
-                                          shadows: const [
-                                            Shadow(
-                                              color: Colors.black26,
-                                              blurRadius: 2,
-                                              offset: Offset(2, 2)
-                                            )
-                                          ]
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Positioned.fill(
+                                          bottom: context.height * .08,
+                                          child: TweenAnimationBuilder<double>(
+                                            curve: Curves.easeOutQuad,
+                                            duration: const Duration(milliseconds: 550),
+                                            tween: Tween(begin: 80, end: iconSize),
+                                            builder: (context, tween, child) {
+
+                                              return Icon(
+                                                state.isResting || state.isExecuting ? Icons.timer : Icons.play_arrow,
+                                                color: ColorApp.backgroundColor,
+                                                size: tween,
+                                                shadows: const [
+                                                  Shadow(
+                                                      color: Colors.black26,
+                                                      blurRadius: 2,
+                                                      offset: Offset(2, 2)
+                                                  )
+                                                ],
+                                              );
+                                            },
+                                          ),
                                         ),
-                                        textAlign: TextAlign.center,
-                                      ),
+                                        Positioned.fill(
+                                          top: context.height * .15,
+                                          child: Text(
+                                            displayTime,
+                                            style: TextStyle(
+                                                color: value >= 3999 ? ColorApp.backgroundColor
+                                                    : ColorApp.errorColor2,
+                                                fontSize: 50,
+                                                shadows: const [
+                                                  Shadow(
+                                                      color: Colors.black26,
+                                                      blurRadius: 2,
+                                                      offset: Offset(2, 2)
+                                                  )
+                                                ]
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
