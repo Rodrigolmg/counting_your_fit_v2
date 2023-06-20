@@ -1,0 +1,83 @@
+{
+  "intro": {
+    "firstPageLabel": "Did you happen to forget which set you were on during your workout?",
+    "secondPageLabel": "Your problems have been solved!",
+    "thirdPageLabel": "Let me know your sets and how long you plan to rest, and I'll assist you!",
+    "fourthPageLabel": "Oh, and if you have any isometric exercises or specific execution times, please let me know as well!",
+    "fifthPageLabel": "So, let's go?!",
+    "go": "GO",
+    "allowNotification": "ALLOW",
+    "notificationPermission": "Oh, I almost forgot! For a better experience, you will receive notifications about what's happening. If you wish to disable the notifications, you can go to the settings and edit the app permissions."
+  },
+  "helpPage": {
+    "timerPage": {
+      "setsHelp": "This is where you can select the total number of sets to be performed.",
+      "restHelp": "This is where you define the total rest duration for each set, in minutes and seconds.",
+      "isometricsHelp": "This is where you define the duration of isometric or execution exercises. For example, an isometric exercise could be a plank, and an execution exercise could be running.",
+      "autoRestHelp": "This is where you can choose whether the rest time should automatically begin after the isometric or execution exercise time has ended, if applicable.",
+      "stepHelp": "These are the exercises that can be defined or have already been defined. If an exercise has been defined, you can click on the corresponding number to edit it.",
+      "stepHelpTitle": "Exercise number"
+    },
+    "exerciseListSettingPage": {
+      "stepQuantityHelp": "This indicates the number of exercises to be performed."
+    },
+    "timeCountPage": {
+      "time": "Time",
+      "timeBeep": "When the timer reaches 10 seconds, it will emit a single beep. During the last 3 seconds, it will beep once per second."
+    }
+  },
+  "exerciseList": {
+    "quantity": "Quantity",
+    "historyRegister": "Register for history",
+    "configureExercises": "Configure exercises",
+    "nextExercise": "Next",
+    "registerAndTrain": "Register & train"
+  },
+  "stepPage": {
+    "nextExercise": "Next exercise",
+    "editExercise": "Edit exercise",
+    "cancelTitle": "Stop exercises defining?",
+    "cancelDescription": "Do you really want to stop setting your exercises?"
+  },
+  "exerciseTimer": {
+    "exercise": "Exercise",
+    "set": "Set",
+    "lastSet": "Last set",
+    "of": "of",
+    "resting": "Resting",
+    "toRest": "Rest",
+    "toExecute": "Perform isometry/execution",
+    "executing": "Performing",
+    "cancelTitle": "Stop exercise?",
+    "cancelDescription": "Do you really want to stop the current exercise?"
+  },
+  "notification": {
+    "restingTitle": "Rest",
+    "restingBody": "Resting of set",
+    "executingTitle": "Isometric/execution exercise",
+    "executingBody": "Performing execution/isometric exercise",
+    "executionFinishedTitle": "Execution/isometric exercise",
+    "executionFinishedBody": "Execution/isometric exercise finished. Let's rest of set",
+    "remaining": "more setLabel to go.",
+    "remainingSingular": "Remain",
+    "finished": "finished",
+    "finishedPlural": "finished",
+    "nextExercise": "Let's go to the exercise",
+    "nextSet": "Let's go to the set",
+    "exerciseFinished": "Let's count another exercise!",
+    "exerciseFinishedPlural": "Let's count others exercises!"
+  },
+  "sets": "Sets",
+  "set": "Set",
+  "rest": "Time rest",
+  "additionalExercise": "Isometric exercise/Execution",
+  "autoRest": "Auto rest",
+  "timeLabel": "Time",
+  "train": "Workout",
+  "oneExercise": "Exercise",
+  "exercises": "Exercises",
+  "yes": "Yes",
+  "no": "No",
+  "closeAppTitle": "No more count?",
+  "closeAppDescription": "Do you really want to close your counting?"
+}
