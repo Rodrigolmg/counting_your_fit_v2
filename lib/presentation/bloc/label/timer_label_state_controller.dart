@@ -1,3 +1,4 @@
+import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,6 +28,10 @@ class TimerLabelController extends Cubit<TimerLabelState>{
     emit(TimerLabelSelected(timerSelected: timerSelected));
   }
 
+  void exerciseSelectTimer(ExerciseSettingEntity exerciseSelected){
+    emit(ExerciseTimerLabelSelected(exerciseSelected: exerciseSelected));
+  }
+
   void checkAdditional(bool hasAdditionalExercise){
     emit(AdditionalExerciseDefined(
         hasAdditionalExercise: hasAdditionalExercise)
@@ -51,6 +56,14 @@ class TimerLabelController extends Cubit<TimerLabelState>{
         seconds == '00'){
       emit(HasNoStepTime());
     }
+  }
+
+  void checkAutoRestNoTime(){
+    emit(HasNoAdditionalTime());
+  }
+
+  void checkStepAutoRestNoTime(){
+    emit(HasStepNoAdditionalTime());
   }
 
 }

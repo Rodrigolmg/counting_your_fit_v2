@@ -1,4 +1,6 @@
 
+import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
+
 abstract class SecondsState{}
 
 extension SecondsStateX on SecondsState{
@@ -6,6 +8,7 @@ extension SecondsStateX on SecondsState{
   bool get isSecondsDefined => this is SecondsDefined;
   bool get isSecondsReset => this is SecondsReset;
   bool get isSecondsSelected => this is SecondsSelected;
+  bool get isExerciseSecondsSelected => this is ExerciseSecondsSelected;
 }
 
 class InitialSecond implements SecondsState {
@@ -21,6 +24,11 @@ class SecondsDefined implements SecondsState {
 class SecondsSelected implements SecondsState {
   final int secondsSelected;
   const SecondsSelected(this.secondsSelected);
+}
+
+class ExerciseSecondsSelected implements SecondsState {
+  final ExerciseSettingEntity exerciseSelected;
+  const ExerciseSecondsSelected(this.exerciseSelected);
 }
 
 class SecondsReset implements SecondsState {

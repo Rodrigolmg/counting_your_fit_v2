@@ -46,6 +46,7 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
   bool hasSecondsTime = false;
   final _shakeTimerKey = GlobalKey<ShakeErrorState>();
   final _shakeAdditionalKey = GlobalKey<ShakeErrorState>();
+  final shakeAdditionalCheckKey = GlobalKey<ShakeErrorState>();
 
   String minuteLabel = '00';
   String secondsLabel = '00';
@@ -217,70 +218,85 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  BlocBuilder<TimerLabelController, TimerLabelState>(
-                    bloc: timerLabelController,
-                    builder: (context, state){
+              ShakeError(
+                key: shakeAdditionalCheckKey,
+                shakeOffset: 6,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    BlocBuilder<TimerLabelController, TimerLabelState>(
+                      bloc: timerLabelController,
+                      builder: (context, state){
 
-                      if(state.isMinuteLabelDefined){
-                        if((state.value as String) == '00'){
-                          if(!hasSecondsTime){
-                            timerLabelController.checkAdditional(false);
+                        if(state.isMinuteLabelDefined){
+                          if((state.value as String) == '00'){
+                            if(!hasSecondsTime){
+                              timerLabelController.checkAdditional(false);
+                            }
+                            hasMinuteTime = false;
+                          } else {
+                            hasMinuteTime = true;
                           }
-                          hasMinuteTime = false;
-                        } else {
-                          hasMinuteTime = true;
-                        }
-                      } else if (state.isSecondsLabelDefined){
-                        if((state.value as String) == '00'){
-                          if(!hasMinuteTime){
-                            timerLabelController.checkAdditional(false);
+                        } else if (state.isSecondsLabelDefined){
+                          if((state.value as String) == '00'){
+                            if(!hasMinuteTime){
+                              timerLabelController.checkAdditional(false);
+                            }
+                            hasSecondsTime = false;
+                          } else {
+                            hasSecondsTime = true;
                           }
-                          hasSecondsTime = false;
-                        } else {
-                          hasSecondsTime = true;
+                        } else if (state.hasAdditionalExercise){
+                          hasAdditionalExercise = (state as AdditionalExerciseDefined).value;
                         }
-                      } else if (state.hasAdditionalExercise){
-                        hasAdditionalExercise = (state as AdditionalExerciseDefined).value;
-                      }
 
-                      return Checkbox(
-                        value: hasAdditionalExercise,
-                        onChanged: (hasMinuteTime || hasSecondsTime) ?
-                            (checkValue){
+                        return Checkbox(
+                          value: hasAdditionalExercise,
+                          onChanged: (checkValue){
+
+                            if(hasMinuteTime || hasSecondsTime){
                               timerLabelController.checkAdditional(checkValue ?? false);
-                        } : null,
-                        checkColor: ColorApp.backgroundColor,
-                        activeColor: ColorApp.mainColor,
-                      );
-                    }
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  BlocBuilder<TimerLabelController, TimerLabelState>(
-                    bloc: timerLabelController,
-                    builder: (context, state){
+                            } else {
+                              timerLabelController.isTimeDefined(minuteLabel, secondsLabel);
+                              _shakeTimerKey.currentState?.shake();
+                            }
 
-                      if (state.hasAdditionalExercise){
-                        hasAdditionalExercise = (state as AdditionalExerciseDefined).value;
+                          },
+                          checkColor: ColorApp.backgroundColor,
+                          activeColor: ColorApp.mainColor,
+                        );
                       }
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    BlocBuilder<TimerLabelController, TimerLabelState>(
+                      bloc: timerLabelController,
+                      builder: (context, state){
 
-                      return Text(
-                        context.translate.get('additionalExercise'),
-                        style: TextStyle(
-                          color: hasAdditionalExercise ?
-                          ColorApp.mainColor : Colors.black26,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
-                        ),
-                      );
-                    }
-                  )
-                ],
+                        Color textColor = Colors.black26;
+
+                        if (state.hasAdditionalExercise){
+                          hasAdditionalExercise = (state as AdditionalExerciseDefined).value;
+                          textColor = hasAdditionalExercise ?
+                          ColorApp.mainColor : Colors.black26;
+                        } else if(state.hasNoAdditionalTime){
+                          textColor = ColorApp.errorColor;
+                        }
+
+                        return Text(
+                          context.translate.get('additionalExercise'),
+                          style: TextStyle(
+                            color: textColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
+                          ),
+                        );
+                      }
+                    )
+                  ],
+                ),
               ),
               BlocBuilder<TimerLabelController, TimerLabelState>(
                 bloc: timerLabelController,
@@ -420,12 +436,28 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
 
                             return Checkbox(
                               value: isAutoRest,
-                              onChanged: (isAdditionalMinuteDefined ||
-                                  isAdditionalSecondsDefined) ||
-                                  state.isAutoRestDefined ?
-                                  (checkValue){
+                              onChanged: (checkValue){
+                                if(hasMinuteTime || hasSecondsTime){
+
+                                  if(!hasAdditionalExercise){
+                                    timerLabelController.checkAutoRestNoTime();
+                                    shakeAdditionalCheckKey.currentState!.shake();
+                                    return;
+                                  }
+
+                                  if((isAdditionalMinuteDefined ||
+                                      isAdditionalSecondsDefined) ||
+                                      state.isAutoRestDefined){
                                     additionalTimerLabelController.checkAutoRest(checkValue ?? false);
-                              } : null,
+                                  } else {
+                                    additionalTimerLabelController.isTimeDefined(additionalMinutes, additionalSeconds);
+                                    _shakeAdditionalKey.currentState?.shake();
+                                  }
+                                } else {
+                                  timerLabelController.isTimeDefined(minuteLabel, secondsLabel);
+                                  _shakeTimerKey.currentState?.shake();
+                                }
+                              },
                               checkColor: ColorApp.backgroundColor,
                               activeColor: ColorApp.mainColor,
                             );

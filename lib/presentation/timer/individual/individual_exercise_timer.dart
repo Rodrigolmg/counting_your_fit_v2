@@ -15,8 +15,10 @@ import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controlle
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_states.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
 import 'package:counting_your_fit_v2/presentation/sheet/timer_helper_sheet.dart';
-import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/individual_beep_volume_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/individual_beep_volume_states.dart';
+import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/beep/individual_beep_volume_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/beep/individual_beep_volume_states.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/icon/button_icon_state.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/icon/button_icon_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/util/notification/notification_label_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,6 +52,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   final additionalMinuteController = GetIt.I.get<AdditionalMinuteStateController>();
   final additionalSecondsController = GetIt.I.get<AdditionalSecondsStateController>();
   final volumeController = IndividualBeepVolumeStateController();
+  final iconController = ButtonIconStateController();
 
   // EXERCISES VALUES
   int setQuantity = 0;
@@ -70,6 +73,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   final finalTimePlayer = AudioPlayer(playerId: 'final')..setReleaseMode(ReleaseMode.stop);
   List<StreamSubscription> streams = [];
   double oldVolume = 1.0;
+  double iconSize  = 80;
   bool fullVolumeSelected = true;
 
   // LOGICAL VALUE FOR PLAY FINAL BEEP ONLY ONE TIME
@@ -300,8 +304,14 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
       },
       onEnded: () {
         if(!hasEnded){
+          iconSize = 0;
+          Future.delayed(
+              const Duration(milliseconds: 200),
+              () {
+                iconController.isPlayIcon();
+              }
+          );
           stopWatchTimer.onStopTimer();
-
           if(individualExerciseController.state.isResting){
             individualExerciseController.finishResting();
             isToExecute = (additionalMinuteValue != null && additionalMinuteValue! > 0)
@@ -341,6 +351,10 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
             }
           }
           hasEnded = true;
+          Future.delayed(
+            const Duration(milliseconds: 200),
+            () => iconSize = 80
+          );
           notify(individualExerciseController.state);
         }
       }
@@ -348,16 +362,33 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   }
 
   void onCountdownTimer(){
-    finalBeepPlayQuantity = 0;
-    stopWatchTimer.onStartTimer();
-    setState(() {
-      hasEnded = false;
-    });
-    if(isToExecute){
-      individualExerciseController.execute();
-    } else {
-      individualExerciseController.rest();
+    if(individualExerciseController.state.isExecuting ||
+      individualExerciseController.state.isResting){
+      return;
     }
+
+    iconSize = 0;
+    Future.delayed(
+      const Duration(milliseconds: 250),
+      () {
+        if(isToExecute){
+          iconController.isExecutingIcon();
+        } else {
+          iconController.isRestingIcon();
+        }
+      }
+    );
+    if(isToExecute){
+      hasEnded = individualExerciseController.execute();
+    } else {
+      hasEnded = individualExerciseController.rest();
+    }
+    finalBeepPlayQuantity = 0;
+    Future.delayed(
+      const Duration(milliseconds: 250),
+        () => iconSize = 80
+    );
+    stopWatchTimer.onStartTimer();
     notify(individualExerciseController.state);
   }
 
@@ -512,11 +543,6 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                               Center(
                                 child: GestureDetector(
                                   onTap: () {
-
-                                    if(state.isResting || state.isExecuting){
-                                      return;
-                                    }
-
                                     onCountdownTimer();
                                   },
                                   child: Container(
@@ -534,23 +560,67 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                                           )
                                         ]
                                     ),
-                                    child: Center(
-                                      child: Text(
-                                        displayTime,
-                                        style: TextStyle(
-                                          color: value >= 3999 ? ColorApp.backgroundColor
-                                              : ColorApp.errorColor2,
-                                          fontSize: 50,
-                                          shadows: const [
-                                            Shadow(
-                                              color: Colors.black26,
-                                              blurRadius: 2,
-                                              offset: Offset(2, 2)
-                                            )
-                                          ]
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        BlocBuilder<ButtonIconStateController, ButtonIconState>(
+                                          bloc: iconController,
+                                          builder: (context, state) {
+                                            return Positioned.fill(
+                                              bottom: context.height * .08,
+                                              child: TweenAnimationBuilder<double>(
+                                                curve: Curves.easeOutQuad,
+                                                duration: const Duration(milliseconds: 550),
+                                                tween: Tween(begin: 80, end: iconSize),
+                                                builder: (context, tween, child) {
+
+                                                  IconData icon = Icons.play_arrow;
+
+                                                  if(state.isPlayIcon) {
+                                                    icon = Icons.play_arrow;
+                                                  } else if (state.isRestingIcon) {
+                                                    icon = Icons.timer;
+                                                  } else {
+                                                    icon = Icons.run_circle_outlined;
+                                                  }
+
+                                                  return Icon(
+                                                    icon,
+                                                    color: ColorApp.backgroundColor,
+                                                    size: tween,
+                                                    shadows: const [
+                                                      Shadow(
+                                                          color: Colors.black26,
+                                                          blurRadius: 2,
+                                                          offset: Offset(2, 2)
+                                                      )
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
                                         ),
-                                        textAlign: TextAlign.center,
-                                      ),
+                                        Positioned.fill(
+                                          top: context.height * .15,
+                                          child: Text(
+                                            displayTime,
+                                            style: TextStyle(
+                                                color: value >= 3999 ? ColorApp.backgroundColor
+                                                    : ColorApp.errorColor2,
+                                                fontSize: 50,
+                                                shadows: const [
+                                                  Shadow(
+                                                      color: Colors.black26,
+                                                      blurRadius: 2,
+                                                      offset: Offset(2, 2)
+                                                  )
+                                                ]
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),

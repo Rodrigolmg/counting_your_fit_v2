@@ -1,3 +1,5 @@
+import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
+
 abstract class AdditionalTimerLabelState<T> {
   T get value;
 }
@@ -8,6 +10,7 @@ extension TimerLabelStateX on AdditionalTimerLabelState{
   bool get isAdditionalSecondsLabelDefined => this is AdditionalSecondsLabelDefined;
   bool get isAdditionalTimerReset => this is AdditionalTimerReset;
   bool get isAdditionalTimerSelected => this is AdditionalTimeLabelSelected;
+  bool get isExerciseAdditionalTimeLabelSelected => this is ExerciseAdditionalTimeLabelSelected;
   bool get isAutoRestDefined => this is AutoRestDefined;
   bool get isStepAutoRestDefined => this is StepAutoRestDefined;
   bool get hasNoAdditionalTime => this is HasNoAdditionalTime;
@@ -46,6 +49,30 @@ class AdditionalTimeLabelSelected implements AdditionalTimerLabelState<String?>{
 
   @override
   String? get value => additionalTimeSelected;
+
+}
+
+class ExerciseAdditionalTimeLabelSelected implements AdditionalTimerLabelState<String?>{
+  final ExerciseSettingEntity? exerciseSelected;
+
+  const ExerciseAdditionalTimeLabelSelected({this.exerciseSelected});
+
+  @override
+  String? get value {
+    String minute = '00';
+    String seconds = '00';
+
+    if(exerciseSelected!.additionalMinute != null){
+      minute = exerciseSelected!.additionalMinute! <= 9 ? '0${exerciseSelected!.additionalMinute}' : exerciseSelected!.additionalMinute.toString();
+    }
+
+    if(exerciseSelected!.additionalSeconds != null){
+      seconds = exerciseSelected!.additionalSeconds! <= 9 ? '0${exerciseSelected!.additionalSeconds}' : exerciseSelected!.additionalSeconds.toString();
+    }
+
+
+    return '$minute:$seconds';
+  }
 
 }
 
