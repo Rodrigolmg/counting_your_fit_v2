@@ -17,8 +17,8 @@ import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/indivi
 import 'package:counting_your_fit_v2/presentation/sheet/timer_helper_sheet.dart';
 import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/beep/individual_beep_volume_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/beep/individual_beep_volume_states.dart';
-import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/icon/button_icon_state.dart';
-import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/icon/button_icon_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/icon/button_icon_state.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/icon/button_icon_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/util/notification/notification_label_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -362,6 +362,11 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   }
 
   void onCountdownTimer(){
+    if(individualExerciseController.state.isExecuting ||
+      individualExerciseController.state.isResting){
+      return;
+    }
+
     iconSize = 0;
     Future.delayed(
       const Duration(milliseconds: 250),
@@ -538,11 +543,6 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                               Center(
                                 child: GestureDetector(
                                   onTap: () {
-
-                                    if(state.isResting || state.isExecuting){
-                                      return;
-                                    }
-
                                     onCountdownTimer();
                                   },
                                   child: Container(

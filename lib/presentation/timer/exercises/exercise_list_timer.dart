@@ -8,6 +8,8 @@ import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
 import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/icon/button_icon_state.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/icon/button_icon_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/minute/additional_minute_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/seconds/additional_seconds_state_controller.dart';
@@ -51,6 +53,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
   final additionalMinuteController = GetIt.I.get<AdditionalMinuteStateController>();
   final additionalSecondsController = GetIt.I.get<AdditionalSecondsStateController>();
   final volumeController = ExercisesBeepVolumeStateController();
+  final iconController = ButtonIconStateController();
 
   // EXERCISES VALUES
   List<ExerciseSettingEntity> exercises = [];
@@ -69,6 +72,8 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
   final finalTimePlayer = AudioPlayer(playerId: 'final2')..setReleaseMode(ReleaseMode.stop);
   List<StreamSubscription> streams = [];
   IconData? volumeIcon;
+
+  double iconSize  = 80;
 
   // LOGICAL VALUE FOR PLAY FINAL BEEP ONLY ONE TIME
   int finalBeepPlayQuantity = 0;
@@ -316,6 +321,13 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
       },
       onEnded: () {
         if(!hasEnded){
+          iconSize = 0;
+          Future.delayed(
+              const Duration(milliseconds: 200),
+                  () {
+                iconController.isPlayIcon();
+              }
+          );
           stopWatchTimer.onStopTimer();
 
           if(exerciseListDefinitionController.state.isCurrentResting){
@@ -367,21 +379,42 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
             }
           }
           hasEnded = true;
+          Future.delayed(
+              const Duration(milliseconds: 200),
+                  () => iconSize = 80
+          );
         }
       }
     );
   }
 
   void onCountdownTimer(){
+    if(exerciseListDefinitionController.state.isCurrentExecuting ||
+        exerciseListDefinitionController.state.isCurrentResting){
+      return;
+    }
+
+    iconSize = 0;
+    Future.delayed(
+      const Duration(milliseconds: 250),
+      () {
+        if(isToExecute){
+          iconController.isExecutingIcon();
+        } else {
+          iconController.isRestingIcon();
+        }
+      }
+    );
     finalBeepPlayQuantity = 0;
+    Future.delayed(
+        const Duration(milliseconds: 250),
+            () => iconSize = 80
+    );
     stopWatchTimer.onStartTimer();
-    setState(() {
-      hasEnded = false;
-    });
     if(isToExecute){
-      exerciseListDefinitionController.executeCurrent();
+      hasEnded = exerciseListDefinitionController.executeCurrent();
     } else {
-      exerciseListDefinitionController.restCurrent();
+      hasEnded = exerciseListDefinitionController.restCurrent();
     }
     notify(exerciseListDefinitionController.state);
   }
@@ -536,10 +569,6 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
                               Center(
                                 child: GestureDetector(
                                   onTap: () {
-                                    if(state.isCurrentResting || state.isCurrentExecuting){
-                                      return;
-                                    }
-
                                     onCountdownTimer();
                                   },
                                   child: Container(
@@ -557,23 +586,67 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
                                           )
                                         ]
                                     ),
-                                    child: Center(
-                                      child: Text(
-                                        displayTime,
-                                        style: TextStyle(
-                                          color: value >= 3999 ? ColorApp.backgroundColor
-                                              : ColorApp.errorColor2,
-                                          fontSize: 50,
-                                          shadows: const [
-                                            Shadow(
-                                              color: Colors.black26,
-                                              blurRadius: 2,
-                                              offset: Offset(2, 2)
-                                            )
-                                          ]
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        BlocBuilder<ButtonIconStateController, ButtonIconState>(
+                                          bloc: iconController,
+                                          builder: (context, state) {
+                                            return Positioned.fill(
+                                              bottom: context.height * .08,
+                                              child: TweenAnimationBuilder<double>(
+                                                curve: Curves.easeOutQuad,
+                                                duration: const Duration(milliseconds: 550),
+                                                tween: Tween(begin: 80, end: iconSize),
+                                                builder: (context, tween, child) {
+
+                                                  IconData icon = Icons.play_arrow;
+
+                                                  if(state.isPlayIcon) {
+                                                    icon = Icons.play_arrow;
+                                                  } else if (state.isRestingIcon) {
+                                                    icon = Icons.timer;
+                                                  } else {
+                                                    icon = Icons.run_circle_outlined;
+                                                  }
+
+                                                  return Icon(
+                                                    icon,
+                                                    color: ColorApp.backgroundColor,
+                                                    size: tween,
+                                                    shadows: const [
+                                                      Shadow(
+                                                          color: Colors.black26,
+                                                          blurRadius: 2,
+                                                          offset: Offset(2, 2)
+                                                      )
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
                                         ),
-                                        textAlign: TextAlign.center,
-                                      ),
+                                        Positioned.fill(
+                                          top: context.height * .15,
+                                          child: Text(
+                                            displayTime,
+                                            style: TextStyle(
+                                                color: value >= 3999 ? ColorApp.backgroundColor
+                                                    : ColorApp.errorColor2,
+                                                fontSize: 50,
+                                                shadows: const [
+                                                  Shadow(
+                                                      color: Colors.black26,
+                                                      blurRadius: 2,
+                                                      offset: Offset(2, 2)
+                                                  )
+                                                ]
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          )
+                                        )
+                                      ],
                                     ),
                                   ),
                                 ),

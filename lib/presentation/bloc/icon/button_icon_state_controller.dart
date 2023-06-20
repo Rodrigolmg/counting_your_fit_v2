@@ -1,4 +1,4 @@
-import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/icon/button_icon_state.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/icon/button_icon_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ButtonIconStateController extends Cubit<ButtonIconState> {
