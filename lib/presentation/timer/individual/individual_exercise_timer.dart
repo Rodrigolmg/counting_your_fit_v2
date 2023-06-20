@@ -15,8 +15,10 @@ import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controlle
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_states.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
 import 'package:counting_your_fit_v2/presentation/sheet/timer_helper_sheet.dart';
-import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/individual_beep_volume_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/individual_beep_volume_states.dart';
+import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/beep/individual_beep_volume_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/beep/individual_beep_volume_states.dart';
+import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/icon/button_icon_state.dart';
+import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/icon/button_icon_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/util/notification/notification_label_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,6 +52,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   final additionalMinuteController = GetIt.I.get<AdditionalMinuteStateController>();
   final additionalSecondsController = GetIt.I.get<AdditionalSecondsStateController>();
   final volumeController = IndividualBeepVolumeStateController();
+  final iconController = ButtonIconStateController();
 
   // EXERCISES VALUES
   int setQuantity = 0;
@@ -302,6 +305,12 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
       onEnded: () {
         if(!hasEnded){
           iconSize = 0;
+          Future.delayed(
+              const Duration(milliseconds: 200),
+              () {
+                iconController.isPlayIcon();
+              }
+          );
           stopWatchTimer.onStopTimer();
           if(individualExerciseController.state.isResting){
             individualExerciseController.finishResting();
@@ -358,12 +367,17 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
       const Duration(milliseconds: 250),
       () {
         if(isToExecute){
-          hasEnded = individualExerciseController.execute();
+          iconController.isExecutingIcon();
         } else {
-          hasEnded = individualExerciseController.rest();
+          iconController.isRestingIcon();
         }
       }
     );
+    if(isToExecute){
+      hasEnded = individualExerciseController.execute();
+    } else {
+      hasEnded = individualExerciseController.rest();
+    }
     finalBeepPlayQuantity = 0;
     Future.delayed(
       const Duration(milliseconds: 250),
@@ -482,6 +496,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
               ),
               BlocBuilder<IndividualExerciseController, IndividualExerciseState>(
                 bloc: individualExerciseController,
+                buildWhen: (oldState, currentState) => currentState.isNextSet,
                 builder: (context, state){
 
                   int set = state is NextSet ? state.nextSet : 1;
@@ -548,28 +563,43 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
                                     child: Stack(
                                       alignment: Alignment.center,
                                       children: [
-                                        Positioned.fill(
-                                          bottom: context.height * .08,
-                                          child: TweenAnimationBuilder<double>(
-                                            curve: Curves.easeOutQuad,
-                                            duration: const Duration(milliseconds: 550),
-                                            tween: Tween(begin: 80, end: iconSize),
-                                            builder: (context, tween, child) {
+                                        BlocBuilder<ButtonIconStateController, ButtonIconState>(
+                                          bloc: iconController,
+                                          builder: (context, state) {
+                                            return Positioned.fill(
+                                              bottom: context.height * .08,
+                                              child: TweenAnimationBuilder<double>(
+                                                curve: Curves.easeOutQuad,
+                                                duration: const Duration(milliseconds: 550),
+                                                tween: Tween(begin: 80, end: iconSize),
+                                                builder: (context, tween, child) {
 
-                                              return Icon(
-                                                state.isResting || state.isExecuting ? Icons.timer : Icons.play_arrow,
-                                                color: ColorApp.backgroundColor,
-                                                size: tween,
-                                                shadows: const [
-                                                  Shadow(
-                                                      color: Colors.black26,
-                                                      blurRadius: 2,
-                                                      offset: Offset(2, 2)
-                                                  )
-                                                ],
-                                              );
-                                            },
-                                          ),
+                                                  IconData icon = Icons.play_arrow;
+
+                                                  if(state.isPlayIcon) {
+                                                    icon = Icons.play_arrow;
+                                                  } else if (state.isRestingIcon) {
+                                                    icon = Icons.timer;
+                                                  } else {
+                                                    icon = Icons.run_circle_outlined;
+                                                  }
+
+                                                  return Icon(
+                                                    icon,
+                                                    color: ColorApp.backgroundColor,
+                                                    size: tween,
+                                                    shadows: const [
+                                                      Shadow(
+                                                          color: Colors.black26,
+                                                          blurRadius: 2,
+                                                          offset: Offset(2, 2)
+                                                      )
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
                                         ),
                                         Positioned.fill(
                                           top: context.height * .15,

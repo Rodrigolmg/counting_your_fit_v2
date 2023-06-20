@@ -1,4 +1,4 @@
-import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/individual_beep_volume_states.dart';
+import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/beep/individual_beep_volume_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class IndividualBeepVolumeStateController extends Cubit<IndividualBeepVolumeState>{
