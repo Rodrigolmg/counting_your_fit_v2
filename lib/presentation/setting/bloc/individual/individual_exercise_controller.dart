@@ -31,12 +31,14 @@ class IndividualExerciseController extends Cubit<IndividualExerciseState>{
     emit(const ExerciseStarted());
   }
 
-  void rest(){
+  bool rest(){
     emit(const Resting());
+    return false;
   }
 
-  void execute(){
+  bool execute(){
     emit(const Executing());
+    return false;
   }
 
   void cancelExecution(){
