@@ -319,8 +319,9 @@ class _IndividualExercisePageState extends State<IndividualExercisePage> {
                           Text(
                             '${context.translate.get('timeLabel')}:',
                             style: TextStyle(
-                                color: ColorApp.mainColor ,
-                                fontSize: 20
+                              color: ColorApp.mainColor ,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold
                             ),
                           ),
                           const SizedBox(

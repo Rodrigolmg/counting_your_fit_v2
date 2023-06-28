@@ -155,33 +155,6 @@ class _ExerciseStepSettingScreenState extends State<ExerciseStepSettingScreen> {
       additionalTimerLabelController.selectExerciseAdditionalTimer(exercise);
       additionalMinuteController.selectExerciseAdditionalMinute(exercise);
       additionalSecondsController.selectExerciseAdditionalSeconds(exercise);
-
-      // minuteController.selectMinute(exercise.minute);
-      // secondsController.selectSeconds(exercise.seconds);
-      // String minuteLabel = exercise.minute <= 9 ? '0${exercise.minute}' : exercise.minute.toString();
-      // String secondsLabelValue = exercise.seconds <= 9 ? '0${exercise.seconds}' : exercise.seconds.toString();
-      // minutesLabel = minuteLabel;
-      // secondsLabel = secondsLabelValue;
-      // timerLabelController.checkStepAdditional(exercise.hasAdditionalTime ?? false);
-      // timerLabelController.selectTimer('$minuteLabel:$secondsLabelValue');
-      //
-      // // ADDITIONAL TIME
-      // additionalMinuteController.selectAdditionalMinute(exercise.additionalMinute);
-      // additionalSecondsController.selectAdditionalSeconds(exercise.additionalSeconds);
-      // String additionalMinuteLabel = exercise.additionalMinute != null &&
-      //     exercise.additionalMinute! <= 9 ? '0${exercise.additionalMinute}' :
-      // exercise.additionalMinute.toString();
-      // String additionalSecondsLabel = exercise.additionalSeconds != null &&
-      //     exercise.additionalSeconds! <= 9 ? '0${exercise.additionalSeconds}'
-      //     : exercise.additionalSeconds.toString();
-      // additionalTimerLabelController.selectAdditionalTimer('$additionalMinuteLabel:$additionalSecondsLabel');
-      //
-      // Future.delayed(
-      //   const Duration(microseconds: 950),
-      //     (){
-      //       additionalTimerLabelController.checkStepAutoRest(exercise!.isAutoRest ?? false);
-      //     }
-      // );
     } else {
       stepController.selectStep(stepIndex);
       setsController.resetSet();
