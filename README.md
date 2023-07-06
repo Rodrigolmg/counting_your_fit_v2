@@ -1,16 +1,8 @@
-# counting_your_fit_v2
+# Counting Your Fit 
 
-A new Flutter project.
+Set the number of sets for your exercise and define the rest time between them.
 
-## Getting Started
+The simplest and most intuitive app for exercise counting and tracking sets, with the rest time you need! With this countdown, you can keep track of your current set and have the exact rest time counted down to start the next one. Fast and practical, no fuss, just input your sets, rest time, and start your workout!
 
-This project is a starting point for a Flutter application.
+You can have a list of exercises to do and choose between setting your sets and rest time individually, meaning before each exercise, define how many sets and the rest time between them. Alternatively, you can define a pre-determined list in the order you've already prepared, so the app shows you which exercise to do, along with its sets and rest time.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
