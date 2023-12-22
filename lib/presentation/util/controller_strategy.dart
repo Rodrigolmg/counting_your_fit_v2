@@ -1,5 +1,4 @@
 import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_controller.dart';
 import 'package:counting_your_fit_v2/presentation/setting/bloc/definition/settings_definition_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/util/abstract_controller.dart';
 import 'package:get_it/get_it.dart';

@@ -13,10 +13,10 @@ packages:
     dependency: transitive
     description:
       name: animated_box_decoration
-      sha256: "543f6f1c55c26b1ffb763181b6cfe567552c6c3a3e3c6fb921917df315bf24c8"
+      sha256: "4f36e77ed62a5420e9d0b5ee6c84b15fb210ed61154e6d0a0a5c7404b332e543"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.6"
+    version: "0.0.7"
   animated_text_kit:
     dependency: "direct main"
     description:
@@ -93,10 +93,10 @@ packages:
     dependency: "direct main"
     description:
       name: awesome_notifications
-      sha256: "6ba98d73553c8a54e7b77f8dd8b95ce9d32a7839ef182b28cf2ad54ec28b1821"
+      sha256: "327162c36a1476978f89638741da618cac42356aabc39a5035b6c206d8fca978"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.5-dev.3"
+    version: "0.7.7"
   bloc:
     dependency: "direct main"
     description:
@@ -157,10 +157,10 @@ packages:
     dependency: transitive
     description:
       name: dimension
-      sha256: fe4523302f9f9dd1e02693661e325901481c6756ea9ada0d762dc08cc28af55d
+      sha256: "50d0df1353a5a16c608a888549976765e34ccb216f1e4fe5415196d6b3d0c5b6"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.6"
+    version: "0.1.7"
   fake_async:
     dependency: transitive
     description:
@@ -202,10 +202,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_class_parser
-      sha256: c5826e597e3c9b948cb338254812461249857d2c26b328930ef21d41b11554c5
+      sha256: d975dd35ec7a93fd6099309496d423211145039a97d09d192cae013ff6fb10d9
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.4"
+    version: "0.2.5"
   flutter_feather_icons:
     dependency: "direct main"
     description:
@@ -353,10 +353,10 @@ packages:
     dependency: "direct main"
     description:
       name: morphable_shape
-      sha256: "962421dd9ab29053d9d90c6109dc32856e74be62489e960ed4471162616cb16f"
+      sha256: "2b757507051e083c6a410df905921dddb2b12edf305d2ae84d1e6d971246934a"
       url: "https://pub.dev"
     source: hosted
-    version: "1.6.5"
+    version: "1.6.6"
   nested:
     dependency: transitive
     description:
@@ -481,10 +481,10 @@ packages:
     dependency: transitive
     description:
       name: plugin_platform_interface
-      sha256: "6a2128648c854906c53fa8e33986fc0247a1116122f9534dd20e3ab9e16a32bc"
+      sha256: f4f88d4a900933e7267e2b353594774fc0d07fb072b47eedcd5b54e1ea3269f8
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.4"
+    version: "2.1.7"
   process:
     dependency: transitive
     description:

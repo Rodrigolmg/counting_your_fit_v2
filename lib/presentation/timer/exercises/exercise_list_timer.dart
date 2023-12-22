@@ -150,7 +150,7 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
         CountingYourFitRoutes.timerSetting);
   }
 
-  Future<bool> onCancel() async {
+  void onCancel(bool? canPop) async {
     showDialog(
       context: context,
       builder: (context) {
@@ -224,7 +224,6 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
         );
       }
     );
-    return false;
   }
 
   int getInitialTime(){
@@ -422,19 +421,19 @@ class _ExerciseListTimerState extends State<ExerciseListTimer> {
   @override
   Widget build(BuildContext context) {
 
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    double height = context.height;
+    double width = context.width;
     isPortuguese = context.translate.isPortuguese;
 
-    return WillPopScope(
-      onWillPop: onCancel,
+    return PopScope(
+      onPopInvoked: onCancel,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
             onPressed: () async {
-              await onCancel();
+              onCancel(true);
             },
             icon: Icon(
               Icons.watch_off,

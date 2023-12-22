@@ -1,6 +1,13 @@
 import 'package:counting_your_fit_v2/color_app.dart';
 import 'package:counting_your_fit_v2/context_extension.dart';
 import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/label/additional_timer_label_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/minute/additional_minute_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/seconds/additional_seconds_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_controller.dart';
+import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/steps/step_state_controller.dart';
 import 'package:counting_your_fit_v2/presentation/bloc/steps/steps_state.dart';
 import 'package:counting_your_fit_v2/presentation/components/directional_button.dart';
@@ -23,6 +30,13 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
 
   final _timeScreenController = GetIt.I.get<SettingsDefinitionStateController>();
   final stepsController = GetIt.I.get<StepStateController>();
+  final setsController = GetIt.I.get<SetsStateController>();
+  final minuteController = GetIt.I.get<MinuteStateController>();
+  final secondsController = GetIt.I.get<SecondsStateController>();
+  final timerLabel = GetIt.I.get<TimerLabelController>();
+  final additionalTimerLabel = GetIt.I.get<AdditionalTimerLabelController>();
+  final additionalMinute = GetIt.I.get<AdditionalMinuteStateController>();
+  final additionalSeconds = GetIt.I.get<AdditionalSecondsStateController>();
   int stepQuantity = 2;
 
 
@@ -109,6 +123,15 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
                 if(!stepsController.state.isStepDefined){
                   stepsController.setSteps(2);
                 }
+
+                setsController.resetSet();
+                minuteController.resetMinute();
+                secondsController.resetSeconds();
+                timerLabel.resetTimer();
+                additionalMinute.resetAdditionalMinute();
+                additionalSeconds.resetAdditionalSeconds();
+                additionalTimerLabel.resetAdditionalTimer();
+
                 Navigator.pushReplacementNamed(
                     context, CountingYourFitRoutes.exerciseStepSetting);
               },
