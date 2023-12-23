@@ -6,10 +6,13 @@
     "fourthPageLabel": "Ah! E se tiver ou uma isometria ou um tempo de execução de exercício, você pode me falar também!",
     "fifthPageLabel": "Então, vamos treinar?!",
     "go": "VAMOS",
-    "allowNotification": "PERMITIR",
+    "allow": "PERMITIR",
     "notificationDialogTitle": "Permissão de notificação",
     "notificationDialogContent": "Por favor nos dê permissão de notificar onde está a contagem do seu exercício?",
-    "notificationPermission": "Quase ia esquecendo! Para uma melhor experiência será notificado o que está acontecendo. Se quiser desabilitar as notificações, pode ir em ferramentas e editar as permissões do app."
+    "notificationPermission": "Quase ia esquecendo! Para uma melhor experiência será notificado o que está acontecendo. Se quiser desabilitar as notificações, pode ir em ferramentas e editar as permissões do app.",
+    "overlayPermission": "Que tal continuar vendo seu tempo enquanto abre outro aplicativo? Se achou bacana, só permitir.",
+    "overlayDialogTitle": "Deseja permitir sobreposição?",
+    "overlayDialogContent": "Se realmente deseja permitir, será aberto a página de configuração de sobreposição e então ative-o"
   },
   "helpPage": {
     "timerPage": {

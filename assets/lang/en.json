@@ -6,8 +6,11 @@
     "fourthPageLabel": "Oh, and if you have any isometric exercises or specific execution times, please let me know as well!",
     "fifthPageLabel": "So, let's go?!",
     "go": "GO",
-    "allowNotification": "ALLOW",
-    "notificationPermission": "Oh, I almost forgot! For a better experience, you will receive notifications about what's happening. If you wish to disable the notifications, you can go to the settings and edit the app permissions."
+    "allow": "ALLOW",
+    "notificationPermission": "Oh, I almost forgot! For a better experience, you will receive notifications about what's happening. If you wish to disable the notifications, you can go to the settings and edit the app permissions.",
+    "overlayPermission": "How about continuing to see your time while opening another application? If you think it's cool, just allow it.",
+    "overlayDialogTitle": "Do you want to allow overlay?",
+    "overlayDialogContent": "If you really want to allow it, the overlay configuration page will be opened, and then activate it."
   },
   "helpPage": {
     "timerPage": {

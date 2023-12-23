@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-
+@pragma("vm:entry-point")
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   initNotification();
@@ -16,9 +16,9 @@ void main() {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then((value) => runApp(const CountingYourFit()));
-  runApp(
-    const CountingYourFit()
-  );
+  // runApp(
+  //   const CountingYourFit()
+  // );
 }
 
 void initInjector(){
