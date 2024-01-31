@@ -1,9 +1,9 @@
-import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
+part of presentation;
 
 abstract class ExerciseListDefinitionStates{}
 
 extension ExerciseListDefinitionStatesX on ExerciseListDefinitionStates{
-  bool get isInitial => this is InitialState;
+  bool get isInitial => this is ExerciseInitialState;
   bool get isSingleExerciseDefined => this is SingleExerciseDefined;
   bool get isSingleExerciseSelected => this is ExerciseSelected;
   bool get isExerciseListDefined => this is ExerciseListDefined;
@@ -17,8 +17,8 @@ extension ExerciseListDefinitionStatesX on ExerciseListDefinitionStates{
   bool get isNextExercise => this is NextExercise;
 }
 
-class InitialState implements ExerciseListDefinitionStates {
-  const InitialState();
+class ExerciseInitialState implements ExerciseListDefinitionStates {
+  const ExerciseInitialState();
 }
 
 class SingleExerciseDefined implements ExerciseListDefinitionStates{

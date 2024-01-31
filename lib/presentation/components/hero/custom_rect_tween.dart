@@ -1,6 +1,4 @@
-import 'dart:ui';
-
-import 'package:flutter/widgets.dart';
+part of presentation;
 
 class CustomRectTween extends RectTween {
 

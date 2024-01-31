@@ -1,16 +1,4 @@
-import 'package:counting_your_fit_v2/color_app.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/label/additional_timer_label_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/minute/additional_minute_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/seconds/additional_seconds_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:numberpicker/numberpicker.dart';
+part of presentation;
 
 class HeroExerciseTimerValues extends StatefulWidget {
 

@@ -1,6 +1,4 @@
-import 'dart:math';
-
-import 'package:flutter/animation.dart';
+part of util;
 
 class SineCurve extends Curve {
   const SineCurve({this.count = 3});

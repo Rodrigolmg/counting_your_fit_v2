@@ -1,3 +1,5 @@
+part of presentation;
+
 abstract class IntroScreenStates{}
 
 extension IntroScreenStatesX on IntroScreenStates{

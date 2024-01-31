@@ -1,7 +1,4 @@
-
-
-import 'package:counting_your_fit_v2/presentation/intro/bloc/intro_screen_states.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+part of presentation;
 
 class IntroScreenStateController extends Cubit<IntroScreenStates>{
 

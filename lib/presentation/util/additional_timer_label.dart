@@ -1,3 +1,5 @@
+part of util;
+
 class AdditionalTimerLabel{
   String? additionalTime;
   AdditionalTimerLabel({

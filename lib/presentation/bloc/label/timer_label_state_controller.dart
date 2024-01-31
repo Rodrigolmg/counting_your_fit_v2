@@ -1,6 +1,4 @@
-import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+part of presentation;
 
 class TimerLabelController extends Cubit<TimerLabelState>{
   String? minuteLabel = '00';
@@ -59,7 +57,7 @@ class TimerLabelController extends Cubit<TimerLabelState>{
   }
 
   void checkAutoRestNoTime(){
-    emit(HasNoAdditionalTime());
+    emit(HasNoAdditional());
   }
 
   void checkStepAutoRestNoTime(){

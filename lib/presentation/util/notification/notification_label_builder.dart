@@ -1,8 +1,4 @@
-import 'package:counting_your_fit_v2/app_localizations.dart';
-import 'package:counting_your_fit_v2/context_extension.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_states.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_states.dart';
-import 'package:flutter/material.dart';
+part of util;
 
 class NotificationLabelBuilder {
   final BuildContext context;

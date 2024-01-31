@@ -1,5 +1,4 @@
-
-import 'package:counting_your_fit_v2/presentation/util/controller_strategy.dart';
+part of util;
 
 abstract class BlocController<T> {
   static BlocController? call(ControllerEnum controllerEnum)

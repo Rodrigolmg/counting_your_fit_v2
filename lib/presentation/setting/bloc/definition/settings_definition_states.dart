@@ -1,3 +1,5 @@
+part of presentation;
+
 abstract class SettingsDefinitionStates{}
 
 extension SettingsDefinitionStateX on SettingsDefinitionStates{
@@ -7,11 +9,11 @@ extension SettingsDefinitionStateX on SettingsDefinitionStates{
   bool get isSecondPageScrolled => this is SecondPageScrolled;
   bool get isHelpCalled => this is HelpCalled;
   bool get isHelpClosed => this is HelpClosed;
-  bool get isInitial => this is InitialState;
+  bool get isInitial => this is SettingInitialState;
 }
 
-class InitialState implements SettingsDefinitionStates{
-  const InitialState();
+class SettingInitialState implements SettingsDefinitionStates{
+  const SettingInitialState();
 }
 
 class FirstPageClicked implements SettingsDefinitionStates{

@@ -1,6 +1,4 @@
-import 'package:counting_your_fit_v2/color_app.dart';
-import 'package:counting_your_fit_v2/context_extension.dart';
-import 'package:flutter/material.dart';
+part of presentation;
 
 class ExercisesHelperSheet extends StatelessWidget {
   const ExercisesHelperSheet({Key? key}) : super(key: key);

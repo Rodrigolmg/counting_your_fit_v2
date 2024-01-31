@@ -1,7 +1,9 @@
+part of presentation;
+
 abstract class IndividualExerciseState{}
 
 extension ExerciseStateX on IndividualExerciseState {
-  bool get isInitial => this is InitialState;
+  bool get isInitial => this is IndividualInitialState;
   bool get isExerciseDefined => this is ExerciseDefined;
   bool get isNextSet => this is NextSet;
   bool get isResting => this is Resting;
@@ -14,8 +16,8 @@ extension ExerciseStateX on IndividualExerciseState {
   bool get isExerciseStopped => this is ExerciseStopped;
 }
 
-class InitialState implements IndividualExerciseState {
-  const InitialState();
+class IndividualInitialState implements IndividualExerciseState {
+  const IndividualInitialState();
 }
 
 class ExerciseDefined implements IndividualExerciseState{

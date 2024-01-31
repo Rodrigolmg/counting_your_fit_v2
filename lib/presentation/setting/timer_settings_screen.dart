@@ -1,16 +1,4 @@
-import 'package:counting_your_fit_v2/color_app.dart';
-import 'package:counting_your_fit_v2/context_extension.dart';
-import 'package:counting_your_fit_v2/presentation/components/individual_exercise_helper_sheet.dart';
-import 'package:counting_your_fit_v2/presentation/sheet/step_helper_sheet.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/definition/settings_definition_states.dart';
-import 'package:counting_your_fit_v2/presentation/setting/pages/exercise_list_page.dart';
-import 'package:counting_your_fit_v2/presentation/setting/pages/individual_exercise_page.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/definition/settings_definition_state_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:get_it/get_it.dart';
+part of presentation;
 
 class TimerSettingsScreen extends StatefulWidget {
   const TimerSettingsScreen({Key? key}) : super(key: key);
@@ -19,7 +7,10 @@ class TimerSettingsScreen extends StatefulWidget {
   State<TimerSettingsScreen> createState() => _TimerSettingsScreenState();
 }
 
-class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
+class _TimerSettingsScreenState extends State<TimerSettingsScreen>
+    with WidgetsBindingObserver{
+
+
 
   final PageController _pageController = PageController();
   final _timeScreenController = GetIt.I.get<SettingsDefinitionStateController>();
@@ -100,6 +91,39 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
         }
     );
     return false;
+  }
+
+
+  void overlayPage() async {
+    // if(await OverlayController.hasPermission){
+    //   if(await OverlayController.isActive){
+    //     await OverlayController.closeService;
+    //   } else {
+    //     await FlutterOverlayWindow.showOverlay(
+    //         width: 100,
+    //         height: 300,
+    //         enableDrag: true,
+    //         visibility: NotificationVisibility.visibilityPublic,
+    //         positionGravity: PositionGravity.right
+    //     );
+    //   }
+    // }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if(state == AppLifecycleState.paused){
+      Future.delayed(const Duration(seconds: 1), (){
+        overlayPage();
+      });
+    }
   }
 
   @override
@@ -188,5 +212,9 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
     );
   }
 
-
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 }

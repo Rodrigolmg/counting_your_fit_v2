@@ -1,3 +1,5 @@
+part of domain;
+
 abstract class EditSelectedSetUseCase{
   Future<void> call(int selectedSet);
 }

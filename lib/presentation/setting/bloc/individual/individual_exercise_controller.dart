@@ -1,10 +1,9 @@
-import 'package:bloc/bloc.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_states.dart';
+part of presentation;
 
 class IndividualExerciseController extends Cubit<IndividualExerciseState>{
 
   IndividualExerciseController([
-    IndividualExerciseState state = const InitialState(),
+    IndividualExerciseState state = const IndividualInitialState(),
   ]) : super(state);
 
   void registerIndividualExercise({

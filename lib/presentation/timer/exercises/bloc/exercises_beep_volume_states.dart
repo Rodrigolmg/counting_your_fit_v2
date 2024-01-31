@@ -1,3 +1,5 @@
+part of presentation;
+
 abstract class ExercisesBeepVolumeState{
   double get volume;
 }

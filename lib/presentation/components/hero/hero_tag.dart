@@ -1,3 +1,5 @@
+part of presentation;
+
 const String heroTimerPopUp = 'timer1';
 const String heroAdditionalPopUp = 'add1';
 const String heroSetsPopUp = 'sets1';

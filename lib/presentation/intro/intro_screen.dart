@@ -1,19 +1,4 @@
-import 'package:counting_your_fit_v2/access_status.dart';
-import 'package:counting_your_fit_v2/color_app.dart';
-import 'package:counting_your_fit_v2/context_extension.dart';
-import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
-import 'package:counting_your_fit_v2/presentation/intro/bloc/intro_screen_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/intro/pages/fit_registering_page.dart';
-import 'package:counting_your_fit_v2/presentation/intro/pages/notification_permission_page.dart';
-import 'package:counting_your_fit_v2/presentation/intro/pages/other_exercises_page.dart';
-import 'package:counting_your_fit_v2/presentation/intro/pages/overlay_permission_page.dart';
-import 'package:counting_your_fit_v2/presentation/intro/pages/question_page.dart';
-import 'package:counting_your_fit_v2/presentation/intro/pages/solution_page.dart';
-import 'package:counting_your_fit_v2/presentation/intro/pages/workout_page.dart';
-import 'package:counting_your_fit_v2/presentation/util/custom_intro_page_view_scroll_physics.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:flutter_overlay_window/flutter_overlay_window.dart';
-import 'package:flutter/material.dart';
+part of presentation;
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({Key? key}) : super(key: key);

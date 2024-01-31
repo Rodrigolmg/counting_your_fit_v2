@@ -1,3 +1,5 @@
+part of presentation;
+
 abstract class ButtonIconState{}
 
 extension ButtonIconStateX on ButtonIconState {

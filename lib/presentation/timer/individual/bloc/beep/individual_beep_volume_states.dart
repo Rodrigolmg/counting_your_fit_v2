@@ -1,41 +1,43 @@
+part of presentation;
+
 abstract class IndividualBeepVolumeState{
   double get volume;
 }
 
 extension IndividualBeepVolumeStateX on IndividualBeepVolumeState{
-  bool get isFullVolume => this is FullVolume;
+  bool get isFullVolume => this is IndividualFullVolume;
   bool get isMidVolume => this is MidVolume;
   bool get isLowVolume => this is LowVolume;
   bool get isNoVolume => this is NoVolume;
 }
 
-class FullVolume implements IndividualBeepVolumeState{
+class IndividualFullVolume implements IndividualBeepVolumeState{
   final double value;
-  const FullVolume(this.value);
+  const IndividualFullVolume(this.value);
 
   @override
   double get volume => value;
 }
 
-class MidVolume implements IndividualBeepVolumeState{
+class IndividualMidVolume implements IndividualBeepVolumeState{
   final double value;
-  const MidVolume(this.value);
+  const IndividualMidVolume(this.value);
 
   @override
   double get volume => value;
 }
 
-class LowVolume implements IndividualBeepVolumeState{
+class IndividualLowVolume implements IndividualBeepVolumeState{
   final double value;
-  const LowVolume(this.value);
+  const IndividualLowVolume(this.value);
 
   @override
   double get volume => value;
 }
 
-class NoVolume implements IndividualBeepVolumeState{
+class IndividualNoVolume implements IndividualBeepVolumeState{
   final double value;
-  const NoVolume(this.value);
+  const IndividualNoVolume(this.value);
 
   @override
   double get volume => value;

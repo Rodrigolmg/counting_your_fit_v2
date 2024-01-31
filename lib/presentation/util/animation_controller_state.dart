@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of util;
 
 abstract class AnimationControllerState<T extends StatefulWidget>
     extends State<T> with SingleTickerProviderStateMixin {

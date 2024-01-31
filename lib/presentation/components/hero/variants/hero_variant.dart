@@ -1,8 +1,4 @@
-import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_exercise_additional_timer_values.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_exercise_sets_value.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_exercise_step_value.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_exercise_timer_values.dart';
-import 'package:flutter/material.dart';
+part of presentation;
 
 abstract class HeroVariant{
   Widget call(String heroTag, {bool? isStepConfig = false});

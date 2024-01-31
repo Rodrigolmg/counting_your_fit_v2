@@ -1,13 +1,9 @@
-import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
-import 'package:counting_your_fit_v2/domain/usecase/register_exercise_list_usecase.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_states.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
+part of presentation;
 
 class ExerciseListDefinitionController extends Cubit<ExerciseListDefinitionStates>{
 
   ExerciseListDefinitionController([
-    ExerciseListDefinitionStates initialState = const InitialState()
+    ExerciseListDefinitionStates initialState = const ExerciseInitialState()
   ]) : super(initialState);
 
   Future<ExerciseSettingEntity> registerSingleExercise({

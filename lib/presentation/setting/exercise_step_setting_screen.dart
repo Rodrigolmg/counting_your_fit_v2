@@ -1,31 +1,4 @@
-import 'package:counting_your_fit_v2/app_localizations.dart';
-import 'package:counting_your_fit_v2/color_app.dart';
-import 'package:counting_your_fit_v2/context_extension.dart';
-import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
-import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/label/additional_timer_label_state.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/label/additional_timer_label_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/minute/additional_minute_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/seconds/additional_seconds_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/steps/step_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/steps/steps_state.dart';
-import 'package:counting_your_fit_v2/presentation/sheet/exercises_helper_sheet.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/hero_button.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_variant.dart';
-import 'package:counting_your_fit_v2/presentation/components/shake_error.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_controller.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/exercises/exercise_list_states.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:im_stepper/stepper.dart';
-import 'package:get_it/get_it.dart';
+part of presentation;
 
 class ExerciseStepSettingScreen extends StatefulWidget {
   const ExerciseStepSettingScreen({Key? key}) : super(key: key);

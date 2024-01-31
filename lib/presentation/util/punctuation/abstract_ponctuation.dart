@@ -1,3 +1,5 @@
+part of util;
+
 abstract class AbstractPunctuation {
   String getPunctuation();
 }

@@ -1,3 +1,4 @@
+part of presentation;
 
 abstract class StepsState{
   dynamic get value;

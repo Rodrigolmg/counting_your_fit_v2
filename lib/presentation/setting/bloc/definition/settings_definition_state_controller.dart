@@ -1,11 +1,9 @@
-import 'package:bloc/bloc.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/definition/settings_definition_states.dart';
-
+part of presentation;
 
 class SettingsDefinitionStateController extends Cubit<SettingsDefinitionStates> {
 
   SettingsDefinitionStateController(
-      [SettingsDefinitionStates state = const InitialState()]
+      [SettingsDefinitionStates state = const SettingInitialState()]
   ) : super(state);
 
   void changePageOnClick(int index){

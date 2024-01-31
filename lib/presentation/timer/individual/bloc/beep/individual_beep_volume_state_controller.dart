@@ -1,26 +1,25 @@
-import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/beep/individual_beep_volume_states.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+part of presentation;
 
 class IndividualBeepVolumeStateController extends Cubit<IndividualBeepVolumeState>{
 
   IndividualBeepVolumeStateController([
-    IndividualBeepVolumeState initialState = const FullVolume(1.0)
+    IndividualBeepVolumeState initialState = const IndividualFullVolume(1.0)
   ]) : super(initialState);
 
   void setVolume(double volume){
     if(volume > .5 && volume <= 1){
-      emit(FullVolume(volume));
+      emit(IndividualFullVolume(volume));
     } else if (volume > .3 && volume <= .5){
-      emit(MidVolume(volume));
+      emit(IndividualMidVolume(volume));
     } else if(volume > 0 && volume <= .3){
-      emit(LowVolume(volume));
+      emit(IndividualLowVolume(volume));
     } else {
-      emit(NoVolume(volume));
+      emit(IndividualNoVolume(volume));
     }
   }
 
   void setVolumeOnClick(double volume){
-    emit(volume > 0 ? const NoVolume(0) : const FullVolume(1));
+    emit(volume > 0 ? const IndividualNoVolume(0) : const IndividualFullVolume(1));
   }
 
 }

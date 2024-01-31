@@ -1,6 +1,4 @@
-import 'package:counting_your_fit_v2/data/model/exercise_setting_model.dart';
-import 'package:counting_your_fit_v2/presentation/util/punctuation/abstract_ponctuation.dart';
-import 'package:flutter/material.dart';
+part of util;
 
 class DynamicLabel {
 

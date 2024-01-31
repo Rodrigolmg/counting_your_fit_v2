@@ -1,31 +1,4 @@
-import 'dart:async';
-
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:counting_your_fit_v2/app_localizations.dart';
-import 'package:counting_your_fit_v2/color_app.dart';
-import 'package:counting_your_fit_v2/context_extension.dart';
-import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/minute/additional_minute_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/seconds/additional_seconds_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_states.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/individual/individual_exercise_controller.dart';
-import 'package:counting_your_fit_v2/presentation/sheet/timer_helper_sheet.dart';
-import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/beep/individual_beep_volume_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/timer/individual/bloc/beep/individual_beep_volume_states.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/icon/button_icon_state.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/icon/button_icon_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/util/notification/notification_label_builder.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:get_it/get_it.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:stop_watch_timer/stop_watch_timer.dart';
+part of presentation;
 
 class IndividualExerciseTimer extends StatefulWidget {
   const IndividualExerciseTimer({Key? key}) : super(key: key);

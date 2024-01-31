@@ -1,5 +1,4 @@
-import 'package:counting_your_fit_v2/presentation/timer/exercises/bloc/exercises_beep_volume_states.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+part of presentation;
 
 class ExercisesBeepVolumeStateController extends Cubit<ExercisesBeepVolumeState>{
 

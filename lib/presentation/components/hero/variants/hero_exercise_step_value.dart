@@ -1,11 +1,4 @@
-import 'package:counting_your_fit_v2/color_app.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/steps/step_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/steps/steps_state.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:numberpicker/numberpicker.dart';
-
+part of presentation;
 
 class HeroExerciseStepValue extends StatefulWidget {
 

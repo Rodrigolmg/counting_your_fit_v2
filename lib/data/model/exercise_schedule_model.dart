@@ -1,5 +1,4 @@
-import 'package:counting_your_fit_v2/data/model/exercise_setting_model.dart';
-import 'package:counting_your_fit_v2/domain/entities/exercise_schedule_entity.dart';
+part of data;
 
 class ExerciseScheduleModel extends ExerciseScheduleEntity{
 

@@ -1,3 +1,5 @@
+part of domain;
+
 class ExerciseSettingEntity{
   int? id;
   int set;

@@ -1,9 +1,4 @@
-
-import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state_controller.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
+part of presentation;
 
 class MinuteStateController extends Cubit<MinuteState>{
   MinuteStateController([

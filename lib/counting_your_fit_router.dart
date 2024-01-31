@@ -1,10 +1,4 @@
-
-import 'package:counting_your_fit_v2/presentation/intro/intro_screen.dart';
-import 'package:counting_your_fit_v2/presentation/setting/exercise_step_setting_screen.dart';
-import 'package:counting_your_fit_v2/presentation/setting/timer_settings_screen.dart';
-import 'package:counting_your_fit_v2/presentation/splash_screen.dart';
-import 'package:counting_your_fit_v2/presentation/timer/exercises/exercise_list_timer.dart';
-import 'package:counting_your_fit_v2/presentation/timer/individual/individual_exercise_timer.dart';
+import 'package:counting_your_fit_v2/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 
 class CountingYourFitRouter {

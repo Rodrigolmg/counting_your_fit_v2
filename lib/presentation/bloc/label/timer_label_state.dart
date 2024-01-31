@@ -1,4 +1,4 @@
-import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
+part of presentation;
 
 abstract class TimerLabelState<T> {
   T get value;
@@ -104,9 +104,9 @@ class HasNoTime implements TimerLabelState<dynamic>{
   get value => null;
 }
 
-class HasNoAdditionalTime implements TimerLabelState<dynamic>{
+class HasNoAdditional implements TimerLabelState<dynamic>{
 
-  HasNoAdditionalTime();
+  HasNoAdditional();
 
   @override
   get value => null;

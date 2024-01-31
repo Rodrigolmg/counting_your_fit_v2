@@ -1,10 +1,4 @@
-import 'dart:async';
-
-import 'package:after_layout/after_layout.dart';
-import 'package:counting_your_fit_v2/access_status.dart';
-import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
-import 'package:flutter/material.dart';
-import 'package:rive/rive.dart';
+part of presentation;
 
 class CustomSplashScreen extends StatefulWidget {
   const CustomSplashScreen({Key? key}) : super(key: key);

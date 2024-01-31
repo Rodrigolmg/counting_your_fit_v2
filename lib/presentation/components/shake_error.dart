@@ -1,6 +1,4 @@
-import 'package:counting_your_fit_v2/presentation/util/animation_controller_state.dart';
-import 'package:counting_your_fit_v2/presentation/util/sine_curve.dart';
-import 'package:flutter/material.dart';
+part of presentation;
 
 class ShakeError extends StatefulWidget {
 

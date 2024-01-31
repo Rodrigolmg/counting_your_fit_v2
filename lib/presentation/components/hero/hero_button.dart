@@ -1,8 +1,4 @@
-import 'package:counting_your_fit_v2/color_app.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/custom_rect_tween.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/hero_router.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_variant.dart';
-import 'package:flutter/material.dart';
+part of presentation;
 
 class HeroButton extends StatefulWidget {
 

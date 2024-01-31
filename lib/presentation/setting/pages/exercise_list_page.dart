@@ -1,23 +1,4 @@
-import 'package:counting_your_fit_v2/color_app.dart';
-import 'package:counting_your_fit_v2/context_extension.dart';
-import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/label/additional_timer_label_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/label/timer_label_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/minute/additional_minute_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/minute/minute_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/seconds/additional_seconds_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/seconds/seconds_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/sets/sets_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/steps/step_state_controller.dart';
-import 'package:counting_your_fit_v2/presentation/bloc/steps/steps_state.dart';
-import 'package:counting_your_fit_v2/presentation/components/directional_button.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/hero_button.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/hero_tag.dart';
-import 'package:counting_your_fit_v2/presentation/components/hero/variants/hero_variant.dart';
-import 'package:counting_your_fit_v2/presentation/setting/bloc/definition/settings_definition_state_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
+part of presentation;
 
 class ExerciseListPage extends StatefulWidget {
   const ExerciseListPage({Key? key}) : super(key: key);

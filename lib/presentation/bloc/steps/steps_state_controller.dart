@@ -1,6 +1,4 @@
-
-import 'package:counting_your_fit_v2/presentation/bloc/steps/steps_state.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+part of presentation;
 
 class StepStateController extends Cubit<StepsState>{
   StepStateController([

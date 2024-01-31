@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of presentation;
 
 class HeroRoute<T> extends PageRoute<T> {
 

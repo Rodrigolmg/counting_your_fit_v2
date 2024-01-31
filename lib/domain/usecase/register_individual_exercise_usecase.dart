@@ -1,4 +1,4 @@
-import 'package:counting_your_fit_v2/domain/entities/exercise_setting_entity.dart';
+part of domain;
 
 abstract class RegisterIndividualExerciseUseCase{
   Future<ExerciseSettingEntity> call({
