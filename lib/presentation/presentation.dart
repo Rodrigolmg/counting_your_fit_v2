@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:after_layout/after_layout.dart';
 import 'package:counting_your_fit_v2/domain/domain.dart';
+import 'package:counting_your_fit_v2/overlay_controller.dart';
 import 'package:flutter/services.dart';
 
 import 'util/util.dart';
@@ -19,7 +20,6 @@ import 'package:counting_your_fit_v2/counting_your_fit_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_overlay_window/flutter_overlay_window.dart';
 import 'package:get_it/get_it.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:morphable_shape/morphable_shape.dart';
@@ -103,5 +103,3 @@ part 'timer/exercises/exercise_list_timer.dart';
 part 'timer/individual/bloc/beep/individual_beep_volume_state_controller.dart';
 part 'timer/individual/bloc/beep/individual_beep_volume_states.dart';
 part 'timer/individual/individual_exercise_timer.dart';
-
-// util

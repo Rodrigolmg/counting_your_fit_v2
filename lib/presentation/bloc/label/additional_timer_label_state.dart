@@ -4,7 +4,7 @@ abstract class AdditionalTimerLabelState<T> {
   T get value;
 }
 
-extension TimerLabelStateX on AdditionalTimerLabelState{
+extension AdditionalTimerLabelStateX on AdditionalTimerLabelState{
   bool get isInitialAdditionalLabel => this is InitialAdditionalTimerLabel;
   bool get isAdditionalMinuteLabelDefined => this is AdditionalMinuteLabelDefined;
   bool get isAdditionalSecondsLabelDefined => this is AdditionalSecondsLabelDefined;

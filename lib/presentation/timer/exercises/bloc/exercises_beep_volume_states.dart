@@ -4,7 +4,7 @@ abstract class ExercisesBeepVolumeState{
   double get volume;
 }
 
-extension IndividualBeepVolumeStateX on ExercisesBeepVolumeState{
+extension ExercisesBeepVolumeStateX on ExercisesBeepVolumeState{
   bool get isFullVolume => this is FullVolume;
   bool get isMidVolume => this is MidVolume;
   bool get isLowVolume => this is LowVolume;

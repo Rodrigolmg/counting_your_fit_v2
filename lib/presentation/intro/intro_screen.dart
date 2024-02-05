@@ -26,7 +26,7 @@ class _IntroScreenState extends State<IntroScreen> {
   }
 
   showOverlayDialog() async {
-    bool? overlayPermissionStatus = await FlutterOverlayWindow.isPermissionGranted();
+    bool? overlayPermissionStatus = await OverlayController.isPermissionGranted;
 
     if(!overlayPermissionStatus){
       if(context.mounted){
@@ -64,12 +64,12 @@ class _IntroScreenState extends State<IntroScreen> {
               actions: [
                 TextButton(
                     onPressed: () async {
-                      bool? isSet = await FlutterOverlayWindow.requestPermission();
+                      bool? isSet = await OverlayController.requestPermission;
                       setState(() {
-                        isOverlaySet = true;
+                        isOverlaySet = isSet ?? true;
                         pageViewScrollPhysics = const AlwaysScrollableScrollPhysics();
                       });
-                      if(context.mounted && isSet != null){
+                      if(context.mounted && isOverlaySet){
                         Navigator.pop(context);
                       }
                     },
@@ -90,7 +90,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 TextButton(
                     onPressed: (){
                       setState(() {
-                        isOverlaySet = true;
+                        isOverlaySet = false;
                         pageViewScrollPhysics = const AlwaysScrollableScrollPhysics();
                       });
                       Navigator.pop(context);

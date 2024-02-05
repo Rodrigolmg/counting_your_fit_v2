@@ -2,7 +2,7 @@ part of presentation;
 
 abstract class AdditionalSecondsState{}
 
-extension SecondsStateX on AdditionalSecondsState{
+extension AdditionalSecondsStateX on AdditionalSecondsState{
   bool get isInitialAdditionalSecond => this is AdditionalSecondsDefined;
   bool get isAdditionalSecondsDefined => this is AdditionalSecondsDefined;
   bool get isAdditionalSecondsReset => this is AdditionalSecondsReset;
