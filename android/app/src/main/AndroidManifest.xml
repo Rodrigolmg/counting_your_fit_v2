@@ -39,6 +39,6 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
-       <!--<service android:name="flutter.overlay.window.flutter_overlay_window.OverlayService" android:exported="false" />-->
+       <service android:name="com.rlorg.counting_your_fit_v2.service.FlutterOverlayService" android:exported="false" />
     </application>
 </manifest>

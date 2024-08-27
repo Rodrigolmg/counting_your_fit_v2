@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.provider.Settings
+import com.rlorg.counting_your_fit_v2.ChannelTag
+import com.rlorg.counting_your_fit_v2.service.FlutterOverlayService
+import com.rlorg.counting_your_fit_v2.service.FlutterWindowSetup
 import io.flutter.FlutterInjector
 import io.flutter.embedding.engine.FlutterEngineGroup
 import io.flutter.embedding.engine.FlutterEngineCache
@@ -20,7 +22,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.PluginRegistry
 
 class OverlayPlugin: FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
-    private val channelTag = "rl/overlay_channel"
+    private val channelTag = ChannelTag.mainChannel
     private val cachedTag = "cachedEngine"
     private val REQUEST_CODE_FOR_OVERLAY_PERMISSION = 1248
     private var act: Activity? = null
@@ -40,6 +42,7 @@ class OverlayPlugin: FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegi
 
     override fun onMethodCall(call: MethodCall, result: Result) {
         pendingResult = result
+
         when(call.method){
             "requestPermission" -> {
                 val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
@@ -48,6 +51,40 @@ class OverlayPlugin: FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegi
             }
             "checkPermission" -> {
                 result.success(checkOverlayPermission())
+            }
+            "showOverlay" -> {
+                if (!checkOverlayPermission()) {
+                    result.error("PERMISSION", "overlay permission is not enabled", null)
+                    return
+                }
+                val notificationVisibility = call.argument<String?>("notificationVisibility")
+
+                FlutterWindowSetup.height = call.argument("height") ?: -1
+                FlutterWindowSetup.width = call.argument("width") ?: -1
+                FlutterWindowSetup.enableDrag = call.argument<Boolean>("enableDrag")!!
+                FlutterWindowSetup.setGravityFromAlignment(call.argument<String?>("alignment") ?: "center")
+                FlutterWindowSetup.setFlag(call.argument<String?>("flag") ?: "flagNotFocusable")
+                FlutterWindowSetup.overlayTitle = call.argument<String>("overlayTitle")!!
+                FlutterWindowSetup.overlayContent = call.argument<String>("overlayContent") ?: ""
+                FlutterWindowSetup.positionGravity = call.argument<String>("positionGravity")!!
+                FlutterWindowSetup.setNotificationVisibility(call.argument<String?>("notificationVisibility")!!)
+
+                val intent = Intent(context, Class.forName(FlutterOverlayService::class.simpleName!!))
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                context.startService(intent)
+                result.success(null)
+            }
+            "isOverlayActive" -> {
+                result.success(FlutterOverlayService.isRunning)
+            }
+            "closeOverlay" -> {
+                if(FlutterOverlayService.isRunning){
+                    val i = Intent(context, Class.forName(FlutterOverlayService::class.simpleName!!))
+                    i.putExtra(FlutterOverlayService.intentExtraIsCloseWindow, true)
+                    context.startService(i)
+                    result.success(true)
+                }
             }
             else -> {
                 result.notImplemented()

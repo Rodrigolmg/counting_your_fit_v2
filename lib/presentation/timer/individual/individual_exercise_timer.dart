@@ -7,13 +7,15 @@ class IndividualExerciseTimer extends StatefulWidget {
   State<IndividualExerciseTimer> createState() => _IndividualExerciseTimerState();
 }
 
-class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
+class _IndividualExerciseTimerState extends State<IndividualExerciseTimer>
+  with WidgetsBindingObserver{
 
   late final StopWatchTimer stopWatchTimer;
   final individualExerciseController = GetIt.I.get<IndividualExerciseController>();
 
   IconData? volumeIcon;
   late bool isPortuguese;
+  AppLifecycleState? _appLifecycleState;
 
   // NOTIFICATION
   late NotificationLabelBuilder notificationBuilder;
@@ -230,11 +232,31 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
     return false;
   }
 
+  Future<void> showOverlay() async {
+    if(await OverlayController.isActive) return;
+    if(context.mounted){
+      await OverlayController.showOverlay(
+          enableDrag: true,
+          overlayContent: 'Teste',
+          overlayFlag: OverlayFlag.defaultFlag,
+          visibility: OverlayNotificationVisibility.visibilityPublic,
+          positionGravity: OverlayPositionGravity.none,
+          width: (context.width * .2).toInt(),
+          height: (context.height * .2).toInt()
+      );
+    }
+  }
+
+  Future<void> closeOverlay() async {
+    await OverlayController.closeOverlay();
+  }
 
   @override
   void initState() {
     super.initState();
     configPlayers();
+
+    WidgetsBinding.instance.addObserver(this);
 
     if(individualExerciseController.state.isExerciseDefined){
       ExerciseDefined exerciseDefined = individualExerciseController.state
@@ -363,6 +385,20 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
     );
     stopWatchTimer.onStartTimer();
     notify(individualExerciseController.state);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    // setState(() {
+    //   _appLifecycleState = state;
+    // });
+
+    if(state == AppLifecycleState.paused){
+      showOverlay();
+    } else if (state == AppLifecycleState.resumed){
+      closeOverlay();
+    }
   }
 
   @override
@@ -751,6 +787,7 @@ class _IndividualExerciseTimerState extends State<IndividualExerciseTimer> {
   @override
   void dispose() {
     stopWatchTimer.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     for (var element in streams) {
       element.cancel();
     }

@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:after_layout/after_layout.dart';
 import 'package:counting_your_fit_v2/domain/domain.dart';
-import 'package:counting_your_fit_v2/overlay_controller.dart';
 import 'package:flutter/services.dart';
 
 import 'util/util.dart';
